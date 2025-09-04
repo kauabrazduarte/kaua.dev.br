@@ -15,12 +15,12 @@ export default function VeryCurrentAge() {
     return () => clearInterval(interval);
   }, []);
 
-  const age = new Date().getFullYear() - bornIn.getFullYear();
-  const monthDiff = new Date().getMonth() - bornIn.getMonth();
-  const dayDiff = new Date().getDate() - bornIn.getDate();
-  const hourDiff = new Date().getHours() - bornIn.getHours();
-  const minuteDiff = new Date().getMinutes() - bornIn.getMinutes();
-  const secondDiff = new Date().getSeconds() - bornIn.getSeconds();
+  const age = Math.abs(new Date().getFullYear() - bornIn.getFullYear());
+  const monthDiff = Math.abs(new Date().getMonth() - bornIn.getMonth());
+  const dayDiff = Math.abs(new Date().getDate() - bornIn.getDate());
+  const hourDiff = Math.abs(new Date().getHours() - bornIn.getHours());
+  const minuteDiff = Math.abs(new Date().getMinutes() - bornIn.getMinutes());
+  const secondDiff = Math.abs(new Date().getSeconds() - bornIn.getSeconds());
 
   return (
     <>

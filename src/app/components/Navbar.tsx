@@ -48,7 +48,7 @@ export default async function Navbar() {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              href="https://github.com/oKauaDev"
+              href="https://github.com/kauabrazduarte"
               aria-label="Meu perfil no GitHub"
               target="_blank"
               className="p-2 rounded transition-colors duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 cursor-pointer text-neutral-800 dark:text-neutral-300"

@@ -12,16 +12,16 @@ export default async function Footer() {
           Kauã Braz (
           <Link
             className="text-neutral-800 dark:text-neutral-200 underline"
-            href="https://github.com/oKauaDev"
+            href="https://github.com/kauabrazduarte"
           >
-            @oKauaDev
+            @kauabrazduarte
           </Link>
           )
         </p>
 
         <Link
           className="text-neutral-800 dark:text-neutral-200 underline"
-          href="https://github.com/oKauaDev/kaua.dev.br"
+          href="https://github.com/kauabrazduarte/kaua.dev.br"
           target="_blank"
         >
           {t("source")}
