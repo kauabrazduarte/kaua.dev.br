@@ -1,6 +1,5 @@
 import X from "@/components/icons/X";
 import { markdownToHtml } from "@/lib/markdown";
-import formatNumber from "@/utils/formatNumber";
 import getTwitterPosts from "@/utils/getTwitterPosts";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -86,7 +85,8 @@ export default async function PostViewer({ params }: PageProps) {
   const breakPoints = post.text.split(/\./g);
 
   if (breakPoints.length > 1) {
-    titlePoint = breakLines[0].length > 120 ? breakLines[0].slice(0, 120) : breakLines[0];
+    titlePoint =
+      breakLines[0].length > 120 ? breakLines[0].slice(0, 120) : breakLines[0];
   }
 
   if (titleLine?.includes(".")) {
@@ -95,7 +95,12 @@ export default async function PostViewer({ params }: PageProps) {
     title = titleLine;
   }
 
-  const attchaments: { width: number; height: number; url: string; type: string }[] = [];
+  const attchaments: {
+    width: number;
+    height: number;
+    url: string;
+    type: string;
+  }[] = [];
 
   post.attachments?.media_keys?.forEach((key) => {
     const media = posts.includes.media.find((m) => m.media_key === key);
@@ -113,13 +118,17 @@ export default async function PostViewer({ params }: PageProps) {
   return (
     <>
       <section className="mt-10">
-        <h1 className="text-2xl leading-9 text-black dark:text-white">{title ?? "---------"}</h1>
+        <h1 className="text-2xl leading-9 text-black dark:text-white">
+          {title ?? "---------"}
+        </h1>
         <div className="flex items-center justify-between max-md:block">
           <div className="flex items-center gap-3  mt-2">
             <div className="text-neutral-700 dark:text-neutral-400">
               <X />
             </div>
-            <p className="text-neutral-700 dark:text-neutral-400 text-sm leading-4">oKauaDev</p>
+            <p className="text-neutral-700 dark:text-neutral-400 text-sm leading-4">
+              oKauaDev
+            </p>
             <span className="block w-[1px] h-full min-h-[16px] bg-neutral-700 dark:bg-neutral-400"></span>
             <p className="text-neutral-700 dark:text-neutral-400 text-sm leading-4 max-md:hidden">
               {dateLong} ({timeDiff})
@@ -128,10 +137,6 @@ export default async function PostViewer({ params }: PageProps) {
               {dateShort} ({timeDiff})
             </p>
           </div>
-
-          <p className="text-neutral-700 dark:text-neutral-400 text-sm leading-4 max-md:mt-2">
-            {formatNumber(post.public_metrics.impression_count)} {t("views")}
-          </p>
         </div>
       </section>
 
@@ -149,7 +154,12 @@ export default async function PostViewer({ params }: PageProps) {
             .filter((a) => a.type === "photo")
             .map((att) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={att.url} src={att.url} alt="" className="w-full h-auto rounded-[8px]" />
+              <img
+                key={att.url}
+                src={att.url}
+                alt=""
+                className="w-full h-auto rounded-[8px]"
+              />
             ))}
         </div>
       </main>

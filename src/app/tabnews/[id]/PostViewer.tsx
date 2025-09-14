@@ -2,7 +2,6 @@
 
 import Tabnews from "@/components/icons/Tabnews";
 import { markdownToHtml } from "@/lib/markdown";
-import formatNumber from "@/utils/formatNumber";
 import getTabnewsPostInfo, { PostInfo } from "@/utils/getTabnewsPostInfo";
 import { useTranslations } from "next-intl";
 import { notFound, useParams } from "next/navigation";
@@ -38,12 +37,16 @@ export default function PostViewer() {
 
   if (!post) return null;
 
-  const dateLong = new Date(post?.published_at ?? Date.now()).toLocaleDateString("pt-BR", {
+  const dateLong = new Date(
+    post?.published_at ?? Date.now(),
+  ).toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "long",
     year: "numeric",
   });
-  const dateShort = new Date(post?.published_at ?? Date.now()).toLocaleDateString("pt-BR", {
+  const dateShort = new Date(
+    post?.published_at ?? Date.now(),
+  ).toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -84,13 +87,17 @@ export default function PostViewer() {
   return (
     <>
       <section className="mt-10">
-        <h1 className="text-2xl leading-9 text-black dark:text-white">{post.title}</h1>
+        <h1 className="text-2xl leading-9 text-black dark:text-white">
+          {post.title}
+        </h1>
         <div className="flex items-center justify-between max-md:block">
           <div className="flex items-center gap-3  mt-2">
             <div className="text-neutral-700 dark:text-neutral-400">
               <Tabnews />
             </div>
-            <p className="text-neutral-700 dark:text-neutral-400 text-sm leading-4">oKauaDev</p>
+            <p className="text-neutral-700 dark:text-neutral-400 text-sm leading-4">
+              oKauaDev
+            </p>
             <span className="block w-[1px] h-full min-h-[16px] bg-neutral-700 dark:bg-neutral-400"></span>
             <p className="text-neutral-700 dark:text-neutral-400 text-sm leading-4 max-md:hidden">
               {dateLong} ({timeDiff})
@@ -99,10 +106,6 @@ export default function PostViewer() {
               {dateShort} ({timeDiff})
             </p>
           </div>
-
-          <p className="text-neutral-700 dark:text-neutral-400 text-sm leading-4 max-md:mt-2">
-            {formatNumber(post.tabcoins)} {t("likes")}
-          </p>
         </div>
       </section>
 

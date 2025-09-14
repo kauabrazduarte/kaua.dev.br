@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/table";
 import X from "@/components/icons/X";
 import Tabnews from "@/components/icons/Tabnews";
-import formatNumber from "@/utils/formatNumber";
 import { useTranslations } from "next-intl";
 import getTabnewsPosts from "@/utils/getTabnewsPosts";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -49,9 +48,6 @@ export default function MyTable() {
               <TableHead className="text-sm text-neutral-700 font-normal leading-4 dark:text-neutral-400">
                 {t("table_title")}
               </TableHead>
-              <TableHead className="w-[40px] text-sm text-neutral-700 font-normal leading-4 dark:text-neutral-400  text-right">
-                {t("table_views")}
-              </TableHead>
             </TableRow>
           </TableHeader>
         </Table>
@@ -80,9 +76,6 @@ export default function MyTable() {
           <TableHead className="text-sm text-neutral-700 font-normal leading-4 dark:text-neutral-400">
             {t("table_title")}
           </TableHead>
-          <TableHead className="w-[40px] text-sm text-neutral-700 font-normal leading-4 dark:text-neutral-400  text-right">
-            {t("table_views")}
-          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -101,9 +94,6 @@ export default function MyTable() {
                 </span>
                 <span className="flex-1 text-sm text-neutral-800 dark:text-neutral-200 font-normal">
                   {post.title}
-                </span>
-                <span className="w-[40px] text-sm text-neutral-800 dark:text-neutral-200 font-normal text-right">
-                  {isNaN(Number(post.views)) ? post.views : formatNumber(Number(post.views))}
                 </span>
               </Link>
             </TableCell>

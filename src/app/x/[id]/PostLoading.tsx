@@ -18,8 +18,6 @@ export default async function PostLoading() {
             <Skeleton className="w-[32px] h-4" />
             <Skeleton className="w-[60px] h-4" />
           </div>
-
-          <Skeleton className="w-[52px] h-4" />
         </div>
       </section>
 
