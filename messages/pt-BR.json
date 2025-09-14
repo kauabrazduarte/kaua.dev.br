@@ -8,8 +8,22 @@
   },
 
   "FooterComponent": {
-    "source": "Código",
-    "credits": "“Todo mundo é frágil antes do interesse”"
+    "source": "Código"
+  },
+
+  "phrases": {
+    "phrase-1": "Todo mundo é frágil antes do interesse.",
+    "phrase-2": "Código é a poesia da lógica.",
+    "phrase-3": "A linha entre o caos e a ordem é um ponto e vírgula.",
+    "phrase-4": "O que não te desafia, não te transforma.",
+    "phrase-5": "Criamos ferramentas que depois nos recriam.",
+    "phrase-6": "A curiosidade é o combustível da inteligência.",
+    "phrase-7": "Faça funcionar, depois faça ficar bonito.",
+    "phrase-8": "Por trás de toda mágica, existe um bom código.",
+    "phrase-9": "O futuro é um rascunho que editamos a cada dia.",
+    "phrase-10": "A simplicidade é o último grau de sofisticação.",
+    "phrase-11": "Não é sobre ter ideias, é sobre fazê-las acontecer.",
+    "phrase-12": "Somos o que fazemos repetidamente. A excelência é um hábito."
   },
 
   "HomePage": {
