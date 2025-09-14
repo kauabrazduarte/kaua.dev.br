@@ -3,35 +3,39 @@ import XNavbar from "@/components/icons/XNavbar";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import React from "react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import ThemeButton from "./ThemeButton";
 import GithubNavbar from "@/components/icons/GithubNavbar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function Navbar() {
   const t = await getTranslations("NavbarComponent");
 
   return (
     <nav className="flex items-center justify-between">
-      <Link
-        href="/"
-        className="text-neutral-950 dark:text-neutral-100 font-medium text-xl max-sm:hidden"
-      >
-        Kauã Braz
-      </Link>
+      <div className="flex items-center justify-between gap-5">
+        <Link href="/">
+          <Avatar>
+            <AvatarImage
+              src="https://avatars.githubusercontent.com/u/79672992?v=4"
+              alt="@kaua.dev.br"
+            />
+            <AvatarFallback>KB</AvatarFallback>
+          </Avatar>
+        </Link>
 
-      <div className="hidden items-center gap-5 max-md:gap-1 max-sm:flex">
-        <Link
-          href="/"
-          className="leading-6 text-neutral-800 dark:text-neutral-300 py-1 px-2 rounded transition-colors duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 cursor-pointer"
-        >
-          {t("home")}
-        </Link>
-        <Link
-          href="/about"
-          className="leading-6 text-neutral-800 dark:text-neutral-300 py-1 px-2 rounded transition-colors duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 cursor-pointer"
-        >
-          {t("about")}
-        </Link>
+        <div className="hidden items-center gap-5 max-md:gap-1 max-sm:flex">
+          <Link
+            href="/about"
+            className="leading-6 text-neutral-800 dark:text-neutral-300 py-1 px-2 rounded transition-colors duration-300 hover:bg-neutral-200 dark:hover:bg-neutral-800 cursor-pointer"
+          >
+            {t("about")}
+          </Link>
+        </div>
       </div>
 
       <div className="flex items-center gap-5 max-md:gap-1">
