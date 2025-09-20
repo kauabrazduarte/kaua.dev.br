@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import getPosts, { Posts } from "@/utils/getPosts";
 import {
   Table,
   TableBody,
@@ -11,22 +10,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import X from "@/components/icons/X";
-import Tabnews from "@/components/icons/Tabnews";
 import { useTranslations } from "next-intl";
-import getTabnewsPosts from "@/utils/getTabnewsPosts";
 import { Skeleton } from "@/components/ui/skeleton";
+import getRepos, { GitHubRepo } from "@/utils/getRepos";
+import formatDate from "@/utils/formatDate";
+import GithubTable from "@/components/icons/GithubTable";
 
 export default function MyTable() {
   const t = useTranslations("HomePage");
   const [exec, setExec] = React.useState(false);
-  const [posts, setPosts] = React.useState<Posts | null>(null);
+  const [posts, setPosts] = React.useState<GitHubRepo[] | null>(null);
 
   React.useEffect(() => {
     const fetchPosts = async () => {
       setExec(true);
-      const tabnewsPosts = await getTabnewsPosts();
-      const data = await getPosts(tabnewsPosts);
+      const data = await getRepos();
       setPosts(data);
     };
 
@@ -67,7 +65,7 @@ export default function MyTable() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[80px] text-sm text-neutral-700 font-normal leading-4 dark:text-neutral-400">
+          <TableHead className="w-[150px] text-sm text-neutral-700 font-normal leading-4 dark:text-neutral-400">
             {t("table_date")}
           </TableHead>
           <TableHead className="w-[16px] text-sm text-neutral-700 font-normal leading-4 dark:text-neutral-400">
@@ -83,17 +81,17 @@ export default function MyTable() {
           <TableRow key={post.id}>
             <TableCell colSpan={4} className="p-0">
               <Link
-                href={`/${post.in}/${post.id}`}
+                href={`/github/${post.full_name.split("/")[1]}`}
                 className="flex items-center gap-4 px-4 py-3 hover:bg-muted transition-colors"
               >
-                <span className="w-[60px] text-sm text-neutral-800 dark:text-neutral-200 font-normal">
-                  {post.date}
+                <span className="w-[130px] text-sm text-neutral-800 dark:text-neutral-200 font-normal">
+                  {formatDate(post.created_at)}
                 </span>
                 <span className="flex items-center justify-centertext-sm text-neutral-800 dark:text-neutral-200 font-normal">
-                  {post.in === "x" ? <X /> : <Tabnews />}
+                  <GithubTable />
                 </span>
                 <span className="flex-1 text-sm text-neutral-800 dark:text-neutral-200 font-normal">
-                  {post.title}
+                  {post.name}
                 </span>
               </Link>
             </TableCell>
