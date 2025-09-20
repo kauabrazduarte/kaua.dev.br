@@ -11,11 +11,13 @@ export default async function TabnewsPostPage({
 }: {
   params: { id: string };
 }) {
+  const { id } = params;
+
   return (
     <>
       <Navbar />
       <Suspense fallback={<PostLoading />}>
-        <PostViewer id={params.id} />
+        <PostViewer id={id} />
       </Suspense>
       <Footer />
     </>
