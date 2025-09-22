@@ -9,12 +9,12 @@ import getRepoInfo from "@/utils/getRepoInfos";
 export const revalidate = 10800;
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = (await params).id;
+  const id = params.id;
 
   const project = await getRepoInfo(id);
 
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: "Projeto Não Encontrado",
       description:
-        "O project que você está procurando não existe ou foi movido.",
+        "O projeto que você está procurando não existe ou foi movido.",
     };
   }
 
@@ -46,9 +46,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProjectGithubPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string }; // params é um objeto, não uma Promise
 }) {
-  const { id } = await params;
+  // Acesso direto ao id, sem 'await'
+  const { id } = params;
 
   return (
     <>
