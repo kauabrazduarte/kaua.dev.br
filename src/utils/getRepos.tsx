@@ -41,12 +41,15 @@ export interface GitHubRepo {
 }
 
 export default async function getRepos(): Promise<GitHubRepo[]> {
+  const headers: HeadersInit = {};
+  if (process.env.GITHUB_BEARER_TOKEN) {
+    headers["Authorization"] = `Bearer ${process.env.GITHUB_BEARER_TOKEN}`;
+  }
+
   const reposRes = await fetch(
     "https://api.github.com/users/kauabrazduarte/repos",
     {
-      headers: {
-        Authorization: `Bearer ${process.env.GITHUB_BEARER_TOKEN}`,
-      },
+      headers,
       next: {
         revalidate: 3600 * 24,
       },
@@ -54,6 +57,11 @@ export default async function getRepos(): Promise<GitHubRepo[]> {
   );
   const repos = await reposRes.json();
   const myrepos = repos as GitHubRepo[];
+
+  if (!Array.isArray(myrepos)) {
+    console.error("Failed to fetch repositories, received:", myrepos);
+    return [];
+  }
 
   return myrepos.sort(
     (a, b) =>
