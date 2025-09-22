@@ -9,12 +9,12 @@ import getRepoInfo from "@/utils/getRepoInfos";
 export const revalidate = 10800;
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id;
+  const id = (await params).id;
 
   const project = await getRepoInfo(id);
 
