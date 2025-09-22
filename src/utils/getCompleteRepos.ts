@@ -7,6 +7,16 @@ export interface CompleteGitHubRepo extends GitHubRepo {
   latest_commit_message: string;
 }
 
+interface Branch {
+  name: string;
+}
+
+interface Commit {
+  commit: {
+    message: string;
+  };
+}
+
 const BASE_URL = "https://api.github.com/repos/kauabrazduarte";
 const headers: HeadersInit = {};
 if (process.env.GITHUB_BEARER_TOKEN) {
@@ -30,9 +40,10 @@ async function getRepoDetails(repoName: string) {
       fetch(`${BASE_URL}/${repoName}/commits`, fetchOptions),
     ]);
 
-    const languages = await languagesRes.json();
-    const branches = (await branchesRes.json()).map((branch: any) => branch.name);
-    const commits = await commitsRes.json();
+    const languages: Record<string, number> = await languagesRes.json();
+    const branchesData: Branch[] = await branchesRes.json();
+    const branches = branchesData.map((branch) => branch.name);
+    const commits: Commit[] = await commitsRes.json();
 
     const commit_count = commits.length;
     const latest_commit_message =
