@@ -1,4 +1,3 @@
-// Removido o "use client"; para se tornar um Server Component
 import GithubTable from "@/components/icons/GithubTable";
 import { markdownToHtml } from "@/lib/markdown";
 import getRepoInfo from "@/utils/getRepoInfos";
@@ -8,7 +7,6 @@ import { notFound, redirect } from "next/navigation";
 
 export default async function PostViewer({ id }: { id: string }) {
   const t = await getTranslations("TabnewsPostPage");
-
   const post = await getRepoInfo(id);
 
   if (!post) {
