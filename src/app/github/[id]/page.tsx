@@ -15,7 +15,6 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-
   const project = await getRepoInfo(id);
 
   if (!project) {
@@ -43,12 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ProjectGithubPage({
-  params,
-}: {
-  params: { id: string }; // params é um objeto, não uma Promise
-}) {
-  // Acesso direto ao id, sem 'await'
+export default async function ProjectGithubPage({ params }: Props) {
   const { id } = params;
 
   return (
