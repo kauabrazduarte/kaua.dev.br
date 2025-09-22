@@ -33,7 +33,7 @@
     "table_views": "views"
   },
 
-  "TabnewsPostPage": {
+  "ProjectGithubPage": {
     "a": "Há",
     "years": "anos",
     "year": "ano",
@@ -47,22 +47,6 @@
     "minute": "minuto",
     "ago": "agora",
     "likes": "Curtidas"
-  },
-
-  "XPostPage": {
-    "a": "Há",
-    "years": "anos",
-    "year": "ano",
-    "months": "meses",
-    "month": "mes",
-    "days": "dias",
-    "day": "dia",
-    "hours": "horas",
-    "hour": "hora",
-    "minutes": "minutos",
-    "minute": "minuto",
-    "ago": "agora",
-    "views": "Visualizações"
   },
 
   "AboutPage": {

@@ -19,19 +19,19 @@ import GithubTable from "@/components/icons/GithubTable";
 export default function MyTable() {
   const t = useTranslations("HomePage");
   const [exec, setExec] = React.useState(false);
-  const [posts, setPosts] = React.useState<GitHubRepo[] | null>(null);
+  const [projects, setProjects] = React.useState<GitHubRepo[] | null>(null);
 
   React.useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchProjects = async () => {
       setExec(true);
       const data = await getRepos();
-      setPosts(data);
+      setProjects(data);
     };
 
-    if (!exec) fetchPosts();
+    if (!exec) fetchProjects();
   }, [exec]);
 
-  if (!Array.isArray(posts)) {
+  if (!Array.isArray(projects)) {
     return (
       <>
         <Table>
@@ -77,21 +77,21 @@ export default function MyTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {posts.map((post) => (
-          <TableRow key={post.id}>
+        {projects.map((project) => (
+          <TableRow key={project.id}>
             <TableCell colSpan={4} className="p-0">
               <Link
-                href={`/github/${post.full_name.split("/")[1]}`}
+                href={`/github/${project.full_name.split("/")[1]}`}
                 className="flex items-center gap-4 px-4 py-3 hover:bg-muted transition-colors"
               >
                 <span className="w-[130px] text-sm text-neutral-800 dark:text-neutral-200 font-normal">
-                  {formatDate(post.created_at)}
+                  {formatDate(project.created_at)}
                 </span>
                 <span className="flex items-center justify-centertext-sm text-neutral-800 dark:text-neutral-200 font-normal">
                   <GithubTable />
                 </span>
                 <span className="flex-1 text-sm text-neutral-800 dark:text-neutral-200 font-normal">
-                  {post.name}
+                  {project.name}
                 </span>
               </Link>
             </TableCell>

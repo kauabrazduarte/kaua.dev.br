@@ -5,36 +5,36 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
-export default async function PostViewer({ id }: { id: string }) {
-  const t = await getTranslations("TabnewsPostPage");
-  const post = await getRepoInfo(id);
+export default async function ProjectViewer({ id }: { id: string }) {
+  const t = await getTranslations("ProjectGithubPage");
+  const project = await getRepoInfo(id);
 
-  if (!post) {
+  if (!project) {
     notFound();
   }
 
-  if (!post.content) {
-    redirect(post.html_url);
+  if (!project.content) {
+    redirect(project.html_url);
   }
 
   const content = await markdownToHtml(
-    post.full_name.split("/")[1],
-    post.content,
+    project.full_name.split("/")[1],
+    project.content,
   );
 
-  const dateLong = new Date(post.created_at).toLocaleDateString("pt-BR", {
+  const dateLong = new Date(project.created_at).toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "long",
     year: "numeric",
   });
-  const dateShort = new Date(post.created_at).toLocaleDateString("pt-BR", {
+  const dateShort = new Date(project.created_at).toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
   });
 
   const actualDate = new Date();
-  const diff = actualDate.getTime() - new Date(post.created_at).getTime();
+  const diff = actualDate.getTime() - new Date(project.created_at).getTime();
   const diffYears = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
   const diffMonths = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
   const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -69,13 +69,13 @@ export default async function PostViewer({ id }: { id: string }) {
     <>
       <section className="mt-10">
         <h1 className="text-2xl leading-9 text-black dark:text-white">
-          {post.name}
+          {project.name}
         </h1>
         <div className="flex items-center justify-between max-md:block">
           <div className="flex items-center gap-3  mt-2">
             <Link
               className="flex items-center gap-3  mt-2"
-              href={`${post.homepage}`}
+              href={`${project.homepage}`}
               target="_blank"
             >
               <div className="text-neutral-700 dark:text-neutral-400">
@@ -99,7 +99,7 @@ export default async function PostViewer({ id }: { id: string }) {
       <main>
         <div
           className="mt-10 prose prose-img:rounded-[8px] max-w-full dark:prose-invert w-full"
-          id="post-content"
+          id="project-content"
           dangerouslySetInnerHTML={{
             __html: content ?? "",
           }}

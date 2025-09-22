@@ -1,8 +1,8 @@
 import Footer from "@/app/components/Footer";
 import Navbar from "@/app/components/Navbar";
 import React, { Suspense } from "react";
-import PostLoading from "./PostLoading";
-import PostViewer from "./PostViewer";
+import ProjectLoading from "./ProjectLoading";
+import ProjectViewer from "./ProjectViewer";
 import { Metadata } from "next";
 import getRepoInfo from "@/utils/getRepoInfos";
 
@@ -16,33 +16,34 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
 
-  const post = await getRepoInfo(id);
+  const project = await getRepoInfo(id);
 
-  if (!post) {
+  if (!project) {
     return {
-      title: "Post Não Encontrado",
-      description: "O post que você está procurando não existe ou foi movido.",
+      title: "Projeto Não Encontrado",
+      description:
+        "O project que você está procurando não existe ou foi movido.",
     };
   }
 
-  const description = post.description || "Leia mais sobre este projeto.";
+  const description = project.description || "Leia mais sobre este projeto.";
 
   return {
-    title: `Projeto: ${post.name}`,
+    title: `Projeto: ${project.name}`,
     description: description,
     openGraph: {
-      title: post.name,
+      title: project.name,
       description: description,
     },
     twitter: {
       card: "summary_large_image",
-      title: post.name,
+      title: project.name,
       description: description,
     },
   };
 }
 
-export default async function TabnewsPostPage({
+export default async function ProjectGithubPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -52,8 +53,8 @@ export default async function TabnewsPostPage({
   return (
     <>
       <Navbar />
-      <Suspense fallback={<PostLoading />}>
-        <PostViewer id={id} />
+      <Suspense fallback={<ProjectLoading />}>
+        <ProjectViewer id={id} />
       </Suspense>
       <Footer />
     </>

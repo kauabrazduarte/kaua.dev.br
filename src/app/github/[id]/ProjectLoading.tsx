@@ -3,7 +3,7 @@ import React from "react";
 
 export const revalidate = 10800;
 
-export default async function PostLoading() {
+export default async function ProjectLoading() {
   return (
     <>
       <section className="mt-10">
