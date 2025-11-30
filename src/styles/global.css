@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+    --font-funnel: "Funnel Sans", ui-sans-serif, system-ui, sans-serif;
+    --font-libre: "Libre Baskerville", sans-serif;
+}
+
+::selection {
+    background-color: #a453e3;
+    color: #fff;
+}
+
+::-moz-selection {
+    background-color: #a453e3;
+    color: #fff;
+}

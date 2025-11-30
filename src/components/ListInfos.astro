@@ -1,0 +1,77 @@
+---
+import EleventyFetch from "@11ty/eleventy-fetch";
+import type { OpenMeteoResponse } from "../types/apis.d.ts";
+
+const url =
+    "https://api.open-meteo.com/v1/forecast?latitude=-21.132&longitude=-42.361&current=temperature_2m,weather_code&hourly=temperature_2m,weather_code&timezone=America%2FSao_Paulo";
+
+const tempoCache = "1h";
+const responseData: OpenMeteoResponse = await EleventyFetch(url, {
+    duration: tempoCache,
+    type: "json",
+});
+
+const temperature = responseData.current.temperature_2m;
+const watherCode = responseData.current.weather_code;
+
+const date = new Date();
+
+const dateString = date.toLocaleTimeString("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+    hour: "2-digit",
+    minute: "2-digit",
+});
+
+function getWeatherIcon(code: number): string {
+    switch (code) {
+        case 0:
+            return "/icons/sol.svg";
+        case 1:
+        case 2:
+            return "/icons/sol-nuvem.svg";
+        case 3:
+            return "/icons/nublado.svg";
+        case 45:
+        case 48:
+            return "/icons/nublado.svg";
+        case 51:
+        case 53:
+        case 55:
+            return "/icons/chuva.svg";
+        case 61:
+        case 63:
+        case 65:
+            return "/icons/chuva.svg";
+        case 80:
+        case 81:
+        case 82:
+            return "/icons/chuvaforte.svg";
+        case 95:
+            return "/icons/chuvacomraio.svg";
+        default:
+            return "/icons/sol.svg";
+    }
+}
+
+const weatherIcon = getWeatherIcon(watherCode);
+---
+
+<div class="flex items-center gap-3 mb-4">
+    <img src={weatherIcon} width={20} height={20} />
+    <p class="text-white text-lg leading-0">{temperature}°C • {dateString}</p>
+</div>
+
+<div class="flex items-center gap-3 mb-4">
+    <img src="/icons/github.svg" width={20} height={20} />
+    <p class="text-white text-lg leading-normal">
+        See my open-source projects at <a
+            href="https://github.com/kauabrazduarte"
+            class="text-purple-500">kaua.dev.br/github</a
+        >
+    </p>
+</div>
+
+<div class="flex items-center gap-3">
+    <img src="/icons/spotify.svg" width={20} height={20} />
+    <p class="text-white text-lg leading-0">I like "The Nights - Avicii"</p>
+</div>

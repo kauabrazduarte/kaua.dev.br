@@ -1,0 +1,38 @@
+---
+import ListInfos from "./ListInfos.astro";
+---
+
+<div
+    id="root-div"
+    class="w-screen h-screen fixed top-0 left-0 bg-black px-[26.72vw] max-lg:px-[10vw] pt-20 pb-10 flex items-center justify-center max-lg:block"
+>
+    <div>
+        <h1
+            class="text-white text-[2rem] max-lg:text-[1.5rem] font-bold leading-normal mb-6 font-libre max-w-[26.72vw] max-lg:max-w-none"
+        >
+            In passing, creating <span class="text-purple-500">websites</span> for
+            the Internet.
+        </h1>
+        <p class="text-white text-lg mb-7">
+            Developing high-quality websites with human hands, for real people.
+            I work as a designer and full-stack programmer.
+        </p>
+        <p class="text-white text-lg mb-6">
+            Sometimes I post things <a
+                href="https://x.com/oKauaDev"
+                class="text-purple-500">on the internet</a
+            >.
+        </p>
+
+        <ListInfos />
+    </div>
+</div>
+<style>
+    #root-div {
+        background: radial-gradient(
+            circle,
+            rgba(0, 0, 0, 0.9) 0%,
+            rgba(0, 0, 0, 0.6) 100%
+        ) !important;
+    }
+</style>
