@@ -14,14 +14,6 @@ const responseData: OpenMeteoResponse = await EleventyFetch(url, {
 const temperature = responseData.current.temperature_2m;
 const watherCode = responseData.current.weather_code;
 
-const date = new Date();
-
-const dateString = date.toLocaleTimeString("pt-BR", {
-    timeZone: "America/Sao_Paulo",
-    hour: "2-digit",
-    minute: "2-digit",
-});
-
 function getWeatherIcon(code: number): string {
     switch (code) {
         case 0:
@@ -58,7 +50,9 @@ const weatherIcon = getWeatherIcon(watherCode);
 
 <div class="flex items-center gap-3 mb-4">
     <img src={weatherIcon} width={20} height={20} />
-    <p class="text-white text-lg leading-0">{temperature}°C • {dateString}</p>
+    <p class="text-white text-lg leading-0">
+        {temperature}°C • <span id="hour"></span>
+    </p>
 </div>
 
 <div class="flex items-center gap-3 mb-4">
@@ -75,3 +69,17 @@ const weatherIcon = getWeatherIcon(watherCode);
     <img src="/icons/spotify.svg" width={20} height={20} />
     <p class="text-white text-lg leading-0">I like "The Nights - Avicii"</p>
 </div>
+
+<script>
+    const date = new Date();
+
+    const dateString = date.toLocaleTimeString("pt-BR", {
+        timeZone: "America/Sao_Paulo",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+
+    const hourElement = document.getElementById("hour");
+
+    if (hourElement) hourElement.innerText = dateString;
+</script>
