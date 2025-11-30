@@ -5,6 +5,10 @@
     --font-libre: "Libre Baskerville", sans-serif;
 }
 
+body {
+    cursor: none;
+}
+
 ::selection {
     background-color: #a453e3;
     color: #fff;
