@@ -78,11 +78,9 @@
             audio.loop = true;
             audio.play();
             soundElement.classList.add("purple");
-            window.localStorage.setItem("sound", "on");
         } else {
             audio.pause();
             soundElement.classList.remove("purple");
-            window.localStorage.removeItem("sound", "off");
         }
     }
 
@@ -90,11 +88,5 @@
 
     if (soundElement) {
         soundElement.addEventListener("click", toggleSound);
-    }
-
-    if (window.localStorage.getItem("sound")) {
-        audio.loop = true;
-        audio.play();
-        soundElement?.classList.add("purple");
     }
 </script>
