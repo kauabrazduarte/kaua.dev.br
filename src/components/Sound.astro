@@ -1,0 +1,100 @@
+---
+
+---
+
+<div
+    id="sound-button"
+    class="absolute bottom-10 right-10 w-10 h-10 z-10 cursor-pointer text-white hover:text-purple-500 transition-colors duration-300"
+>
+    <svg
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+        height="24"
+        id="screenshot-e5dd0007-31db-8030-8007-30c1b253861c"
+        viewBox="0 0 24 24"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        fill="none"
+        version="1.1"
+        ><g
+            id="shape-e5dd0007-31db-8030-8007-30c1b253861c"
+            width="16"
+            height="16"
+            class="bi bi-music-note-beamed"
+            rx="0"
+            ry="0"
+            style="fill: rgb(0, 0, 0);"
+            ><g
+                id="shape-e5dd0007-31db-8030-8007-30c1b2540e0f"
+                style="display: none;"
+                ><g
+                    class="fills"
+                    id="fills-e5dd0007-31db-8030-8007-30c1b2540e0f"
+                    ><rect
+                        width="24"
+                        height="24"
+                        x="0"
+                        transform="matrix(1.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000)"
+                        style="fill: none;"
+                        ry="0"
+                        fill="none"
+                        rx="0"
+                        y="0"></rect></g
+                ></g
+            ><g id="shape-e5dd0007-31db-8030-8007-30c1b2544201"
+                ><g
+                    class="fills"
+                    id="fills-e5dd0007-31db-8030-8007-30c1b2544201"
+                    ><path
+                        d="M9,19.5C9,21.157470703125,7.320068359375,22.5,5.25,22.5C3.179931640625,22.5,1.5,21.157470703125,1.5,19.5C1.5,17.842529296875,3.179931640625,16.5,5.25,16.5C7.320068359375,16.5,9,17.843994140625,9,19.5M22.5,16.5C22.5,18.157470703125,20.820068359375,19.5,18.75,19.5C16.679931640625,19.5,15,18.157470703125,15,16.5C15,14.842529296875,16.679931640625,13.5,18.75,13.5C20.820068359375,13.5,22.5,14.842529296875,22.5,16.5"
+                        style="fill: currentColor; fill-opacity: 1;"></path></g
+                ></g
+            ><g id="shape-e5dd0007-31db-8030-8007-30c1b254837b"
+                ><g
+                    class="fills"
+                    id="fills-e5dd0007-31db-8030-8007-30c1b254837b"
+                    ><path
+                        d="M21,16.5L21,3L22.5,3L22.5,16.5ZM9,4.5L9,19.5L7.5,19.5L7.5,4.5Z"
+                        fill-rule="evenodd"
+                        style="fill: currentColor; fill-opacity: 1;"></path></g
+                ></g
+            ><g id="shape-e5dd0007-31db-8030-8007-30c1b254837c"
+                ><g
+                    class="fills"
+                    id="fills-e5dd0007-31db-8030-8007-30c1b254837c"
+                    ><path
+                        d="M7.5,4.3575439453125C7.5,3.587158203125,8.08349609375,2.9420166015625,8.85009765625,2.864990234375L20.85009765625,1.6650390625C21.271728515625,1.62255859375,21.6917724609375,1.7606201171875,22.006103515625,2.0450439453125C22.320556640625,2.3294677734375,22.5,2.733642578125,22.5,3.157470703125L22.5,4.5L7.5,6Z"
+                        style="fill: currentColor; fill-opacity: 1;"></path></g
+                ></g
+            ></g
+        ></svg
+    >
+</div>
+
+<script>
+    const audio = new Audio("/sounds/ambient.mp3");
+
+    function toggleSound() {
+        if (audio.paused) {
+            audio.loop = true;
+            audio.play();
+            soundElement.classList.add("purple");
+            window.localStorage.setItem("sound", "on");
+        } else {
+            audio.pause();
+            soundElement.classList.remove("purple");
+            window.localStorage.removeItem("sound", "off");
+        }
+    }
+
+    const soundElement = document.getElementById("sound-button");
+
+    if (soundElement) {
+        soundElement.addEventListener("click", toggleSound);
+    }
+
+    if (window.localStorage.getItem("sound")) {
+        audio.loop = true;
+        audio.play();
+        soundElement?.classList.add("purple");
+    }
+</script>

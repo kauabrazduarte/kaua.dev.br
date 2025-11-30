@@ -14,3 +14,7 @@
     background-color: #a453e3;
     color: #fff;
 }
+
+.purple {
+    @apply text-purple-500;
+}

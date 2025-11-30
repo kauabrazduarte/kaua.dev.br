@@ -1,10 +1,11 @@
 ---
 import ListInfos from "./ListInfos.astro";
+import Sound from "./Sound.astro";
 ---
 
 <div
     id="root-div"
-    class="w-screen h-screen fixed top-0 left-0 bg-black px-[26.72vw] max-lg:px-[10vw] pt-20 pb-10 flex items-center justify-center max-lg:block"
+    class="w-screen h-screen fixed top-0 left-0 bg-black px-[26.72vw] max-lg:px-[10vw] pt-20 pb-10 flex flex-col items-center justify-center max-lg:block"
 >
     <div>
         <h1
@@ -26,6 +27,14 @@ import ListInfos from "./ListInfos.astro";
 
         <ListInfos />
     </div>
+
+    <Sound />
+    <footer
+        class="absolute bottom-10 max-md:bottom-30 text-white opacity-50 text-center"
+    >
+        I enjoy programming because I've always wanted to create something
+        touching.
+    </footer>
 </div>
 <style>
     #root-div {
