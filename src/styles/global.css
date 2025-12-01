@@ -5,8 +5,10 @@
     --font-libre: "Libre Baskerville", sans-serif;
 }
 
-body {
-    cursor: none;
+html,
+body,
+* {
+    cursor: none !important; /* Invisível */
 }
 
 ::selection {

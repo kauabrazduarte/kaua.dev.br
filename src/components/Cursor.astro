@@ -2,17 +2,41 @@
 
 ---
 
-<svg class="curzr" hidden>
+<svg class="curzr">
     <filter id="motionblur" x="-100%" y="-100%" width="400%" height="400%">
         <feGaussianBlur class="curzr-motion-blur" stdDeviation="0, 0"
         ></feGaussianBlur>
     </filter>
-    <circle cx="50%" cy="50%" r="10" fill="#a453e3" filter="url(#motionblur)"
-    ></circle>
+    <circle
+        class="color-cursor transition-colors duration-300"
+        cx="50%"
+        cy="50%"
+        r="10"
+        fill="#a453e3"
+        filter="url(#motionblur)"></circle>
 </svg>
 
 <script>
     class MotionBlur {
+        private root: HTMLElement;
+        private cursor: HTMLElement | null;
+        private filter: SVGFEGaussianBlurElement | null;
+        private position: {
+            distanceX: number;
+            distanceY: number;
+            pointerX: number;
+            pointerY: number;
+        };
+        private previousPointerX: number;
+        private previousPointerY: number;
+        private angle: number;
+        private previousAngle: number;
+        private angleDisplace: number;
+        private degrees: number;
+        private cursorSize: number;
+        private moving: boolean;
+        private cursorStyle: { [key: string]: string };
+
         constructor() {
             this.root = document.body;
 
@@ -71,16 +95,16 @@
                 pointerEvents: "none",
             };
 
-            this.init(this.cursor, this.cursorStyle);
+            if (this.cursor) this.init(this.cursor, this.cursorStyle);
         }
 
-        init(el, style) {
+        init(el: HTMLElement, style: { [key: string]: string }) {
             Object.assign(el.style, style);
 
-            this.cursor.removeAttribute("hidden");
+            this.cursor?.removeAttribute("hidden");
         }
 
-        move(event) {
+        move(event: MouseEvent) {
             this.previousPointerX = this.position.pointerX;
 
             this.previousPointerY = this.position.pointerY;
@@ -101,14 +125,15 @@
                 20,
             );
 
-            this.cursor.style.transform = `translate3d(${this.position.pointerX}px, ${this.position.pointerY}px, 0)`;
+            if (this.cursor)
+                this.cursor.style.transform = `translate3d(${this.position.pointerX}px, ${this.position.pointerY}px, 0)`;
 
             this.rotate(this.position);
 
             this.moving ? this.stop() : (this.moving = true);
         }
 
-        rotate(position) {
+        rotate(position: { distanceX: number; distanceY: number }) {
             let unsortedAngle =
                 Math.atan(
                     Math.abs(position.distanceY) / Math.abs(position.distanceX),
@@ -124,7 +149,7 @@
                         this.angle = -unsortedAngle;
                     }
 
-                    this.filter.setAttribute(
+                    this.filter?.setAttribute(
                         "stdDeviation",
                         `${Math.abs(this.position.distanceX / 2)}, 0`,
                     );
@@ -135,28 +160,29 @@
                         this.angle = unsortedAngle;
                     }
 
-                    this.filter.setAttribute(
+                    this.filter?.setAttribute(
                         "stdDeviation",
                         `${Math.abs(this.position.distanceY / 2)}, 0`,
                     );
                 }
             }
 
-            this.cursor.style.transform += ` rotate(${this.angle}deg)`;
+            if (this.cursor)
+                this.cursor.style.transform += ` rotate(${this.angle}deg)`;
 
             this.previousAngle = this.angle;
         }
 
         stop() {
             setTimeout(() => {
-                this.filter.setAttribute("stdDeviation", "0, 0");
+                this.filter?.setAttribute("stdDeviation", "0, 0");
 
                 this.moving = false;
             }, 50);
         }
 
         remove() {
-            this.cursor.remove();
+            this.cursor?.remove();
         }
     }
 
@@ -171,6 +197,33 @@
             document.onmousemove = function (event) {
                 cursor.move(event);
             };
+
+            const colorCursor: HTMLElement = document.querySelector(
+                ".color-cursor",
+            ) as HTMLElement;
+
+            document.addEventListener("mouseover", (event) => {
+                const target = event.target;
+
+                const elementoInterativo = (target as HTMLElement)?.closest(
+                    'a, button, input, textarea, [role="button"]',
+                );
+
+                if (elementoInterativo) {
+                    colorCursor.style.fill = "#fff";
+                }
+            });
+
+            document.addEventListener("mouseout", (event) => {
+                const target = event.target;
+                const elementoInterativo = (target as HTMLElement)?.closest(
+                    "a, button, input, textarea",
+                );
+
+                if (elementoInterativo) {
+                    colorCursor.style.fill = "#a453e3";
+                }
+            });
         } else {
             cursor.remove();
         }
