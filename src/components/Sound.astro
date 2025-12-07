@@ -77,10 +77,10 @@
         if (audio.paused) {
             audio.loop = true;
             audio.play();
-            soundElement.classList.add("purple");
+            soundElement?.classList.add("purple");
         } else {
             audio.pause();
-            soundElement.classList.remove("purple");
+            soundElement?.classList.remove("purple");
         }
     }
 

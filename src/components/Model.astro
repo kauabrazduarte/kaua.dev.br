@@ -43,7 +43,7 @@
     scene.add(directionalLight);
 
     const loader = new GLTFLoader();
-    let model;
+    let model: THREE.Group<THREE.Object3DEventMap>;
 
     loader.load(
         "/model/scene.gltf",
