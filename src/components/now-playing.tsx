@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 interface Track {
@@ -31,10 +31,21 @@ function SpotifyIcon({ size = 12 }: { size?: number }) {
 
 const POLL_MS = 3 * 60 * 1000; // 3 minutes — matches server-side cache window.
 
+// Marquee timing: pause at each end (15% of cycle), scrolling takes the
+// middle 35%. Speed is content-length aware: roughly 30 pixels per second
+// of travel + 5s of combined pauses, never shorter than 8 seconds.
+function marqueeDurationSeconds(overflowPx: number): number {
+  return Math.max(8, overflowPx / 30 + 5);
+}
+
 export function NowPlaying({ className = "" }: { className?: string }) {
   const t = useTranslations("nowPlaying");
   const [track, setTrack] = useState<Track | null>(null);
+  const viewportRef = useRef<HTMLSpanElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
+  const [overflowPx, setOverflowPx] = useState(0);
 
+  // Poll Spotify
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -55,7 +66,33 @@ export function NowPlaying({ className = "" }: { className?: string }) {
     };
   }, []);
 
+  // Measure overflow whenever track changes or layout reflows. Using
+  // ResizeObserver catches font-load, container resizes and text changes.
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const text = textRef.current;
+    if (!viewport || !text) return;
+
+    function measure() {
+      // refs may flip to null between observer callbacks; re-read each time
+      const v = viewportRef.current;
+      const x = textRef.current;
+      if (!v || !x) return;
+      const diff = x.scrollWidth - v.clientWidth;
+      setOverflowPx(diff > 0 ? diff : 0);
+    }
+    measure();
+
+    const ro = new ResizeObserver(measure);
+    ro.observe(viewport);
+    ro.observe(text);
+    return () => ro.disconnect();
+  }, [track]);
+
   if (!track) return null;
+
+  const isOverflowing = overflowPx > 0;
+  const duration = marqueeDurationSeconds(overflowPx);
 
   return (
     <a
@@ -70,11 +107,27 @@ export function NowPlaying({ className = "" }: { className?: string }) {
       <span aria-hidden className="shrink-0 text-muted-foreground/60">
         —
       </span>
-      {/* min-w-0 is required for `truncate` to actually shrink inside a flex
-          child, otherwise it expands to its content's intrinsic width. */}
-      <span className="min-w-0 truncate">
-        {track.artist} <span className="text-muted-foreground/60">·</span>{" "}
-        {track.title}
+      {/* Viewport: clips the overflowing text; min-w-0 lets it shrink inside
+          the flex parent so we always know how much overflow there is. */}
+      <span
+        ref={viewportRef}
+        className="relative min-w-0 flex-1 overflow-hidden"
+      >
+        <span
+          ref={textRef}
+          className={isOverflowing ? "marquee" : "block whitespace-nowrap"}
+          style={
+            isOverflowing
+              ? ({
+                  ["--marquee-distance" as string]: `-${overflowPx}px`,
+                  animationDuration: `${duration}s`,
+                } as React.CSSProperties)
+              : undefined
+          }
+        >
+          {track.artist} <span className="text-muted-foreground/60">·</span>{" "}
+          {track.title}
+        </span>
       </span>
     </a>
   );

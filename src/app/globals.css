@@ -179,3 +179,24 @@
 .spotify-beat:hover {
   animation: spotify-beat 0.85s ease-in-out infinite;
 }
+
+/* Marquee: text scrolls from start → end → back to start, pausing at each
+   extreme. Only applied when the content actually overflows its container.
+   `--marquee-distance` is set per-instance by the component as a negative
+   pixel value matching the overflow amount. */
+@keyframes marquee {
+  0%, 15%   { transform: translateX(0); }
+  50%, 65%  { transform: translateX(var(--marquee-distance, 0)); }
+  100%      { transform: translateX(0); }
+}
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation-name: marquee;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+.group:hover .marquee {
+  animation-play-state: paused;
+}
