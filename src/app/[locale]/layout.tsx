@@ -144,7 +144,8 @@ export default async function LocaleLayout({
     name: siteConfig.name,
     alternateName: [siteConfig.shortName, "kauadevbr", "kauabrazduarte"],
     url: siteConfig.url,
-    image: siteConfig.github.avatar,
+    // Absolute URL — Google requires fully-qualified URLs in JSON-LD image fields.
+    image: `${siteConfig.url}${siteConfig.github.avatar}`,
     birthDate: siteConfig.birth,
     nationality: { "@type": "Country", name: "Brazil" },
     sameAs: [siteConfig.links.github, siteConfig.links.x],
@@ -188,6 +189,22 @@ export default async function LocaleLayout({
       name: w.name,
       ...(w.aka ? { alternateName: w.aka } : {}),
     })),
+  };
+
+  // WebSite schema: top-level entity that both Person (as publisher) and
+  // Quotation (via isPartOf) reference by @id. Without this, the #website
+  // anchor used elsewhere would be an orphan reference.
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteConfig.url}#website`,
+    url: siteConfig.url,
+    name: siteConfig.name,
+    description:
+      (siteConfig.description as Record<string, string>)[locale] ??
+      siteConfig.description.en,
+    inLanguage: Object.values(LANGUAGE_TAG),
+    publisher: { "@id": `${siteConfig.url}#person` },
   };
 
   // Quotation schema marks the footer line as a unique, attributable quote so
@@ -239,6 +256,11 @@ export default async function LocaleLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <head>
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
