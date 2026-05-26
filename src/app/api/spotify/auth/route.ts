@@ -7,19 +7,33 @@ import { SPOTIFY_SCOPES, getRedirectUri } from "@/lib/spotify";
 
 export const dynamic = "force-dynamic";
 
-export function GET() {
+export function GET(req: Request) {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   if (!clientId) {
     return NextResponse.json(
-      { error: "SPOTIFY_CLIENT_ID missing in .env.local" },
+      { error: "SPOTIFY_CLIENT_ID missing in env" },
       { status: 500 },
     );
+  }
+
+  const redirectUri = getRedirectUri();
+
+  // ?debug=1 → returns what we're about to send instead of redirecting, so you
+  // can compare exactly against what's registered in the Spotify Dashboard.
+  if (new URL(req.url).searchParams.has("debug")) {
+    return NextResponse.json({
+      clientId,
+      redirectUri,
+      scopes: SPOTIFY_SCOPES,
+      nextPublicSiteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? null,
+      hint: "The 'redirectUri' above must be registered VERBATIM in your Spotify Dashboard → Settings → Redirect URIs (case-sensitive, no trailing slash, exact protocol).",
+    });
   }
 
   const url = new URL("https://accounts.spotify.com/authorize");
   url.searchParams.set("client_id", clientId);
   url.searchParams.set("response_type", "code");
-  url.searchParams.set("redirect_uri", getRedirectUri());
+  url.searchParams.set("redirect_uri", redirectUri);
   url.searchParams.set("scope", SPOTIFY_SCOPES);
 
   return NextResponse.redirect(url.toString());
