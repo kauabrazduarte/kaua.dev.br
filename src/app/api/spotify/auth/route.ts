@@ -7,7 +7,16 @@ import { SPOTIFY_SCOPES, getRedirectUri } from "@/lib/spotify";
 
 export const dynamic = "force-dynamic";
 
+// One-shot setup tool: flip to `true` only when you need to (re)run the OAuth
+// flow to obtain a fresh refresh_token. Keep it `false` in production so the
+// route returns 404 to outsiders.
+const OAUTH_ENABLED = false;
+
 export function GET(req: Request) {
+  if (!OAUTH_ENABLED) {
+    return new NextResponse("Not Found", { status: 404 });
+  }
+
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   if (!clientId) {
     return NextResponse.json(

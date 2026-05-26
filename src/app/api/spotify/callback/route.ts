@@ -7,7 +7,15 @@ import { getRedirectUri } from "@/lib/spotify";
 
 export const dynamic = "force-dynamic";
 
+// Paired with /api/spotify/auth — flip both flags to `true` only when running
+// the one-time OAuth setup.
+const OAUTH_ENABLED = false;
+
 export async function GET(req: Request) {
+  if (!OAUTH_ENABLED) {
+    return new NextResponse("Not Found", { status: 404 });
+  }
+
   const code = new URL(req.url).searchParams.get("code");
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;

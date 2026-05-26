@@ -167,3 +167,15 @@
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+/* Heart-beat style pulse for the Spotify mark on hover. */
+@keyframes spotify-beat {
+  0%, 100% { transform: scale(1); }
+  25%      { transform: scale(1.22); }
+  50%      { transform: scale(0.95); }
+  75%      { transform: scale(1.12); }
+}
+.group:hover .spotify-beat,
+.spotify-beat:hover {
+  animation: spotify-beat 0.85s ease-in-out infinite;
+}

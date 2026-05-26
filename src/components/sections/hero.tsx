@@ -29,16 +29,19 @@ export function HeroSection() {
             priority
             className="h-12 w-12 shrink-0 rounded-full"
           />
-          <div className="leading-snug">
+          <div className="min-w-0 leading-snug">
             <h1 className="text-xl font-medium tracking-tight text-foreground sm:text-2xl">
               {siteConfig.name}
             </h1>
             <p className="font-mono text-xs text-muted-foreground">
               {t("role")} · {t("based")}
             </p>
-            <NowPlaying />
           </div>
         </div>
+
+        {/* Sits below the avatar block so it always has full width — keeps
+            mobile from breaking when track titles are long. */}
+        <NowPlaying className="mt-3" />
 
         <div className="mt-6 grid items-center gap-6 sm:grid-cols-[1fr_0.5fr] sm:gap-4">
           <div className="min-w-0">
