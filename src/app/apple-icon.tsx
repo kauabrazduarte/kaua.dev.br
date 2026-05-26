@@ -2,14 +2,14 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
 
-// nodejs runtime so we can read the bundled avatar from /public.
+// iOS pins this to the home screen at 180². iOS doesn't honour transparent
+// corners (it renders the icon on a tile), so we keep the image fully
+// circular — looks natural inside the iOS rounded-square frame.
 export const runtime = "nodejs";
-// 256² is big enough to look crisp when browsers downscale to 16/32/48
-// (favicon) and large enough for PWA / OS contexts.
-export const size = { width: 256, height: 256 };
+export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
-export default async function Icon() {
+export default async function AppleIcon() {
   const buf = await readFile(
     path.join(process.cwd(), "public", "avatar.png"),
   );
@@ -22,9 +22,6 @@ export default async function Icon() {
           width: "100%",
           height: "100%",
           display: "flex",
-          // Fully circular crop. The outer container is the only painted
-          // area; the corners outside the circle stay transparent in the
-          // resulting PNG.
           borderRadius: 9999,
           overflow: "hidden",
           background: "transparent",
