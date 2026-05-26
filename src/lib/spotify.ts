@@ -20,9 +20,11 @@ export interface NowPlaying {
   albumArt?: string;
 }
 
-// Artists whose tracks should never surface on the site. Matching is "contains"
-// over the normalized form (lowercase, diacritics stripped) so spelling and
-// accent variations are caught.
+// Artists whose tracks should never surface on the site. Matching is
+// whole-word: the artist string is normalized (lowercase, accents stripped,
+// any non-alphanumeric — including punctuation — collapsed into spaces),
+// then we look for the blocked term surrounded by spaces. So "key" matches
+// "Key" or "Key Sounds Label" but NOT "Monkey" or "Keys".
 const ARTIST_BLOCKLIST: string[] = [
   "chata",
   "riya",
@@ -36,12 +38,14 @@ function normalize(s: string): string {
   return s
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
+    .replace(/[̀-ͯ]/g, "") // strip combining diacritical marks
+    .replace(/[^a-z0-9]+/g, " ")      // any non-letter becomes a single space
+    .trim();
 }
 
 function isBlocked(artist: string): boolean {
-  const n = normalize(artist);
-  return ARTIST_BLOCKLIST.some((blocked) => n.includes(blocked));
+  const padded = ` ${normalize(artist)} `;
+  return ARTIST_BLOCKLIST.some((blocked) => padded.includes(` ${blocked} `));
 }
 
 function basicAuthHeader(): string | null {
