@@ -125,6 +125,7 @@ export default async function LocaleLayout({
   // hydration, fully indexable by crawlers).
   const tFooter = await getTranslations({ locale, namespace: "footer" });
   const QUOTE = tFooter("quote");
+  const tA11y = await getTranslations({ locale, namespace: "a11y" });
 
   // BCP-47 language tag per locale, used in JSON-LD's `inLanguage` and the
   // <blockquote lang="…"> attribute so search engines and screen readers can
@@ -161,6 +162,30 @@ export default async function LocaleLayout({
       (siteConfig.description as Record<string, string>)[locale] ??
       siteConfig.description.en,
     knowsLanguage: ["pt-BR", "en", "es", "zh"],
+    hasOccupation: {
+      "@type": "Occupation",
+      name:
+        locale === "pt"
+          ? "Desenvolvedor Full-Stack"
+          : locale === "es"
+            ? "Desarrollador Full-Stack"
+            : locale === "zh"
+              ? "全栈开发者"
+              : "Full-Stack Developer",
+      occupationLocation: {
+        "@type": "Country",
+        name: "Brazil",
+      },
+      skills: [
+        "Bun",
+        "Node.js",
+        "TypeScript",
+        "Next.js",
+        "React",
+        "Astro",
+        "AI Automation",
+      ],
+    },
     knowsAbout: [
       "Bun",
       "Node.js",
@@ -189,6 +214,18 @@ export default async function LocaleLayout({
       name: w.name,
       ...(w.aka ? { alternateName: w.aka } : {}),
     })),
+  };
+
+  // ProfilePage schema wraps the Person and tells Google "this URL IS a
+  // profile page for that entity" — unlocks profile-style SERP treatment.
+  const profilePageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": `${siteConfig.url}/${locale}#profile`,
+    url: `${siteConfig.url}/${locale}`,
+    inLanguage: langTag,
+    mainEntity: { "@id": `${siteConfig.url}#person` },
+    isPartOf: { "@id": `${siteConfig.url}#website` },
   };
 
   // WebSite schema: top-level entity that both Person (as publisher) and
@@ -256,10 +293,19 @@ export default async function LocaleLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <head>
+        {/* rel="me" links — IndieAuth / Mastodon verification, ties this
+            site to the author's external profiles. Also reinforces E-E-A-T. */}
+        <link rel="me" href={siteConfig.links.github} />
+        <link rel="me" href={siteConfig.links.x} />
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageJsonLd) }}
         />
         <script
           type="application/ld+json"
@@ -281,8 +327,16 @@ export default async function LocaleLayout({
             disableTransitionOnChange
           >
             <div className="relative flex min-h-dvh flex-col">
+              {/* Skip link — only visible when focused via keyboard tab.
+                  Lets keyboard / screen-reader users jump past the header. */}
+              <a
+                href="#main"
+                className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:border focus:border-border focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:text-foreground focus:shadow-md"
+              >
+                {tA11y("skipToContent")}
+              </a>
               <SiteHeader />
-              <main className="flex-1">{children}</main>
+              <main id="main" className="flex-1">{children}</main>
               <SiteFooter />
               <figure
                 id="quote"

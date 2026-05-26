@@ -7,6 +7,9 @@
     "language": "Idioma",
     "theme": "Mudar tema"
   },
+  "a11y": {
+    "skipToContent": "Pular para o conteúdo"
+  },
   "nowPlaying": {
     "label": "Ouvindo"
   },

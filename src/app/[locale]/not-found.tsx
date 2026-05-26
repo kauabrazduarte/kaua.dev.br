@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
+
+// Explicit noindex — error pages should never appear in SERPs.
+export const metadata: Metadata = {
+  title: "Not found",
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   return (

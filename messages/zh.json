@@ -7,6 +7,9 @@
     "language": "语言",
     "theme": "切换主题"
   },
+  "a11y": {
+    "skipToContent": "跳到内容"
+  },
   "nowPlaying": {
     "label": "正在听"
   },
