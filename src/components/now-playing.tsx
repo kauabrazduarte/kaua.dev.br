@@ -62,15 +62,17 @@ export function NowPlaying({ className = "" }: { className?: string }) {
       href={track.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group inline-flex max-w-full items-center gap-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:text-foreground ${className}`}
+      className={`group flex w-full min-w-0 items-center gap-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:text-foreground ${className}`}
       aria-label={`${t("label")} — ${track.artist} · ${track.title}`}
     >
       <SpotifyIcon size={12} />
-      <span className="text-foreground/70">{t("label")}</span>
-      <span aria-hidden className="text-muted-foreground/60">
+      <span className="shrink-0 text-foreground/70">{t("label")}</span>
+      <span aria-hidden className="shrink-0 text-muted-foreground/60">
         —
       </span>
-      <span className="truncate">
+      {/* min-w-0 is required for `truncate` to actually shrink inside a flex
+          child, otherwise it expands to its content's intrinsic width. */}
+      <span className="min-w-0 truncate">
         {track.artist} <span className="text-muted-foreground/60">·</span>{" "}
         {track.title}
       </span>
