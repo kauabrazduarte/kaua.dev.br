@@ -1,6 +1,13 @@
 import type { MetadataRoute } from "next";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import { siteConfig } from "@/lib/site";
+
+const LANGUAGE_TAG: Record<Locale, string> = {
+  pt: "pt-BR",
+  en: "en-US",
+  es: "es-ES",
+  zh: "zh-CN",
+};
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -11,10 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: locale === routing.defaultLocale ? 1 : 0.8,
     alternates: {
       languages: Object.fromEntries(
-        routing.locales.map((l) => [
-          l === "pt" ? "pt-BR" : "en-US",
-          `${siteConfig.url}/${l}`,
-        ]),
+        routing.locales.map((l) => [LANGUAGE_TAG[l], `${siteConfig.url}/${l}`]),
       ),
     },
   }));

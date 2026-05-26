@@ -158,3 +158,12 @@
 .hover-lift:hover {
   animation: paper-lift 380ms ease-out forwards;
 }
+
+/* Invisible-but-scrollable: hides the scrollbar visually while preserving
+   scroll functionality (mouse wheel, trackpad, touch, keyboard). */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

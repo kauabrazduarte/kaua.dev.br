@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { siteConfig } from "@/lib/site";
+import { ThemedCatLottie } from "@/components/themed-cat-lottie";
+import { NowPlaying } from "@/components/now-playing";
 
 export function HeroSection() {
   const t = useTranslations("hero");
@@ -34,32 +36,41 @@ export function HeroSection() {
             <p className="font-mono text-xs text-muted-foreground">
               {t("role")} · {t("based")}
             </p>
+            <NowPlaying />
           </div>
         </div>
 
-        <p className="mt-6 text-base leading-relaxed text-muted-foreground sm:text-[17px]">
-          <Tagline />
-        </p>
+        <div className="mt-6 grid items-center gap-6 sm:grid-cols-[1fr_0.5fr] sm:gap-4">
+          <div className="min-w-0">
+            <p className="text-base leading-relaxed text-muted-foreground sm:text-[17px]">
+              <Tagline />
+            </p>
 
-        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-          <a
-            href="#projects"
-            className="group inline-flex items-center gap-1.5 text-foreground underline decoration-foreground/30 decoration-1 underline-offset-4 transition-colors hover:decoration-foreground"
-          >
-            {t("primaryCta")}
-            <span
-              aria-hidden
-              className="transition-transform group-hover:translate-x-0.5"
-            >
-              →
-            </span>
-          </a>
-          <a
-            href="#contact"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            {t("secondaryCta")}
-          </a>
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+              <a
+                href="#experience"
+                className="group inline-flex items-center gap-1.5 text-foreground underline decoration-foreground/30 decoration-1 underline-offset-4 transition-colors hover:decoration-foreground"
+              >
+                {t("primaryCta")}
+                <span
+                  aria-hidden
+                  className="transition-transform group-hover:translate-x-0.5"
+                >
+                  →
+                </span>
+              </a>
+              <a
+                href="#contact"
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {t("secondaryCta")}
+              </a>
+            </div>
+          </div>
+
+          <div className="order-first mx-auto w-full max-w-[180px] sm:order-none sm:max-w-none">
+            <ThemedCatLottie className="w-full" />
+          </div>
         </div>
       </div>
     </section>

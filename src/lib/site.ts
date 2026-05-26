@@ -7,6 +7,8 @@ export const siteConfig = {
   description: {
     pt: "Desenvolvedor Full-Stack focado em aplicações web e automações com IA. Trabalho com Bun, Node.js, TypeScript, React, Next.js e Astro.",
     en: "Full-Stack Developer focused on web apps and AI automation. I work with Bun, Node.js, TypeScript, React, Next.js and Astro.",
+    es: "Desarrollador Full-Stack enfocado en aplicaciones web y automatización con IA. Trabajo con Bun, Node.js, TypeScript, React, Next.js y Astro.",
+    zh: "全栈开发者，专注于 Web 应用和 AI 自动化。使用 Bun、Node.js、TypeScript、React、Next.js 和 Astro。",
   },
   keywords: [
     "Kauã Braz Duarte",

@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "Kauã Braz Duarte — Desarrollador Full-Stack",
+    "description": "Portafolio de Kauã Braz Duarte, desarrollador full-stack enfocado en aplicaciones web y automatización con IA usando Bun, Node.js, TypeScript, React, Next.js y Astro."
+  },
+  "nav": {
+    "language": "Idioma",
+    "theme": "Cambiar tema"
+  },
+  "nowPlaying": {
+    "label": "Escuchando ahora"
+  },
+  "hero": {
+    "status": "Abierto a charlar",
+    "greeting": "Hola, soy Kauã",
+    "role": "Desarrollador Full-Stack",
+    "tagline": "Construyo aplicaciones web y {accent} con Bun, Node.js y TypeScript.",
+    "taglineAccent": "automatizaciones con IA",
+    "primaryCta": "Dónde he trabajado",
+    "secondaryCta": "Hablemos",
+    "based": "Brasil · Remoto"
+  },
+  "about": {
+    "kicker": "Sobre mí",
+    "title": "Sobre mí",
+    "p1": "Soy desarrollador full-stack, {age} años, enfocado en construir aplicaciones web y automatizaciones con Bun, Node.js y TypeScript. Ocasionalmente exploro otros lenguajes como Python y PHP.",
+    "p3": "Soy especialista en automatizaciones con IA — si una API tiene un endpoint, lo integro. En el día a día uso bastante Claude Code y Codex.",
+    "p4": "No estoy aceptando trabajos activamente en este momento, pero si tienes una propuesta interesante, escríbeme."
+  },
+  "skills": {
+    "kicker": "Stack",
+    "title": "Tecnologías que uso",
+    "subtitle": "Herramientas que aparecen en la mayoría de mis proyectos.",
+    "categories": {
+      "languages": "Lenguajes",
+      "frontend": "Front-end",
+      "backend": "Back-end",
+      "devops": "DevOps",
+      "ai": "IA y Diseño"
+    }
+  },
+  "projects": {
+    "kicker": "Proyectos",
+    "title": "Trabajos seleccionados",
+    "subtitle": "Una muestra de lo que vengo construyendo. Más en GitHub.",
+    "viewCode": "Código",
+    "viewLive": "Demo",
+    "viewAll": "Ver todo en GitHub"
+  },
+  "experience": {
+    "kicker": "Trayectoria",
+    "title": "Experiencia",
+    "subtitle": "Por dónde pasé y qué entregué.",
+    "present": "Actual"
+  },
+  "stats": {
+    "kicker": "GitHub",
+    "title": "Actividad pública",
+    "repos": "Repositorios",
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "stars": "Estrellas recibidas"
+  },
+  "contact": {
+    "kicker": "Contacto",
+    "title": "Hablemos",
+    "subtitle": "No estoy aceptando trabajos activamente, pero siempre abierto a propuestas interesantes.",
+    "or": "o en"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "builtWith": "Hecho con mucho {heart}",
+    "quote": "Fui testigo de mí mismo solo cuando otro nombró mi paso."
+  }
+}

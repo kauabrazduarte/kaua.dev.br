@@ -7,13 +7,16 @@
     "language": "Language",
     "theme": "Toggle theme"
   },
+  "nowPlaying": {
+    "label": "Now playing"
+  },
   "hero": {
     "status": "Open to chat",
     "greeting": "Hey, I'm Kauã",
     "role": "Full-Stack Developer",
     "tagline": "I build web apps and {accent} with Bun, Node.js and TypeScript.",
     "taglineAccent": "AI automations",
-    "primaryCta": "See projects",
+    "primaryCta": "Where I worked",
     "secondaryCta": "Get in touch",
     "based": "Brazil · Remote"
   },
@@ -66,6 +69,7 @@
   },
   "footer": {
     "rights": "All rights reserved.",
-    "builtWith": "Made with lots of {heart}"
+    "builtWith": "Made with lots of {heart}",
+    "quote": "I bore witness to myself only when another named my passage."
   }
 }

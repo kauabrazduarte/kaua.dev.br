@@ -7,13 +7,16 @@
     "language": "Idioma",
     "theme": "Mudar tema"
   },
+  "nowPlaying": {
+    "label": "Escutando agora"
+  },
   "hero": {
     "status": "Aberto a conversar",
     "greeting": "Olá, eu sou o Kauã",
     "role": "Desenvolvedor Full-Stack",
     "tagline": "Construo aplicações web e {accent} com Bun, Node.js e TypeScript.",
     "taglineAccent": "automações com IA",
-    "primaryCta": "Ver projetos",
+    "primaryCta": "Onde trabalhei",
     "secondaryCta": "Falar comigo",
     "based": "Brasil · Remoto"
   },
@@ -66,6 +69,7 @@
   },
   "footer": {
     "rights": "Todos os direitos reservados.",
-    "builtWith": "Feito com muito {heart}"
+    "builtWith": "Feito com muito {heart}",
+    "quote": "Fui testemunha de mim mesmo apenas quando outro nomeou minha passagem."
   }
 }

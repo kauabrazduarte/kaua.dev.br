@@ -1,14 +1,17 @@
 import { useLocale, useTranslations } from "next-intl";
 import { Section } from "@/components/section";
+import type { Locale } from "@/i18n/routing";
+
+type L10n = Record<Locale, string>;
 
 interface Experience {
   company: string;
   aka?: string;
   url?: string;
-  role: { pt: string; en: string };
-  period: { pt: string; en: string };
+  role: L10n;
+  period: L10n;
   current?: boolean;
-  highlights: { pt: string; en: string }[];
+  highlights: L10n[];
   tags: string[];
 }
 
@@ -17,17 +20,31 @@ const EXPERIENCES: Experience[] = [
     company: "Marcos Jocober",
     aka: "The Deed Hunter",
     url: "https://marcosjocober.com",
-    role: { pt: "Desenvolvedor Full-Stack", en: "Full-Stack Developer" },
-    period: { pt: "2025 — Atual", en: "2025 — Present" },
+    role: {
+      pt: "Desenvolvedor Full-Stack",
+      en: "Full-Stack Developer",
+      es: "Desarrollador Full-Stack",
+      zh: "全栈开发者",
+    },
+    period: {
+      pt: "2025 — Atual",
+      en: "2025 — Present",
+      es: "2025 — Actual",
+      zh: "2025 — 至今",
+    },
     current: true,
     highlights: [
       {
         pt: "Foco em automações de processos com integrações de IA e APIs.",
         en: "Focused on process automation with AI integrations and APIs.",
+        es: "Enfoque en automatización de procesos con integraciones de IA y APIs.",
+        zh: "专注于通过 AI 和 API 集成实现流程自动化。",
       },
       {
         pt: "Construção e manutenção de ferramentas internas em Next.js e Bun.",
         en: "Building and maintaining internal tools in Next.js and Bun.",
+        es: "Construcción y mantenimiento de herramientas internas en Next.js y Bun.",
+        zh: "构建和维护基于 Next.js 和 Bun 的内部工具。",
       },
     ],
     tags: [
@@ -47,13 +64,22 @@ const EXPERIENCES: Experience[] = [
     role: {
       pt: "Desenvolvedor Web",
       en: "Web Developer",
+      es: "Desarrollador Web",
+      zh: "Web 开发者",
     },
-    period: { pt: "2025 — Atual", en: "2025 — Present" },
+    period: {
+      pt: "2025 — Atual",
+      en: "2025 — Present",
+      es: "2025 — Actual",
+      zh: "2025 — 至今",
+    },
     current: true,
     highlights: [
       {
         pt: "Desenvolvimento e manutenção do website em produção.",
         en: "Development and maintenance of the production website.",
+        es: "Desarrollo y mantenimiento del sitio web en producción.",
+        zh: "开发和维护生产环境的网站。",
       },
     ],
     tags: [
@@ -68,16 +94,30 @@ const EXPERIENCES: Experience[] = [
   {
     company: "Workana",
     url: "https://www.workana.com",
-    role: { pt: "Freelancer · Full-Stack", en: "Freelancer · Full-Stack" },
-    period: { pt: "2020 — 2025", en: "2020 — 2025" },
+    role: {
+      pt: "Freelancer · Full-Stack",
+      en: "Freelancer · Full-Stack",
+      es: "Freelancer · Full-Stack",
+      zh: "自由职业 · 全栈",
+    },
+    period: {
+      pt: "2020 — 2025",
+      en: "2020 — 2025",
+      es: "2020 — 2025",
+      zh: "2020 — 2025",
+    },
     highlights: [
       {
         pt: "Mais de 500 projetos entregues — aplicações web, automações e integrações de API.",
         en: "500+ projects delivered — web apps, automations and API integrations.",
+        es: "Más de 500 proyectos entregados — aplicaciones web, automatizaciones e integraciones de API.",
+        zh: "交付超过 500 个项目——Web 应用、自动化和 API 集成。",
       },
       {
         pt: "Atendimento direto a clientes do Brasil e LATAM, com foco em prazo e qualidade.",
         en: "Direct work with clients across Brazil and LATAM, with a focus on deadlines and quality.",
+        es: "Trabajo directo con clientes de Brasil y LATAM, con foco en plazos y calidad.",
+        zh: "直接服务巴西和拉美客户，注重交付时间和质量。",
       },
     ],
     tags: ["React", "Node.js", "PHP", "PostgreSQL", "Astro"],
@@ -86,7 +126,7 @@ const EXPERIENCES: Experience[] = [
 
 export function ExperienceSection() {
   const t = useTranslations("experience");
-  const locale = useLocale() as "pt" | "en";
+  const locale = useLocale() as Locale;
 
   return (
     <Section

@@ -89,7 +89,7 @@ export async function ContributionGraph() {
     <div className="mt-5">
       {/* Horizontal scroll on small screens so the calendar always shows
           its full 53 weeks without squishing the cells. */}
-      <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0">
+      <div className="scrollbar-none -mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0">
         <div className="inline-block min-w-max">
           {/* Month labels row */}
           <div

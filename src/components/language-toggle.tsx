@@ -4,7 +4,7 @@ import * as React from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Languages } from "lucide-react";
 import { useRouter, usePathname } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,9 +15,11 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
-const labels: Record<string, { label: string; flag: string }> = {
+const labels: Record<Locale, { label: string; flag: string }> = {
   pt: { label: "Português", flag: "🇧🇷" },
   en: { label: "English", flag: "🇺🇸" },
+  es: { label: "Español", flag: "🇪🇸" },
+  zh: { label: "中文", flag: "🇨🇳" },
 };
 
 export function LanguageToggle() {
@@ -30,7 +32,7 @@ export function LanguageToggle() {
   function switchTo(next: string) {
     if (next === locale) return;
     startTransition(() => {
-      router.replace(pathname, { locale: next as "pt" | "en" });
+      router.replace(pathname, { locale: next as Locale });
     });
   }
 

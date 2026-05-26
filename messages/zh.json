@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "Kauã Braz Duarte — 全栈开发者",
+    "description": "Kauã Braz Duarte 的作品集，专注于使用 Bun、Node.js、TypeScript、React、Next.js 和 Astro 构建 Web 应用与 AI 自动化的全栈开发者。"
+  },
+  "nav": {
+    "language": "语言",
+    "theme": "切换主题"
+  },
+  "nowPlaying": {
+    "label": "正在听"
+  },
+  "hero": {
+    "status": "欢迎联系",
+    "greeting": "嗨，我是 Kauã",
+    "role": "全栈开发者",
+    "tagline": "我使用 Bun、Node.js 和 TypeScript 构建 Web 应用和 {accent}。",
+    "taglineAccent": "AI 自动化",
+    "primaryCta": "工作经历",
+    "secondaryCta": "联系我",
+    "based": "巴西 · 远程"
+  },
+  "about": {
+    "kicker": "关于",
+    "title": "关于我",
+    "p1": "我是一名全栈开发者，{age} 岁，专注于使用 Bun、Node.js 和 TypeScript 构建 Web 应用和自动化工具。偶尔也会涉足 Python 和 PHP。",
+    "p3": "我专精 AI 自动化——只要 API 有端点，我就能集成。日常工作中大量使用 Claude Code 和 Codex。",
+    "p4": "我目前没有积极接洽新项目，但如果你有有趣的提案，欢迎联系。"
+  },
+  "skills": {
+    "kicker": "技术栈",
+    "title": "我使用的技术",
+    "subtitle": "在我大部分项目中都会出现的工具。",
+    "categories": {
+      "languages": "编程语言",
+      "frontend": "前端",
+      "backend": "后端",
+      "devops": "DevOps",
+      "ai": "AI 与设计"
+    }
+  },
+  "projects": {
+    "kicker": "项目",
+    "title": "精选作品",
+    "subtitle": "我一直在构建的项目示例。更多内容在 GitHub。",
+    "viewCode": "代码",
+    "viewLive": "演示",
+    "viewAll": "在 GitHub 上查看全部"
+  },
+  "experience": {
+    "kicker": "经历",
+    "title": "工作经验",
+    "subtitle": "我去过的地方和交付的成果。",
+    "present": "至今"
+  },
+  "stats": {
+    "kicker": "GitHub",
+    "title": "公开活动",
+    "repos": "仓库",
+    "followers": "关注者",
+    "following": "关注中",
+    "stars": "获得的星标"
+  },
+  "contact": {
+    "kicker": "联系",
+    "title": "聊聊吧",
+    "subtitle": "目前没有积极接洽新工作，但始终欢迎有趣的提案。",
+    "or": "或在"
+  },
+  "footer": {
+    "rights": "保留所有权利。",
+    "builtWith": "用满满的 {heart} 制作",
+    "quote": "唯有当他者命名了我的过往，我才见证了自己。"
+  }
+}

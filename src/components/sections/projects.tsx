@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { Section } from "@/components/section";
 import { siteConfig } from "@/lib/site";
+import type { Locale } from "@/i18n/routing";
 
 // TODO(kauã): substitua os placeholders pelos seus projetos reais.
 // `cover` aceita um caminho dentro de /public (ex.: /projects/foo.png)
@@ -9,7 +10,8 @@ import { siteConfig } from "@/lib/site";
 interface Project {
   slug: string;
   title: string;
-  description: { pt: string; en: string };
+  // `en` is the fallback whenever a translation for the active locale is missing.
+  description: Partial<Record<Locale, string>> & { en: string };
   stack: string[];
   cover?: string | null;
   repo?: string;
@@ -56,7 +58,7 @@ const PROJECTS: Project[] = [
 
 export function ProjectsSection() {
   const t = useTranslations("projects");
-  const locale = useLocale() as "pt" | "en";
+  const locale = useLocale() as Locale;
 
   return (
     <Section
@@ -103,7 +105,7 @@ export function ProjectsSection() {
                 </span>
               </div>
               <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                {p.description[locale]}
+                {p.description[locale] ?? p.description.en}
               </p>
               <p className="mt-2 font-mono text-[11px] text-muted-foreground/80">
                 {p.stack.join(" · ")}

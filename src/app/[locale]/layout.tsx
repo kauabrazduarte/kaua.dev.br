@@ -52,12 +52,21 @@ export async function generateMetadata({
       languages: {
         "pt-BR": "/pt",
         "en-US": "/en",
+        "es-ES": "/es",
+        "zh-CN": "/zh",
         "x-default": "/",
       },
     },
     openGraph: {
       type: "website",
-      locale: locale === "pt" ? "pt_BR" : "en_US",
+      locale:
+        locale === "pt"
+          ? "pt_BR"
+          : locale === "es"
+            ? "es_ES"
+            : locale === "zh"
+              ? "zh_CN"
+              : "en_US",
       url: `${siteConfig.url}/${locale}`,
       siteName: siteConfig.name,
       title: t("title"),
@@ -111,9 +120,27 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  // SSR-rendered quote text per locale (next-intl reads from messages/<locale>.json
+  // server-side, so the translated text lives in the initial HTML — no client
+  // hydration, fully indexable by crawlers).
+  const tFooter = await getTranslations({ locale, namespace: "footer" });
+  const QUOTE = tFooter("quote");
+
+  // BCP-47 language tag per locale, used in JSON-LD's `inLanguage` and the
+  // <blockquote lang="…"> attribute so search engines and screen readers can
+  // attribute the text to the correct language.
+  const LANGUAGE_TAG: Record<string, string> = {
+    pt: "pt-BR",
+    en: "en-US",
+    es: "es-ES",
+    zh: "zh-CN",
+  };
+  const langTag = LANGUAGE_TAG[locale] ?? "en-US";
+
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": `${siteConfig.url}#person`,
     name: siteConfig.name,
     alternateName: [siteConfig.shortName, "kauadevbr", "kauabrazduarte"],
     url: siteConfig.url,
@@ -124,12 +151,15 @@ export default async function LocaleLayout({
     jobTitle:
       locale === "pt"
         ? "Desenvolvedor Full-Stack"
-        : "Full-Stack Developer",
+        : locale === "es"
+          ? "Desarrollador Full-Stack"
+          : locale === "zh"
+            ? "全栈开发者"
+            : "Full-Stack Developer",
     description:
-      locale === "pt"
-        ? siteConfig.description.pt
-        : siteConfig.description.en,
-    knowsLanguage: ["pt-BR", "en"],
+      (siteConfig.description as Record<string, string>)[locale] ??
+      siteConfig.description.en,
+    knowsLanguage: ["pt-BR", "en", "es", "zh"],
     knowsAbout: [
       "Bun",
       "Node.js",
@@ -160,6 +190,48 @@ export default async function LocaleLayout({
     })),
   };
 
+  // Quotation schema marks the footer line as a unique, attributable quote so
+  // exact-phrase searches can surface this site in any of the four languages.
+  // Each locale gets its own @id (so /pt#quote, /en#quote, …) and the PT version
+  // is the canonical "original work"; the others declare themselves as
+  // translationOfWork pointing at it — this is the schema.org-blessed way to
+  // tell search engines "same idea, translated".
+  const quoteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Quotation",
+    "@id": `${siteConfig.url}/${locale}#quote`,
+    text: QUOTE,
+    inLanguage: langTag,
+    creator: { "@id": `${siteConfig.url}#person` },
+    spokenByCharacter: { "@id": `${siteConfig.url}#person` },
+    url: `${siteConfig.url}/${locale}#quote`,
+    ...(locale === "pt"
+      ? {
+          // PT is the original; declare the translations so Google links them.
+          workTranslation: routing.locales
+            .filter((l) => l !== "pt")
+            .map((l) => ({
+              "@type": "Quotation",
+              "@id": `${siteConfig.url}/${l}#quote`,
+              inLanguage: LANGUAGE_TAG[l],
+            })),
+        }
+      : {
+          // Non-PT locales are translations of the PT original.
+          translationOfWork: {
+            "@type": "Quotation",
+            "@id": `${siteConfig.url}/pt#quote`,
+            inLanguage: "pt-BR",
+          },
+        }),
+    isPartOf: {
+      "@type": "WebSite",
+      "@id": `${siteConfig.url}#website`,
+      url: siteConfig.url,
+      name: siteConfig.name,
+    },
+  };
+
   return (
     <html
       lang={locale}
@@ -171,6 +243,11 @@ export default async function LocaleLayout({
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(quoteJsonLd) }}
         />
       </head>
       <body className="min-h-dvh bg-background text-foreground antialiased">
@@ -185,6 +262,23 @@ export default async function LocaleLayout({
               <SiteHeader />
               <main className="flex-1">{children}</main>
               <SiteFooter />
+              <figure
+                id="quote"
+                className="mx-auto w-full max-w-2xl px-6 pb-10 pt-2 text-center"
+              >
+                <blockquote
+                  cite={`${siteConfig.url}/${locale}#quote`}
+                  lang={langTag}
+                  className="text-xs italic text-muted-foreground/70"
+                >
+                  <p>&ldquo;{QUOTE}&rdquo;</p>
+                </blockquote>
+                {/* Attribution is hidden visually but kept in the DOM so
+                    crawlers can tie the quote to its author. */}
+                <figcaption className="sr-only">
+                  — {siteConfig.name}
+                </figcaption>
+              </figure>
             </div>
           </ThemeProvider>
         </NextIntlClientProvider>
