@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# kauadev.br
 
-## Getting Started
+Portfólio pessoal do **Kauã Braz Duarte** — desenvolvedor full-stack.
 
-First, run the development server:
+Construído com **Next.js 16 (App Router)**, **Bun**, **Tailwind CSS v4**, **shadcn/ui**,
+**next-intl** (pt/en) e **next-themes** (light/dark).
+
+- **Tema light** focado em **amber**
+- **Tema dark** focado em **violet**
+- Ícones gerais inline no estilo do [itshover.com](https://www.itshover.com/icons)
+- Ícones de tecnologia via [`developer-icons`](https://www.npmjs.com/package/developer-icons)
+- SEO completo: metadata API, sitemap, robots, manifest, OG dinâmico (edge), JSON-LD Person
+
+## Scripts
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install   # instala deps
+bun dev       # servidor de desenvolvimento
+bun run build # build de produção
+bun start     # servidor de produção
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Onde editar
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| O quê | Arquivo |
+| --- | --- |
+| Nome, links sociais, GitHub user | `src/lib/site.ts` |
+| Textos PT | `messages/pt.json` |
+| Textos EN | `messages/en.json` |
+| Tema (amber/violet) | `src/app/globals.css` |
+| Projetos (placeholders) | `src/components/sections/projects.tsx` |
+| Experiência (timeline) | `src/components/sections/experience.tsx` |
+| Skills / Stack | `src/components/sections/skills.tsx` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estrutura
 
-## Learn More
+```
+src/
+├── app/
+│   ├── [locale]/        # rotas localizadas (pt, en)
+│   ├── globals.css      # tokens de tema (amber/violet)
+│   ├── icon.tsx         # favicon dinâmico (edge)
+│   ├── opengraph-image.tsx
+│   ├── manifest.ts
+│   ├── robots.ts
+│   └── sitemap.ts
+├── components/
+│   ├── sections/        # Hero, About, Skills, Projects, Experience, Stats, Contact
+│   ├── ui/              # shadcn primitives
+│   └── *.tsx            # header, footer, theme toggle, language toggle
+├── i18n/                # routing + request config (next-intl)
+└── lib/
+    ├── site.ts          # config central
+    └── utils.ts         # cn()
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Otimizado para Vercel ou qualquer runtime Node 20+ / Bun.
+Antes do deploy, atualize `siteConfig.url` em `src/lib/site.ts`.

@@ -1,26 +1,160 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-paper-rule: var(--paper-rule);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ─────────────────────────────────────────────
+ * Light theme — warm "paper" off-white.
+ * Background is a creamy off-white close to printed
+ * paper. Accent (amber-600) shows up only in the
+ * status dot, link underlines and focus rings.
+ * ───────────────────────────────────────────── */
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.975 0.008 85);        /* warm cream */
+  --foreground: oklch(0.22 0.012 60);         /* warm ink */
+  --card: oklch(0.975 0.008 85);              /* same as bg (no card surface) */
+  --card-foreground: oklch(0.22 0.012 60);
+  --popover: oklch(0.99 0.005 85);
+  --popover-foreground: oklch(0.22 0.012 60);
+
+  --primary: oklch(0.62 0.16 55);             /* amber-600 ink */
+  --primary-foreground: oklch(0.99 0.005 85);
+
+  --secondary: oklch(0.95 0.008 85);
+  --secondary-foreground: oklch(0.32 0.012 60);
+
+  --muted: oklch(0.95 0.008 85);
+  --muted-foreground: oklch(0.5 0.01 60);
+
+  --accent: oklch(0.93 0.012 85);
+  --accent-foreground: oklch(0.25 0.012 60);
+
+  --destructive: oklch(0.58 0.22 28);
+  --destructive-foreground: oklch(0.99 0 0);
+  --success: oklch(0.55 0.13 155);
+  --success-foreground: oklch(0.99 0 0);
+
+  --border: oklch(0.88 0.012 80);             /* faint warm rule */
+  --paper-rule: oklch(0.82 0.012 80);         /* slightly stronger for dividers */
+  --input: oklch(0.88 0.012 80);
+  --ring: oklch(0.62 0.16 55);
+}
+
+/* ─────────────────────────────────────────────
+ * Dark theme — deep ink "carbon paper" feel.
+ * ───────────────────────────────────────────── */
+.dark {
+  --background: oklch(0.13 0.008 285);
+  --foreground: oklch(0.95 0.005 285);
+  --card: oklch(0.13 0.008 285);
+  --card-foreground: oklch(0.95 0.005 285);
+  --popover: oklch(0.17 0.01 285);
+  --popover-foreground: oklch(0.95 0.005 285);
+
+  --primary: oklch(0.74 0.18 295);            /* violet-400 */
+  --primary-foreground: oklch(0.13 0.02 285);
+
+  --secondary: oklch(0.2 0.01 285);
+  --secondary-foreground: oklch(0.95 0.005 285);
+
+  --muted: oklch(0.2 0.01 285);
+  --muted-foreground: oklch(0.62 0.012 285);
+
+  --accent: oklch(0.22 0.012 285);
+  --accent-foreground: oklch(0.95 0.005 285);
+
+  --destructive: oklch(0.65 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --success: oklch(0.72 0.16 160);
+  --success-foreground: oklch(0.13 0.02 160);
+
+  --border: oklch(0.24 0.012 285);
+  --paper-rule: oklch(0.3 0.012 285);
+  --input: oklch(0.24 0.012 285);
+  --ring: oklch(0.74 0.18 295);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  /* Always show a pointer on interactive elements — Tailwind v4 ships with
+     `cursor: default` on buttons by default. */
+  button:not(:disabled),
+  a[href],
+  [role="button"]:not([aria-disabled="true"]),
+  summary,
+  [type="submit"],
+  [type="button"] {
+    cursor: pointer;
+  }
+  html {
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Extremely subtle paper grain — SVG turbulence at ~2% opacity.
+       Doesn't add network bytes (inline data URI) and reads as texture
+       rather than noise. */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
+    background-repeat: repeat;
+  }
+  ::selection {
+    background-color: color-mix(in oklab, var(--primary) 30%, transparent);
+    color: var(--foreground);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Hairline rule like a printed page line. */
+.paper-rule {
+  height: 1px;
+  background-color: var(--paper-rule);
+}
+
+/* Animated wiggle for tech-icon hovers. */
+@keyframes paper-lift {
+  0% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-2px) rotate(-3deg); }
+  100% { transform: translateY(-1px) rotate(0); }
+}
+
+.hover-lift:hover {
+  animation: paper-lift 380ms ease-out forwards;
 }

@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "title": "Kauã Braz Duarte — Desenvolvedor Full-Stack",
+    "description": "Portfólio de Kauã Braz Duarte, desenvolvedor full-stack focado em aplicações web e automações com IA usando Bun, Node.js, TypeScript, React, Next.js e Astro."
+  },
+  "nav": {
+    "language": "Idioma",
+    "theme": "Mudar tema"
+  },
+  "hero": {
+    "status": "Aberto a conversar",
+    "greeting": "Olá, eu sou o Kauã",
+    "role": "Desenvolvedor Full-Stack",
+    "tagline": "Construo aplicações web e {accent} com Bun, Node.js e TypeScript.",
+    "taglineAccent": "automações com IA",
+    "primaryCta": "Ver projetos",
+    "secondaryCta": "Falar comigo",
+    "based": "Brasil · Remoto"
+  },
+  "about": {
+    "kicker": "Sobre",
+    "title": "Sobre mim",
+    "p1": "Sou desenvolvedor full-stack, {age} anos, focado em construir aplicações web e automações usando Bun, Node.js e TypeScript. Eventualmente me aventuro em outras linguagens como Python e PHP.",
+    "p3": "Sou especialista em automações com IA — se uma API tem um endpoint, eu integro. No dia a dia uso bastante Claude Code e Codex.",
+    "p4": "Não estou aceitando trabalhos ativamente no momento, mas se você tem uma proposta interessante, me chama."
+  },
+  "skills": {
+    "kicker": "Stack",
+    "title": "Tecnologias que eu uso",
+    "subtitle": "Ferramentas que aparecem na maioria dos meus projetos.",
+    "categories": {
+      "languages": "Linguagens",
+      "frontend": "Front-end",
+      "backend": "Back-end",
+      "devops": "DevOps",
+      "ai": "IA & Design"
+    }
+  },
+  "projects": {
+    "kicker": "Projetos",
+    "title": "Trabalhos selecionados",
+    "subtitle": "Uma amostra do que venho construindo. Mais no GitHub.",
+    "viewCode": "Código",
+    "viewLive": "Demo",
+    "viewAll": "Ver tudo no GitHub"
+  },
+  "experience": {
+    "kicker": "Trajetória",
+    "title": "Experiência",
+    "subtitle": "Onde passei e o que entreguei.",
+    "present": "Atual"
+  },
+  "stats": {
+    "kicker": "GitHub",
+    "title": "Atividade pública",
+    "repos": "Repositórios",
+    "followers": "Seguidores",
+    "following": "Seguindo",
+    "stars": "Stars recebidas"
+  },
+  "contact": {
+    "kicker": "Contato",
+    "title": "Vamos conversar",
+    "subtitle": "Não estou ativamente aceitando trabalhos, mas estou aberto a ouvir propostas interessantes.",
+    "or": "ou em"
+  },
+  "footer": {
+    "rights": "Todos os direitos reservados.",
+    "builtWith": "Feito com muito {heart}"
+  }
+}

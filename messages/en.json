@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "title": "Kauã Braz Duarte — Full-Stack Developer",
+    "description": "Portfolio of Kauã Braz Duarte, full-stack developer focused on web apps and AI automation with Bun, Node.js, TypeScript, React, Next.js and Astro."
+  },
+  "nav": {
+    "language": "Language",
+    "theme": "Toggle theme"
+  },
+  "hero": {
+    "status": "Open to chat",
+    "greeting": "Hey, I'm Kauã",
+    "role": "Full-Stack Developer",
+    "tagline": "I build web apps and {accent} with Bun, Node.js and TypeScript.",
+    "taglineAccent": "AI automations",
+    "primaryCta": "See projects",
+    "secondaryCta": "Get in touch",
+    "based": "Brazil · Remote"
+  },
+  "about": {
+    "kicker": "About",
+    "title": "About me",
+    "p1": "I'm a full-stack developer, {age} years old, focused on shipping web apps and automations with Bun, Node.js and TypeScript. I occasionally venture into Python and PHP.",
+    "p3": "I specialize in AI automation — if an API has an endpoint, I'll integrate it. I lean heavily on Claude Code and Codex in my daily workflow.",
+    "p4": "I'm not actively taking on work right now, but if you have an interesting proposal, drop me a line."
+  },
+  "skills": {
+    "kicker": "Stack",
+    "title": "Tech I work with",
+    "subtitle": "Tools that show up in most of my projects.",
+    "categories": {
+      "languages": "Languages",
+      "frontend": "Front-end",
+      "backend": "Back-end",
+      "devops": "DevOps",
+      "ai": "AI & Design"
+    }
+  },
+  "projects": {
+    "kicker": "Projects",
+    "title": "Selected work",
+    "subtitle": "A sample of what I've been building. More on GitHub.",
+    "viewCode": "Code",
+    "viewLive": "Demo",
+    "viewAll": "See all on GitHub"
+  },
+  "experience": {
+    "kicker": "Journey",
+    "title": "Experience",
+    "subtitle": "Where I've been and what I shipped.",
+    "present": "Present"
+  },
+  "stats": {
+    "kicker": "GitHub",
+    "title": "Public activity",
+    "repos": "Repositories",
+    "followers": "Followers",
+    "following": "Following",
+    "stars": "Stars received"
+  },
+  "contact": {
+    "kicker": "Contact",
+    "title": "Let's talk",
+    "subtitle": "Not actively taking on work, but always open to hear interesting proposals.",
+    "or": "or on"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "builtWith": "Made with lots of {heart}"
+  }
+}
