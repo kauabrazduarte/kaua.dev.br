@@ -17,7 +17,6 @@ import {
   Docker,
   VercelDark,
   Git,
-  GitHubLight,
   GitHubDark,
   Figma,
   AnthropicBasicLight,
@@ -38,8 +37,12 @@ interface Skill {
   DarkIcon?: React.ComponentType<{ size?: number; className?: string }>;
   // Override the icon's brand colors with the foreground color so it
   // inverts with the theme. "fill" works for solid marks (Claude, OpenAI,
-  // Vercel); "stroke" for outline marks (Shadcn).
+  // Vercel, GitHub); "stroke" for outline marks (Shadcn).
   tint?: "fill" | "stroke";
+  // CSS-invert the icon in dark mode. Use when the icon has internal detail
+  // (gradients, multi-color paths) that a flat tint would erase — e.g.
+  // Next.js, where the "N" is a gradient over a solid circle.
+  invert?: boolean;
 }
 
 const SKILLS: Skill[] = [
@@ -49,7 +52,7 @@ const SKILLS: Skill[] = [
   { name: "Python", category: "languages", Icon: Python },
 
   { name: "React", category: "frontend", Icon: ReactIcon },
-  { name: "Next.js", category: "frontend", Icon: NextJs },
+  { name: "Next.js", category: "frontend", Icon: NextJs, invert: true },
   { name: "Astro", category: "frontend", Icon: Astro },
   { name: "Tailwind", category: "frontend", Icon: TailwindCSS },
   { name: "Shadcn", category: "frontend", Icon: ShadcnUI, tint: "stroke" },
@@ -65,7 +68,7 @@ const SKILLS: Skill[] = [
   { name: "Docker", category: "devops", Icon: Docker },
   { name: "Vercel", category: "devops", Icon: VercelDark, tint: "fill" },
   { name: "Git", category: "devops", Icon: Git },
-  { name: "GitHub", category: "devops", Icon: GitHubLight, DarkIcon: GitHubDark },
+  { name: "GitHub", category: "devops", Icon: GitHubDark, tint: "fill" },
   { name: "Linux", category: "devops", Icon: Linux },
 
   { name: "Claude", category: "ai", Icon: AnthropicBasicLight, DarkIcon: AnthropicBasicDark, tint: "fill" },
@@ -95,7 +98,7 @@ export function SkillsSection() {
                 {t(`categories.${cat}`)}
               </dt>
               <dd className="-mt-1 mb-2 flex flex-wrap items-center gap-x-4 gap-y-2 sm:mb-0 sm:mt-0">
-                {items.map(({ name, Icon, DarkIcon, tint }) => {
+                {items.map(({ name, Icon, DarkIcon, tint, invert }) => {
                   // Tinted icons inherit the theme's foreground color so the
                   // mark inverts with the theme (dark in light mode, near-white
                   // in dark mode). "fill" repaints solid marks; "stroke" recolors
@@ -106,7 +109,10 @@ export function SkillsSection() {
                       : tint === "stroke"
                         ? "text-foreground/85 [&_path]:!stroke-current [&_g]:!stroke-current"
                         : "";
-                  const wrapperClass = `inline-flex size-4 items-center justify-center ${tintClass}`;
+                  // invert: CSS-flip the icon in dark mode while preserving
+                  // internal detail (gradients) that a tint would flatten.
+                  const invertClass = invert ? "dark:invert" : "";
+                  const wrapperClass = `inline-flex size-4 items-center justify-center ${tintClass} ${invertClass}`;
                   return (
                     <span
                       key={name}
