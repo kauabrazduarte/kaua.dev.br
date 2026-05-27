@@ -100,12 +100,14 @@ export async function ContributionGraph() {
             }}
             aria-hidden
           >
-            {weeks.map((_, idx) => {
+            {weeks.map((week, idx) => {
               const mark = months.find((m) => m.columnStart === idx + 1);
               // First-week month label looks weird; only show if column >= 2.
               const visible = mark && idx > 0;
+              const weekKey =
+                week.find((d): d is Day => d !== null)?.date ?? `pad-${mark?.label ?? "head"}`;
               return (
-                <div key={idx} className="font-mono leading-none">
+                <div key={weekKey} className="font-mono leading-none">
                   {visible ? <span>{mark.label}</span> : null}
                 </div>
               );

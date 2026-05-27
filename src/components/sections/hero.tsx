@@ -11,9 +11,9 @@ export function HeroSection() {
     <section id="top" className="scroll-mt-20">
       <div className="mx-auto w-full max-w-2xl px-6 pb-12 pt-14 sm:pb-16 sm:pt-20">
         <div className="flex items-center gap-2">
-          <span className="relative flex h-2 w-2" aria-hidden>
+          <span className="relative flex size-2" aria-hidden>
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+            <span className="relative inline-flex size-2 rounded-full bg-success" />
           </span>
           <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
             {t("status")}
@@ -27,7 +27,7 @@ export function HeroSection() {
             width={56}
             height={56}
             priority
-            className="h-12 w-12 shrink-0 rounded-full"
+            className="size-12 shrink-0 rounded-full"
           />
           <div className="min-w-0 leading-snug">
             <h1 className="text-xl font-medium tracking-tight text-foreground sm:text-2xl">
@@ -88,7 +88,7 @@ function Tagline() {
   return (
     <>
       {parts.map((chunk, i) => (
-        <span key={i}>
+        <span key={chunk || `boundary-${accent}-${parts.length}`}>
           {chunk}
           {i < parts.length - 1 ? (
             <span className="text-foreground">{accent}</span>

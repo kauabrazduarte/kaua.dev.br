@@ -113,9 +113,11 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
   const artist = data.item.artists.map((a) => a.name).join(", ");
   if (isBlocked(artist)) return null;
 
-  const smallestArt = data.item.album.images
-    .slice()
-    .sort((a, b) => (a.height ?? 0) - (b.height ?? 0))[0];
+  const smallestArt = data.item.album.images.reduce<typeof data.item.album.images[number] | undefined>(
+    (min, img) =>
+      !min || (img.height ?? 0) < (min.height ?? 0) ? img : min,
+    undefined,
+  );
 
   return {
     isPlaying: data.is_playing,

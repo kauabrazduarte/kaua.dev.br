@@ -23,7 +23,7 @@ const labels: Record<Locale, { label: string; flag: string }> = {
 };
 
 export function LanguageToggle() {
-  const router = useRouter();
+  const { replace } = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("nav");
@@ -32,7 +32,7 @@ export function LanguageToggle() {
   function switchTo(next: string) {
     if (next === locale) return;
     startTransition(() => {
-      router.replace(pathname, { locale: next as Locale });
+      replace(pathname, { locale: next as Locale });
     });
   }
 
@@ -46,7 +46,7 @@ export function LanguageToggle() {
           className="h-9 gap-2 rounded-full px-3"
           disabled={pending}
         >
-          <Languages className="h-4 w-4" />
+          <Languages className="size-4" />
           <span className="text-xs font-semibold uppercase">{locale}</span>
         </Button>
       </DropdownMenuTrigger>

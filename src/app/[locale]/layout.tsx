@@ -118,14 +118,16 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
 
   setRequestLocale(locale);
-  const messages = await getMessages();
 
   // SSR-rendered quote text per locale (next-intl reads from messages/<locale>.json
   // server-side, so the translated text lives in the initial HTML — no client
   // hydration, fully indexable by crawlers).
-  const tFooter = await getTranslations({ locale, namespace: "footer" });
+  const [messages, tFooter, tA11y] = await Promise.all([
+    getMessages(),
+    getTranslations({ locale, namespace: "footer" }),
+    getTranslations({ locale, namespace: "a11y" }),
+  ]);
   const QUOTE = tFooter("quote");
-  const tA11y = await getTranslations({ locale, namespace: "a11y" });
 
   // BCP-47 language tag per locale, used in JSON-LD's `inLanguage` and the
   // <blockquote lang="…"> attribute so search engines and screen readers can
@@ -262,13 +264,17 @@ export default async function LocaleLayout({
     ...(locale === "pt"
       ? {
           // PT is the original; declare the translations so Google links them.
-          workTranslation: routing.locales
-            .filter((l) => l !== "pt")
-            .map((l) => ({
-              "@type": "Quotation",
-              "@id": `${siteConfig.url}/${l}#quote`,
-              inLanguage: LANGUAGE_TAG[l],
-            })),
+          workTranslation: routing.locales.flatMap((l) =>
+            l === "pt"
+              ? []
+              : [
+                  {
+                    "@type": "Quotation",
+                    "@id": `${siteConfig.url}/${l}#quote`,
+                    inLanguage: LANGUAGE_TAG[l],
+                  },
+                ],
+          ),
         }
       : {
           // Non-PT locales are translations of the PT original.
@@ -352,7 +358,8 @@ export default async function LocaleLayout({
                 {/* Attribution is hidden visually but kept in the DOM so
                     crawlers can tie the quote to its author. */}
                 <figcaption className="sr-only">
-                  — {siteConfig.name}
+                  {"— "}
+                  {siteConfig.name}
                 </figcaption>
               </figure>
             </div>

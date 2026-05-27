@@ -157,7 +157,7 @@ export function ExperienceSection() {
               {exp.period[locale]}
               {exp.current ? (
                 <span className="ml-2 inline-flex items-center gap-1 normal-case tracking-normal text-success">
-                  <span aria-hidden className="h-1 w-1 rounded-full bg-success" />
+                  <span aria-hidden className="size-1 rounded-full bg-success" />
                   {t("present")}
                 </span>
               ) : null}
@@ -174,8 +174,8 @@ export function ExperienceSection() {
                 <span className="text-muted-foreground">{exp.role[locale]}</span>
               </p>
               <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-                {exp.highlights.map((h, i) => (
-                  <li key={i} className="flex gap-2 leading-relaxed">
+                {exp.highlights.map((h) => (
+                  <li key={h.en} className="flex gap-2 leading-relaxed">
                     <span
                       aria-hidden
                       className="mt-2.5 h-px w-2.5 shrink-0 bg-muted-foreground/40"

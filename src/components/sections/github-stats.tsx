@@ -50,8 +50,10 @@ async function fetchGitHub() {
 }
 
 export async function GitHubStatsSection() {
-  const t = await getTranslations("stats");
-  const stats = await fetchGitHub();
+  const [t, stats] = await Promise.all([
+    getTranslations("stats"),
+    fetchGitHub(),
+  ]);
   const items: { key: string; label: string; value: string }[] = stats
     ? [
         { key: "repos", label: t("repos"), value: stats.repos.toLocaleString() },

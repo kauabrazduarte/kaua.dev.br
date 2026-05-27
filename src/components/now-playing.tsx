@@ -105,7 +105,7 @@ export function NowPlaying({ className = "" }: { className?: string }) {
       <SpotifyIcon size={12} />
       <span className="shrink-0 text-foreground/70">{t("label")}</span>
       <span aria-hidden className="shrink-0 text-muted-foreground/60">
-        —
+        {"—"}
       </span>
       {/* Viewport: clips the overflowing text; min-w-0 lets it shrink inside
           the flex parent so we always know how much overflow there is. */}

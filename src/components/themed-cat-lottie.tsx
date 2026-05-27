@@ -1,8 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
+
+const noopSubscribe = () => () => {};
+
+function subscribeReducedMotion(cb: () => void) {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
@@ -84,18 +92,15 @@ let cache: unknown | null = null;
 export function ThemedCatLottie({ className = "" }: { className?: string }) {
   const { resolvedTheme } = useTheme();
   const [raw, setRaw] = useState<unknown | null>(() => cache);
-  const [mounted, setMounted] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
+  );
 
   useEffect(() => {
-    setMounted(true);
-
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
-    mq.addEventListener("change", onChange);
-
-    if (cache) return () => mq.removeEventListener("change", onChange);
+    if (cache) return;
 
     let cancelled = false;
     fetch("/cat.json", { cache: "force-cache" })
@@ -109,7 +114,6 @@ export function ThemedCatLottie({ className = "" }: { className?: string }) {
 
     return () => {
       cancelled = true;
-      mq.removeEventListener("change", onChange);
     };
   }, []);
 

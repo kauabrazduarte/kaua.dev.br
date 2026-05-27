@@ -7,11 +7,16 @@ import MoonIcon from "@/components/ui/moon-icon";
 import BrightnessDownIcon from "@/components/ui/brightness-down-icon";
 import type { AnimatedIconHandle } from "@/components/ui/types";
 
+const noop = () => () => {};
+
 export function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
   const t = useTranslations("nav");
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
+  const mounted = React.useSyncExternalStore(
+    noop,
+    () => true,
+    () => false,
+  );
 
   const moonRef = React.useRef<AnimatedIconHandle>(null);
   const sunRef = React.useRef<AnimatedIconHandle>(null);
@@ -31,12 +36,12 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={t("theme")}
       title={t("theme")}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+      className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
     >
       {/* Render the placeholder shape while not mounted to avoid a flash. */}
-      <span className="inline-flex h-[18px] w-[18px] items-center justify-center" aria-hidden>
+      <span className="inline-flex size-[18px] items-center justify-center" aria-hidden>
         {!mounted ? (
-          <span className="h-[18px] w-[18px]" />
+          <span className="size-[18px]" />
         ) : isDark ? (
           <BrightnessDownIcon ref={sunRef} size={18} strokeWidth={1.8} />
         ) : (
