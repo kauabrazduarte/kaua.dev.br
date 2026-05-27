@@ -27,10 +27,10 @@ const EXPERIENCES: Experience[] = [
       zh: "全栈开发者",
     },
     period: {
-      pt: "2025 — Atual",
-      en: "2025 — Present",
-      es: "2025 — Actual",
-      zh: "2025 — 至今",
+      pt: "2026 — Atual",
+      en: "2026 — Present",
+      es: "2026 — Actual",
+      zh: "2026 — 至今",
     },
     current: true,
     highlights: [
@@ -68,18 +68,30 @@ const EXPERIENCES: Experience[] = [
       zh: "Web 开发者",
     },
     period: {
-      pt: "2025 — Atual",
-      en: "2025 — Present",
-      es: "2025 — Actual",
-      zh: "2025 — 至今",
+      pt: "2026 — Atual",
+      en: "2026 — Present",
+      es: "2026 — Actual",
+      zh: "2026 — 至今",
     },
     current: true,
     highlights: [
       {
-        pt: "Desenvolvimento e manutenção do website em produção.",
-        en: "Development and maintenance of the production website.",
-        es: "Desarrollo y mantenimiento del sitio web en producción.",
-        zh: "开发和维护生产环境的网站。",
+        pt: "Manutenção do website em produção.",
+        en: "Maintenance of the production website.",
+        es: "Mantenimiento del sitio web en producción.",
+        zh: "维护生产环境的网站。",
+      },
+      {
+        pt: "Criando novas features.",
+        en: "Building new features.",
+        es: "Creando nuevas funcionalidades.",
+        zh: "开发新功能。",
+      },
+      {
+        pt: "Criação do sistema completo.",
+        en: "Built the entire system.",
+        es: "Creación del sistema completo.",
+        zh: "搭建完整的系统。",
       },
     ],
     tags: [
