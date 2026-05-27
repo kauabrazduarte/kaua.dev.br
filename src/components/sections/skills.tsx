@@ -16,7 +16,6 @@ import {
   Supabase,
   Docker,
   VercelDark,
-  VercelLight,
   Git,
   GitHubLight,
   GitHubDark,
@@ -24,6 +23,9 @@ import {
   AnthropicBasicLight,
   AnthropicBasicDark,
   OpenAI,
+  ShadcnUI,
+  Linux,
+  Electron,
 } from "developer-icons";
 import { Section } from "@/components/section";
 
@@ -34,10 +36,10 @@ interface Skill {
   category: Category;
   Icon: React.ComponentType<{ size?: number; className?: string }>;
   DarkIcon?: React.ComponentType<{ size?: number; className?: string }>;
-  // When true, override the icon's brand colors with the foreground color
-  // (useful for monochrome marks like Claude/OpenAI that disappear on
-  // certain backgrounds).
-  tint?: boolean;
+  // Override the icon's brand colors with the foreground color so it
+  // inverts with the theme. "fill" works for solid marks (Claude, OpenAI,
+  // Vercel); "stroke" for outline marks (Shadcn).
+  tint?: "fill" | "stroke";
 }
 
 const SKILLS: Skill[] = [
@@ -59,12 +61,15 @@ const SKILLS: Skill[] = [
   { name: "PostgreSQL", category: "backend", Icon: PostgreSQL },
 
   { name: "Docker", category: "devops", Icon: Docker },
-  { name: "Vercel", category: "devops", Icon: VercelLight, DarkIcon: VercelDark },
+  { name: "Vercel", category: "devops", Icon: VercelDark, tint: "fill" },
   { name: "Git", category: "devops", Icon: Git },
   { name: "GitHub", category: "devops", Icon: GitHubLight, DarkIcon: GitHubDark },
+  { name: "Shadcn", category: "devops", Icon: ShadcnUI, tint: "stroke" },
+  { name: "Linux", category: "devops", Icon: Linux },
+  { name: "Electron", category: "devops", Icon: Electron },
 
-  { name: "Claude", category: "ai", Icon: AnthropicBasicLight, DarkIcon: AnthropicBasicDark, tint: true },
-  { name: "Codex", category: "ai", Icon: OpenAI, tint: true },
+  { name: "Claude", category: "ai", Icon: AnthropicBasicLight, DarkIcon: AnthropicBasicDark, tint: "fill" },
+  { name: "Codex", category: "ai", Icon: OpenAI, tint: "fill" },
   { name: "Figma", category: "ai", Icon: Figma },
 ];
 
@@ -91,12 +96,17 @@ export function SkillsSection() {
               </dt>
               <dd className="-mt-1 mb-2 flex flex-wrap items-center gap-x-4 gap-y-2 sm:mb-0 sm:mt-0">
                 {items.map(({ name, Icon, DarkIcon, tint }) => {
-                  // For tinted icons we paint every path with currentColor so
-                  // the brand mark adopts the theme's foreground (amber-ish
-                  // dark in light mode, near-white in dark mode).
-                  const wrapperClass = tint
-                    ? "inline-flex h-4 w-4 items-center justify-center text-foreground/85 [&_path]:!fill-current [&_rect]:!fill-current"
-                    : "inline-flex h-4 w-4 items-center justify-center";
+                  // Tinted icons inherit the theme's foreground color so the
+                  // mark inverts with the theme (dark in light mode, near-white
+                  // in dark mode). "fill" repaints solid marks; "stroke" recolors
+                  // outline marks like Shadcn.
+                  const tintClass =
+                    tint === "fill"
+                      ? "text-foreground/85 [&_path]:!fill-current [&_rect]:!fill-current"
+                      : tint === "stroke"
+                        ? "text-foreground/85 [&_path]:!stroke-current [&_g]:!stroke-current"
+                        : "";
+                  const wrapperClass = `inline-flex size-4 items-center justify-center ${tintClass}`;
                   return (
                     <span
                       key={name}
