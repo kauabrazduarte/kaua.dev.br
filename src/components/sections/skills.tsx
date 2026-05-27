@@ -52,10 +52,12 @@ const SKILLS: Skill[] = [
   { name: "Next.js", category: "frontend", Icon: NextJs },
   { name: "Astro", category: "frontend", Icon: Astro },
   { name: "Tailwind", category: "frontend", Icon: TailwindCSS },
+  { name: "Shadcn", category: "frontend", Icon: ShadcnUI, tint: "stroke" },
 
   { name: "Bun", category: "backend", Icon: BunJs },
   { name: "Node.js", category: "backend", Icon: NodeJs },
   { name: "Deno", category: "backend", Icon: Deno },
+  { name: "Electron", category: "backend", Icon: Electron },
   { name: "Prisma", category: "backend", Icon: Prisma },
   { name: "Supabase", category: "backend", Icon: Supabase },
   { name: "PostgreSQL", category: "backend", Icon: PostgreSQL },
@@ -64,9 +66,7 @@ const SKILLS: Skill[] = [
   { name: "Vercel", category: "devops", Icon: VercelDark, tint: "fill" },
   { name: "Git", category: "devops", Icon: Git },
   { name: "GitHub", category: "devops", Icon: GitHubLight, DarkIcon: GitHubDark },
-  { name: "Shadcn", category: "devops", Icon: ShadcnUI, tint: "stroke" },
   { name: "Linux", category: "devops", Icon: Linux },
-  { name: "Electron", category: "devops", Icon: Electron },
 
   { name: "Claude", category: "ai", Icon: AnthropicBasicLight, DarkIcon: AnthropicBasicDark, tint: "fill" },
   { name: "Codex", category: "ai", Icon: OpenAI, tint: "fill" },
