@@ -15,6 +15,7 @@
   },
   "hero": {
     "status": "Abierto a charlar",
+    "statusOnline": "Programando ahora",
     "greeting": "Hola, soy Kauã",
     "role": "Desarrollador Full-Stack",
     "tagline": "Construyo aplicaciones web y {accent} con Bun, Node.js y TypeScript.",

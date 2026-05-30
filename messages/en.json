@@ -15,6 +15,7 @@
   },
   "hero": {
     "status": "Open to chat",
+    "statusOnline": "Coding right now",
     "greeting": "Hey, I'm Kauã",
     "role": "Full-Stack Developer",
     "tagline": "I build web apps and {accent} with Bun, Node.js and TypeScript.",

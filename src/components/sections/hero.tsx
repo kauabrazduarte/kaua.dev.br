@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { siteConfig } from "@/lib/site";
 import { ThemedCatLottie } from "@/components/themed-cat-lottie";
 import { NowPlaying } from "@/components/now-playing";
+import { PresenceStatus } from "@/components/presence-status";
 
 export function HeroSection() {
   const t = useTranslations("hero");
@@ -10,15 +11,9 @@ export function HeroSection() {
   return (
     <section id="top" className="scroll-mt-20">
       <div className="mx-auto w-full max-w-2xl px-6 pb-12 pt-14 sm:pb-16 sm:pt-20">
-        <div className="flex items-center gap-2">
-          <span className="relative flex size-2" aria-hidden>
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70" />
-            <span className="relative inline-flex size-2 rounded-full bg-success" />
-          </span>
-          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-            {t("status")}
-          </span>
-        </div>
+        {/* Live presence — pulsing green while I'm working in Claude Code,
+            muted "open to chat" otherwise. Driven by /api/presence. */}
+        <PresenceStatus />
 
         <div className="mt-6 flex items-center gap-4">
           <Image

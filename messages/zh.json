@@ -15,6 +15,7 @@
   },
   "hero": {
     "status": "欢迎联系",
+    "statusOnline": "正在编程",
     "greeting": "嗨，我是 Kauã",
     "role": "全栈开发者",
     "tagline": "我使用 Bun、Node.js 和 TypeScript 构建 Web 应用和 {accent}。",
