@@ -7,9 +7,9 @@ import { useTranslations } from "next-intl";
 // keeps the dot fresh without hammering the API from every open tab.
 const POLL_MS = 60 * 1000;
 
-// Live "is Kauã working right now" dot. Defaults to the offline/"open to chat"
-// state on first render (matches SSR — no hydration flicker) and flips to a
-// pulsing green when a heartbeat is alive. Backed by /api/presence.
+// Live presence label with an always-green pulsing dot. The text starts as
+// "open to chat" on first render (matches SSR — no hydration flicker) and flips
+// to "coding right now" when a heartbeat is alive. Backed by /api/presence.
 export function PresenceStatus({ className = "" }: { className?: string }) {
   const t = useTranslations("hero");
   const [working, setWorking] = useState(false);
@@ -36,16 +36,11 @@ export function PresenceStatus({ className = "" }: { className?: string }) {
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
+      {/* Dot stays green + pulsing in both states; only the text changes
+          between "coding right now" and "open to chat". */}
       <span className="relative flex size-2" aria-hidden>
-        {/* Ping ring only while working — a static muted dot reads as idle. */}
-        {working && (
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70" />
-        )}
-        <span
-          className={`relative inline-flex size-2 rounded-full ${
-            working ? "bg-success" : "bg-muted-foreground/40"
-          }`}
-        />
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70" />
+        <span className="relative inline-flex size-2 rounded-full bg-success" />
       </span>
       <span
         aria-live="polite"
