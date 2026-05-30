@@ -1,13 +1,12 @@
 // Public read-only endpoint consumed by the NowPlaying client component.
-// Cached for 3 minutes server-side; subsequent client requests within that
+// Cached for 10 seconds server-side; subsequent client requests within that
 // window hit the Next.js data cache instead of Spotify.
 import { NextResponse } from "next/server";
 import { getNowPlaying } from "@/lib/spotify";
 
-// 3 minutes — matches the client-side polling interval in NowPlaying.tsx
-// and the underlying Spotify fetch cache in src/lib/spotify.ts.
+// 10 seconds — matches the underlying Spotify fetch cache in src/lib/spotify.ts.
 // (Must be a literal in route segment configs — don't import.)
-export const revalidate = 180;
+export const revalidate = 10;
 
 export async function GET() {
   const track = await getNowPlaying();
@@ -15,7 +14,7 @@ export async function GET() {
     { track },
     {
       headers: {
-        "Cache-Control": "public, s-maxage=180, stale-while-revalidate=360",
+        "Cache-Control": "public, s-maxage=10, stale-while-revalidate=20",
       },
     },
   );

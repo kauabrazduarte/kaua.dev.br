@@ -1,6 +1,6 @@
 // Spotify "now playing" — server-only.
 // All requests run on the server (env vars are server-only). The result is
-// cached for 3 minutes to match the client polling interval.
+// cached for 10 seconds server-side.
 
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const NOW_PLAYING_URL = "https://api.spotify.com/v1/me/player/currently-playing";
@@ -8,8 +8,8 @@ const NOW_PLAYING_URL = "https://api.spotify.com/v1/me/player/currently-playing"
 export const SPOTIFY_REDIRECT_PATH = "/api/spotify/callback";
 export const SPOTIFY_SCOPES = "user-read-currently-playing user-read-playback-state";
 
-// Server-side cache window in seconds — matches the client's polling cadence.
-export const NOW_PLAYING_CACHE_SECONDS = 180;
+// Server-side cache window in seconds.
+export const NOW_PLAYING_CACHE_SECONDS = 10;
 
 export interface NowPlaying {
   isPlaying: boolean;
