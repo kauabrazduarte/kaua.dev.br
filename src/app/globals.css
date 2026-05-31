@@ -46,7 +46,7 @@
   --foreground: oklch(0.22 0.012 60);         /* warm ink */
   --card: oklch(0.975 0.008 85);              /* same as bg (no card surface) */
   --card-foreground: oklch(0.22 0.012 60);
-  --popover: oklch(0.99 0.005 85);
+  --popover: oklch(0.966 0.008 85);           /* warm off-white (~#f7f4ef) */
   --popover-foreground: oklch(0.22 0.012 60);
 
   --primary: oklch(0.62 0.16 55);             /* amber-600 ink */
