@@ -1,15 +1,11 @@
 // Spotify "now playing" — server-only.
-// All requests run on the server (env vars are server-only). The result is
-// cached for 10 seconds server-side.
+// All requests run on the server (env vars are server-only).
 
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const NOW_PLAYING_URL = "https://api.spotify.com/v1/me/player/currently-playing";
 
 export const SPOTIFY_REDIRECT_PATH = "/api/spotify/callback";
 export const SPOTIFY_SCOPES = "user-read-currently-playing user-read-playback-state";
-
-// Server-side cache window in seconds.
-export const NOW_PLAYING_CACHE_SECONDS = 10;
 
 export interface NowPlaying {
   isPlaying: boolean;
@@ -18,6 +14,8 @@ export interface NowPlaying {
   album?: string;
   url: string;
   albumArt?: string;
+  /** Seconds until the track ends + 5s buffer — use as next-fetch delay. */
+  revalidateIn: number;
 }
 
 // Artists whose tracks should never surface on the site. Matching is
@@ -88,10 +86,7 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
 
   const res = await fetch(NOW_PLAYING_URL, {
     headers: { Authorization: `Bearer ${token}` },
-    next: {
-      revalidate: NOW_PLAYING_CACHE_SECONDS,
-      tags: ["spotify-now-playing"],
-    },
+    cache: "no-store",
   });
 
   // 204 = nothing playing right now; non-OK = error.
@@ -99,8 +94,10 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
 
   type Track = {
     is_playing: boolean;
+    progress_ms: number | null;
     item: {
       name: string;
+      duration_ms: number;
       external_urls: { spotify: string };
       artists: { name: string }[];
       album: { name: string; images: { url: string; height: number; width: number }[] };
@@ -119,6 +116,9 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
     undefined,
   );
 
+  const remainingMs = data.item.duration_ms - (data.progress_ms ?? 0);
+  const revalidateIn = Math.ceil((remainingMs + 5_000) / 1_000);
+
   return {
     isPlaying: data.is_playing,
     title: data.item.name,
@@ -126,6 +126,7 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
     album: data.item.album.name,
     url: data.item.external_urls.spotify,
     albumArt: smallestArt?.url,
+    revalidateIn,
   };
 }
 

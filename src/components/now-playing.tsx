@@ -8,6 +8,7 @@ interface Track {
   title: string;
   artist: string;
   url: string;
+  revalidateIn?: number;
 }
 
 // Official Spotify brand green (#1DB954). Hardcoded so the icon stays the
@@ -29,7 +30,8 @@ function SpotifyIcon({ size = 12 }: { size?: number }) {
   );
 }
 
-const POLL_MS = 3 * 60 * 1000; // 3 minutes — matches server-side cache window.
+// Fallback poll interval when nothing is playing (seconds).
+const IDLE_POLL_S = 30;
 
 // Marquee timing: pause at each end (15% of cycle), scrolling takes the
 // middle 35%. Speed is content-length aware: roughly 30 pixels per second
@@ -45,24 +47,31 @@ export function NowPlaying({ className = "" }: { className?: string }) {
   const textRef = useRef<HTMLSpanElement>(null);
   const [overflowPx, setOverflowPx] = useState(0);
 
-  // Poll Spotify
+  // Poll Spotify — interval is dynamic: when a track is playing we wait until
+  // it ends (+5s buffer), otherwise we fall back to IDLE_POLL_S seconds.
   useEffect(() => {
     let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout>;
+
     async function load() {
+      let delayS = IDLE_POLL_S;
       try {
         const res = await fetch("/api/spotify/now-playing");
-        if (!res.ok) return;
-        const data = (await res.json()) as { track: Track | null };
-        if (!cancelled) setTrack(data.track);
+        if (res.ok) {
+          const data = (await res.json()) as { track: Track | null };
+          if (!cancelled) setTrack(data.track);
+          delayS = data.track?.revalidateIn ?? IDLE_POLL_S;
+        }
       } catch {
-        // silent fail — UI just hides
+        // silent fail — retry after fallback delay
       }
+      if (!cancelled) timeoutId = setTimeout(load, delayS * 1_000);
     }
+
     load();
-    const id = setInterval(load, POLL_MS);
     return () => {
       cancelled = true;
-      clearInterval(id);
+      clearTimeout(timeoutId);
     };
   }, []);
 
