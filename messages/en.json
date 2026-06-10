@@ -20,6 +20,12 @@
     "role": "Full-Stack Developer",
     "tagline": "I build web apps and {accent} with Bun, Node.js and TypeScript.",
     "taglineAccent": "AI automations",
+    "taglineWords": [
+      "AI automations",
+      "API integrations",
+      "internal tools",
+      "automation scripts"
+    ],
     "primaryCta": "Where I worked",
     "secondaryCta": "Get in touch",
     "based": "Brazil · Remote"

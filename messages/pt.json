@@ -20,6 +20,12 @@
     "role": "Desenvolvedor Full-Stack",
     "tagline": "Construo aplicações web e {accent} com Bun, Node.js e TypeScript.",
     "taglineAccent": "automações com IA",
+    "taglineWords": [
+      "automações com IA",
+      "integrações de API",
+      "ferramentas internas",
+      "scripts de automação"
+    ],
     "primaryCta": "Onde trabalhei",
     "secondaryCta": "Falar comigo",
     "based": "Brasil · Remoto"

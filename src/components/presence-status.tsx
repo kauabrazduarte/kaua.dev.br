@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Calligraph } from "calligraph";
 
 // Poll the live presence endpoint. The server caches it for ~15s, so 60s here
 // keeps the dot fresh without hammering the API from every open tab.
@@ -42,12 +43,18 @@ export function PresenceStatus({ className = "" }: { className?: string }) {
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70" />
         <span className="relative inline-flex size-2 rounded-full bg-success" />
       </span>
-      <span
+      {/* The label morphs between "coding right now" and "open to chat" —
+          shared letters glide, the rest fade through. */}
+      <Calligraph
+        as="span"
+        variant="text"
+        animation="smooth"
+        trend={1}
         aria-live="polite"
         className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
       >
         {working ? t("statusOnline") : t("status")}
-      </span>
+      </Calligraph>
     </div>
   );
 }

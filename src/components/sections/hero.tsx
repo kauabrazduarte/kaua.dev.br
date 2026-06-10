@@ -1,9 +1,11 @@
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useMessages, useTranslations } from "next-intl";
 import { siteConfig } from "@/lib/site";
 import { ThemedCatLottie } from "@/components/themed-cat-lottie";
 import { NowPlaying } from "@/components/now-playing";
 import { PresenceStatus } from "@/components/presence-status";
+import { AnimatedName } from "@/components/animated-name";
+import { RotatingAccent } from "@/components/rotating-accent";
 
 export function HeroSection() {
   const t = useTranslations("hero");
@@ -26,7 +28,7 @@ export function HeroSection() {
           />
           <div className="min-w-0 leading-snug">
             <h1 className="text-xl font-medium tracking-tight text-foreground sm:text-2xl">
-              {siteConfig.name}
+              <AnimatedName text={siteConfig.name} />
             </h1>
             <p className="font-mono text-xs text-muted-foreground">
               {t("role")} · {t("based")}
@@ -76,20 +78,16 @@ export function HeroSection() {
 }
 
 function Tagline() {
-  const t = useTranslations("hero");
-  const accent = t("taglineAccent");
-  const full = t("tagline", { accent });
-  const parts = full.split(accent);
+  // Work from the raw template so the {accent} slot can host a live, rotating
+  // word (RotatingAccent) instead of a baked-in string. Splitting on the
+  // literal placeholder keeps the surrounding copy server-rendered.
+  const messages = useMessages() as { hero: { tagline: string } };
+  const [before, after = ""] = messages.hero.tagline.split("{accent}");
   return (
     <>
-      {parts.map((chunk, i) => (
-        <span key={chunk || `boundary-${accent}-${parts.length}`}>
-          {chunk}
-          {i < parts.length - 1 ? (
-            <span className="text-foreground">{accent}</span>
-          ) : null}
-        </span>
-      ))}
+      {before}
+      <RotatingAccent className="text-foreground" />
+      {after}
     </>
   );
 }
