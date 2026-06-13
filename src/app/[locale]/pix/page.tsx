@@ -23,17 +23,21 @@ export async function generateMetadata({
 export default async function PixPage({ params }: { params: Params }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "pix" });
 
-  // The payload is static, so this QR is generated once at build time and
-  // inlined as SVG — no client JS, no third-party QR service, scannable on a
+  // `t` and the QR are independent — race them. The payload is static, so the
+  // QR is generated once at build time and inlined as an SVG data URI: no
+  // client JS, no third-party QR service, vector-crisp, and scannable on a
   // white tile in both light and dark themes.
-  const qrSvg = await QRCode.toString(siteConfig.pix.payload, {
-    type: "svg",
-    margin: 2,
-    errorCorrectionLevel: "M",
-    color: { dark: "#0a0a0a", light: "#ffffff" },
-  });
+  const [t, qrSvg] = await Promise.all([
+    getTranslations({ locale, namespace: "pix" }),
+    QRCode.toString(siteConfig.pix.payload, {
+      type: "svg",
+      margin: 2,
+      errorCorrectionLevel: "M",
+      color: { dark: "#0a0a0a", light: "#ffffff" },
+    }),
+  ]);
+  const qrDataUri = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrSvg)}`;
 
   return (
     <div className="mx-auto w-full max-w-sm px-6 py-12 sm:py-16">
@@ -49,12 +53,13 @@ export default async function PixPage({ params }: { params: Params }) {
 
       {/* White tile keeps the QR high-contrast (and scannable) even in dark mode. */}
       <div className="mx-auto mt-8 w-full max-w-[280px] rounded-2xl border border-border bg-white p-5 shadow-sm">
-        <div
-          className="aspect-square w-full [&>svg]:h-full [&>svg]:w-full"
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: qrSvg }}
-          aria-label={t("qrAlt")}
-          role="img"
+        {/* eslint-disable-next-line @next/next/no-img-element -- inline data-URI SVG, nothing for the image optimizer to do */}
+        <img
+          src={qrDataUri}
+          alt={t("qrAlt")}
+          width={280}
+          height={280}
+          className="aspect-square w-full"
         />
       </div>
 
