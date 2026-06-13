@@ -58,7 +58,9 @@
     "kicker": "经历",
     "title": "工作经验",
     "subtitle": "我去过的地方和交付的成果。",
-    "present": "至今"
+    "present": "至今",
+    "showAll": "查看全部",
+    "showLess": "收起"
   },
   "stats": {
     "kicker": "GitHub",

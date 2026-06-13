@@ -58,7 +58,9 @@
     "kicker": "Journey",
     "title": "Experience",
     "subtitle": "Where I've been and what I shipped.",
-    "present": "Present"
+    "present": "Present",
+    "showAll": "View all",
+    "showLess": "Show less"
   },
   "stats": {
     "kicker": "GitHub",

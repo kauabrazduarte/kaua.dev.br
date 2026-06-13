@@ -58,7 +58,9 @@
     "kicker": "Trayectoria",
     "title": "Experiencia",
     "subtitle": "Por dónde pasé y qué entregué.",
-    "present": "Actual"
+    "present": "Actual",
+    "showAll": "Ver todos",
+    "showLess": "Ver menos"
   },
   "stats": {
     "kicker": "GitHub",
