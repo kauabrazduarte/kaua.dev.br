@@ -20,12 +20,6 @@
     "role": "全栈开发者",
     "tagline": "我使用 Bun、Node.js 和 TypeScript 构建 Web 应用和 {accent}。",
     "taglineAccent": "AI 自动化",
-    "taglineWords": [
-      "AI 自动化",
-      "API 集成",
-      "内部工具",
-      "自动化脚本"
-    ],
     "primaryCta": "工作经历",
     "secondaryCta": "联系我",
     "based": "巴西 · 远程"

@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Section } from "@/components/section";
 import { ContributionGraph } from "@/components/contribution-graph";
-import { AnimatedStat } from "@/components/animated-stat";
 import { siteConfig } from "@/lib/site";
 
 interface GhUser {
@@ -55,20 +54,18 @@ export async function GitHubStatsSection() {
     getTranslations("stats"),
     fetchGitHub(),
   ]);
-  // value is the raw number for the odometer roll-up; null falls back to a dash
-  // when the GitHub fetch fails.
-  const items: { key: string; label: string; value: number | null }[] = stats
+  const items: { key: string; label: string; value: string }[] = stats
     ? [
-        { key: "repos", label: t("repos"), value: stats.repos },
-        { key: "stars", label: t("stars"), value: stats.stars },
-        { key: "followers", label: t("followers"), value: stats.followers },
-        { key: "following", label: t("following"), value: stats.following },
+        { key: "repos", label: t("repos"), value: stats.repos.toLocaleString() },
+        { key: "stars", label: t("stars"), value: stats.stars.toLocaleString() },
+        { key: "followers", label: t("followers"), value: stats.followers.toLocaleString() },
+        { key: "following", label: t("following"), value: stats.following.toLocaleString() },
       ]
     : [
-        { key: "repos", label: t("repos"), value: null },
-        { key: "stars", label: t("stars"), value: null },
-        { key: "followers", label: t("followers"), value: null },
-        { key: "following", label: t("following"), value: null },
+        { key: "repos", label: t("repos"), value: "—" },
+        { key: "stars", label: t("stars"), value: "—" },
+        { key: "followers", label: t("followers"), value: "—" },
+        { key: "following", label: t("following"), value: "—" },
       ];
 
   return (
@@ -80,7 +77,7 @@ export async function GitHubStatsSection() {
               {item.label}
             </dt>
             <dd className="mt-1 text-xl font-medium tabular-nums text-foreground sm:text-2xl">
-              {item.value === null ? "—" : <AnimatedStat value={item.value} />}
+              {item.value}
             </dd>
           </div>
         ))}
