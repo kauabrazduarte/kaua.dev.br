@@ -43,7 +43,10 @@ export default async function PixPage({ params }: { params: Params }) {
     QRCode.toString(siteConfig.pix.payload, {
       type: "svg",
       margin: 2,
-      errorCorrectionLevel: "M",
+      // Q (25%) gives extra recovery headroom — the modules are tinted with the
+      // brand color rather than pure black, so we trade a denser code for a more
+      // reliable scan.
+      errorCorrectionLevel: "Q",
       color: { dark: "#000000", light: "#ffffff" },
     }),
   ]);
@@ -53,6 +56,11 @@ export default async function PixPage({ params }: { params: Params }) {
   const themedQr = qrSvg
     .replaceAll('fill="#ffffff"', 'fill="transparent"')
     .replaceAll('stroke="#000000"', 'stroke="currentColor"');
+
+  // Brand-accented outline buttons — orange border/text on the cream paper
+  // (violet in dark), in the home's accent spirit rather than a heavy fill.
+  const brandButton =
+    "w-full border-brand/40 text-brand hover:bg-brand/10 hover:text-brand";
 
   return (
     <div className="mx-auto w-full max-w-sm px-6 py-12 sm:py-16">
@@ -67,11 +75,12 @@ export default async function PixPage({ params }: { params: Params }) {
       </header>
 
       {/* Themed tile: a popover surface (not pure white) with the QR recolored
-          to the theme foreground, so it blends in both light and dark. The QR is
-          aria-hidden — the same data is exposed as the copyable key/code below. */}
+          to the brand accent (burnt orange in light, violet in dark), so it sits
+          on-brand in both themes. The QR is aria-hidden — the same data is
+          exposed as the copyable key/code below. */}
       <div className="mx-auto mt-8 w-full max-w-[280px] rounded-2xl border border-border bg-popover p-5 shadow-sm">
         <div
-          className="aspect-square w-full text-foreground [&>svg]:h-full [&>svg]:w-full"
+          className="aspect-square w-full text-brand [&>svg]:h-full [&>svg]:w-full"
           aria-hidden
           // Trusted, static, build-time QR (no user input) — safe to inline.
           // react-doctor-disable-next-line react-doctor/no-danger
@@ -102,16 +111,16 @@ export default async function PixPage({ params }: { params: Params }) {
           label={t("copyKey")}
           copiedLabel={t("copied")}
           variant="outline"
-          className="w-full"
+          className={brandButton}
         />
         <CopyButton
           value={siteConfig.pix.payload}
           label={t("copyCode")}
           copiedLabel={t("copied")}
           variant="outline"
-          className="w-full"
+          className={brandButton}
         />
-        <Button asChild variant="outline" className="w-full">
+        <Button asChild variant="outline" className={brandButton}>
           <a
             href={siteConfig.pix.nubankUrl}
             target="_blank"

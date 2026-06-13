@@ -25,6 +25,7 @@
   --color-ring: var(--ring);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  --color-brand: var(--brand);
   --color-paper-rule: var(--paper-rule);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -70,6 +71,9 @@
   --paper-rule: oklch(0.82 0.012 80);         /* slightly stronger for dividers */
   --input: oklch(0.88 0.012 80);
   --ring: oklch(0.62 0.16 55);
+  /* Burnt-orange brand accent for the Pix QR + action buttons. A touch deeper
+     than --primary so it reads as the warm "home orange" on the cream paper. */
+  --brand: #be5828;
 }
 
 /* ─────────────────────────────────────────────
@@ -104,6 +108,9 @@
   --paper-rule: oklch(0.3 0.012 285);
   --input: oklch(0.24 0.012 285);
   --ring: oklch(0.74 0.18 295);
+  /* Dark mode follows the home's violet accent so the QR + buttons stay on-brand
+     (and the QR keeps enough contrast on the dark tile to scan). */
+  --brand: var(--primary);
 }
 
 @layer base {
