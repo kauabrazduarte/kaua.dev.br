@@ -43,10 +43,7 @@ export default async function PixPage({ params }: { params: Params }) {
     QRCode.toString(siteConfig.pix.payload, {
       type: "svg",
       margin: 2,
-      // Q (25%) gives extra recovery headroom — the modules are tinted with the
-      // brand color rather than pure black, so we trade a denser code for a more
-      // reliable scan.
-      errorCorrectionLevel: "Q",
+      errorCorrectionLevel: "M",
       color: { dark: "#000000", light: "#ffffff" },
     }),
   ]);
@@ -75,12 +72,11 @@ export default async function PixPage({ params }: { params: Params }) {
       </header>
 
       {/* Themed tile: a popover surface (not pure white) with the QR recolored
-          to the brand accent (burnt orange in light, violet in dark), so it sits
-          on-brand in both themes. The QR is aria-hidden — the same data is
-          exposed as the copyable key/code below. */}
+          to the theme foreground, so it blends in both light and dark. The QR is
+          aria-hidden — the same data is exposed as the copyable key/code below. */}
       <div className="mx-auto mt-8 w-full max-w-[280px] rounded-2xl border border-border bg-popover p-5 shadow-sm">
         <div
-          className="aspect-square w-full text-brand [&>svg]:h-full [&>svg]:w-full"
+          className="aspect-square w-full text-foreground [&>svg]:h-full [&>svg]:w-full"
           aria-hidden
           // Trusted, static, build-time QR (no user input) — safe to inline.
           // react-doctor-disable-next-line react-doctor/no-danger
