@@ -17,6 +17,45 @@ interface Experience {
 
 const EXPERIENCES: Experience[] = [
   {
+    company: "Melo Advogados",
+    role: {
+      pt: "Desenvolvedor Full-Stack",
+      en: "Full-Stack Developer",
+      es: "Desarrollador Full-Stack",
+      zh: "全栈开发者",
+    },
+    period: {
+      pt: "2026 — Atual",
+      en: "2026 — Present",
+      es: "2026 — Actual",
+      zh: "2026 — 至今",
+    },
+    current: true,
+    highlights: [
+      {
+        pt: "Foco em integrações de IA aplicadas ao fluxo jurídico.",
+        en: "Focused on AI integrations applied to the legal workflow.",
+        es: "Enfoque en integraciones de IA aplicadas al flujo jurídico.",
+        zh: "专注于应用于法律工作流程的 AI 集成。",
+      },
+      {
+        pt: "Adaptação e manutenção de websites.",
+        en: "Adapting and maintaining websites.",
+        es: "Adaptación y mantenimiento de sitios web.",
+        zh: "网站的适配与维护。",
+      },
+    ],
+    tags: [
+      "Next.js",
+      "TypeScript",
+      "Python",
+      "Bun",
+      "Claude Code",
+      "Google Cloud Run",
+      "Google Workspace",
+    ],
+  },
+  {
     company: "Marcos Jocober",
     aka: "The Deed Hunter",
     url: "https://marcosjocober.com",
