@@ -13,6 +13,11 @@
   "a11y": {
     "skipToContent": "Pular para o conteúdo"
   },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "A página que você procura não existe ou pode ter sido movida.",
+    "cta": "Voltar ao início"
+  },
   "nowPlaying": {
     "label": "Ouvindo"
   },
