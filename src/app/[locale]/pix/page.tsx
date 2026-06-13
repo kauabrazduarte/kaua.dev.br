@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import QRCode from "qrcode";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CopyButton } from "@/components/copy-button";
@@ -53,12 +54,14 @@ export default async function PixPage({ params }: { params: Params }) {
 
       {/* White tile keeps the QR high-contrast (and scannable) even in dark mode. */}
       <div className="mx-auto mt-8 w-full max-w-[280px] rounded-2xl border border-border bg-white p-5 shadow-sm">
-        {/* eslint-disable-next-line @next/next/no-img-element -- inline data-URI SVG, nothing for the image optimizer to do */}
-        <img
+        {/* `unoptimized`: the QR is a static inline SVG data URI — there's
+            nothing for the image optimizer to fetch or resize. */}
+        <Image
           src={qrDataUri}
           alt={t("qrAlt")}
           width={280}
           height={280}
+          unoptimized
           className="aspect-square w-full"
         />
       </div>
