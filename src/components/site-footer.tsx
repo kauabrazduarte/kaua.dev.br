@@ -12,7 +12,7 @@ export function SiteFooter() {
     <footer>
       <div className="mx-auto w-full max-w-2xl px-6">
         <div className="paper-rule" aria-hidden />
-        <div className="flex flex-col items-start justify-between gap-1 py-6 sm:flex-row sm:items-center">
+        <div className="flex flex-col items-center justify-between gap-1 py-6 text-center sm:flex-row sm:items-center sm:text-left">
           <p className="font-mono text-[11px] text-muted-foreground">
             © {year} {siteConfig.name}
           </p>

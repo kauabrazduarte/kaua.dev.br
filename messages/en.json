@@ -8,8 +8,7 @@
     "theme": "Toggle theme",
     "menu": "Menu",
     "menuLinks": "Links",
-    "menuPix": "Pix",
-    "menuCoffee": "Buy me a coffee"
+    "menuPix": "Pix"
   },
   "a11y": {
     "skipToContent": "Skip to content"

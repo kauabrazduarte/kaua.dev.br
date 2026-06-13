@@ -8,8 +8,7 @@
     "theme": "切换主题",
     "menu": "菜单",
     "menuLinks": "链接",
-    "menuPix": "Pix",
-    "menuCoffee": "请我喝杯咖啡"
+    "menuPix": "Pix"
   },
   "a11y": {
     "skipToContent": "跳到内容"

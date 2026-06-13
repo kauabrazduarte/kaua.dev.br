@@ -8,8 +8,7 @@
     "theme": "Cambiar tema",
     "menu": "Menú",
     "menuLinks": "Enlaces",
-    "menuPix": "Pix",
-    "menuCoffee": "Invítame un café"
+    "menuPix": "Pix"
   },
   "a11y": {
     "skipToContent": "Saltar al contenido"

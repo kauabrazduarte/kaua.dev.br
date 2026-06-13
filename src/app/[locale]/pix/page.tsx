@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import QRCode from "qrcode";
 import { ExternalLink } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -37,19 +36,23 @@ export default async function PixPage({ params }: { params: Params }) {
   setRequestLocale(locale);
 
   // `t` and the QR are independent — race them. The payload is static, so the
-  // QR is generated once at build time and inlined as an SVG data URI: no
-  // client JS, no third-party QR service, vector-crisp, and scannable on a
-  // white tile in both light and dark themes.
+  // QR is generated once at build time and inlined as SVG: no client JS, no
+  // third-party QR service, vector-crisp.
   const [t, qrSvg] = await Promise.all([
     getTranslations({ locale, namespace: "pix" }),
     QRCode.toString(siteConfig.pix.payload, {
       type: "svg",
       margin: 2,
       errorCorrectionLevel: "M",
-      color: { dark: "#0a0a0a", light: "#ffffff" },
+      color: { dark: "#000000", light: "#ffffff" },
     }),
   ]);
-  const qrDataUri = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(qrSvg)}`;
+  // Recolor to the live theme: the modules pick up `currentColor` (the page's
+  // --foreground) and the background goes transparent so the themed tile shows
+  // through. qrcode emits one `fill` (background rect) + one `stroke` (modules).
+  const themedQr = qrSvg
+    .replaceAll('fill="#ffffff"', 'fill="transparent"')
+    .replaceAll('stroke="#000000"', 'stroke="currentColor"');
 
   return (
     <div className="mx-auto w-full max-w-sm px-6 py-12 sm:py-16">
@@ -63,17 +66,16 @@ export default async function PixPage({ params }: { params: Params }) {
         <p className="mt-2 text-sm text-muted-foreground">{t("subtitle")}</p>
       </header>
 
-      {/* White tile keeps the QR high-contrast (and scannable) even in dark mode. */}
-      <div className="mx-auto mt-8 w-full max-w-[280px] rounded-2xl border border-border bg-white p-5 shadow-sm">
-        {/* `unoptimized`: the QR is a static inline SVG data URI — there's
-            nothing for the image optimizer to fetch or resize. */}
-        <Image
-          src={qrDataUri}
-          alt={t("qrAlt")}
-          width={280}
-          height={280}
-          unoptimized
-          className="aspect-square w-full"
+      {/* Themed tile: a popover surface (not pure white) with the QR recolored
+          to the theme foreground, so it blends in both light and dark. The QR is
+          aria-hidden — the same data is exposed as the copyable key/code below. */}
+      <div className="mx-auto mt-8 w-full max-w-[280px] rounded-2xl border border-border bg-popover p-5 shadow-sm">
+        <div
+          className="aspect-square w-full text-foreground [&>svg]:h-full [&>svg]:w-full"
+          aria-hidden
+          // Trusted, static, build-time QR (no user input) — safe to inline.
+          // react-doctor-disable-next-line react-doctor/no-danger
+          dangerouslySetInnerHTML={{ __html: themedQr }}
         />
       </div>
 
@@ -99,6 +101,7 @@ export default async function PixPage({ params }: { params: Params }) {
           value={siteConfig.pix.key}
           label={t("copyKey")}
           copiedLabel={t("copied")}
+          variant="outline"
           className="w-full"
         />
         <CopyButton
