@@ -71,6 +71,21 @@
     "subtitle": "Não estou ativamente aceitando trabalhos, mas estou aberto a ouvir propostas interessantes.",
     "or": "ou em"
   },
+  "links": {
+    "title": "Meus links",
+    "subtitle": "Meus perfis e formas de contato em um só lugar.",
+    "coffee": "Me pague um café",
+    "pixSub": "Me apoie com um Pix"
+  },
+  "pix": {
+    "title": "Me mande um Pix",
+    "subtitle": "Aponte a câmera do app do seu banco para o QR Code ou copie a chave.",
+    "qrAlt": "QR Code do Pix",
+    "keyLabel": "Chave Pix (CNPJ)",
+    "copyKey": "Copiar chave Pix",
+    "copyCode": "Copiar código copia e cola",
+    "copied": "Copiado!"
+  },
   "footer": {
     "rights": "Todos os direitos reservados.",
     "builtWith": "Feito com muito {heart}",

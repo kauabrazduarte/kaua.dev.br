@@ -9,22 +9,37 @@ const LANGUAGE_TAG: Record<Locale, string> = {
   zh: "zh-CN",
 };
 
+// Localized routes worth indexing. `segment` is the path after the locale
+// (empty for the home). `priority` is for the default-locale entry; non-default
+// locales get a small discount below.
+const PATHS = [
+  { segment: "", priority: 1 },
+  { segment: "/links", priority: 0.6 },
+  { segment: "/pix", priority: 0.5 },
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  // Per-URL hreflang map — same for every entry; x-default points to the
-  // unprefixed root so locale-less crawlers and ambiguous regions land
-  // somewhere sensible.
-  const languages: Record<string, string> = {
-    ...Object.fromEntries(
-      routing.locales.map((l) => [LANGUAGE_TAG[l], `${siteConfig.url}/${l}`]),
-    ),
-    "x-default": siteConfig.url,
-  };
-  return routing.locales.map((locale) => ({
-    url: `${siteConfig.url}/${locale}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: locale === routing.defaultLocale ? 1 : 0.8,
-    alternates: { languages },
-  }));
+
+  return PATHS.flatMap(({ segment, priority }) => {
+    // Per-URL hreflang map: every locale of THIS path, plus an x-default that
+    // points to the unprefixed URL (which redirects to the default locale) so
+    // locale-less crawlers land somewhere sensible.
+    const languages: Record<string, string> = {
+      ...Object.fromEntries(
+        routing.locales.map((l) => [
+          LANGUAGE_TAG[l],
+          `${siteConfig.url}/${l}${segment}`,
+        ]),
+      ),
+      "x-default": `${siteConfig.url}${segment}`,
+    };
+    return routing.locales.map((locale) => ({
+      url: `${siteConfig.url}/${locale}${segment}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: locale === routing.defaultLocale ? priority : priority - 0.2,
+      alternates: { languages },
+    }));
+  });
 }

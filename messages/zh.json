@@ -71,6 +71,21 @@
     "subtitle": "目前没有积极接洽新工作，但始终欢迎有趣的提案。",
     "or": "或在"
   },
+  "links": {
+    "title": "我的链接",
+    "subtitle": "我的所有主页和联系方式，尽在一处。",
+    "coffee": "请我喝杯咖啡",
+    "pixSub": "用 Pix 支持我"
+  },
+  "pix": {
+    "title": "给我发 Pix",
+    "subtitle": "用银行 App 的相机扫描二维码，或复制密钥。",
+    "qrAlt": "Pix 二维码",
+    "keyLabel": "Pix 密钥 (CNPJ)",
+    "copyKey": "复制 Pix 密钥",
+    "copyCode": "复制 Pix 代码",
+    "copied": "已复制！"
+  },
   "footer": {
     "rights": "保留所有权利。",
     "builtWith": "用满满的 {heart} 制作",

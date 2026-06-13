@@ -71,6 +71,21 @@
     "subtitle": "Not actively taking on work, but always open to hear interesting proposals.",
     "or": "or on"
   },
+  "links": {
+    "title": "My links",
+    "subtitle": "All my profiles and ways to reach me in one place.",
+    "coffee": "Buy me a coffee",
+    "pixSub": "Support me with a Pix"
+  },
+  "pix": {
+    "title": "Send me a Pix",
+    "subtitle": "Point your bank app's camera at the QR code or copy the key.",
+    "qrAlt": "Pix QR code",
+    "keyLabel": "Pix key (CNPJ)",
+    "copyKey": "Copy Pix key",
+    "copyCode": "Copy Pix code",
+    "copied": "Copied!"
+  },
   "footer": {
     "rights": "All rights reserved.",
     "builtWith": "Made with lots of {heart}",

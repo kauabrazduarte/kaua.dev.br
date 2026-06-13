@@ -44,6 +44,16 @@ export const siteConfig = {
     github: "https://github.com/kauabrazduarte",
     email: "mailto:contato@kaua.dev.br",
     x: "https://x.com/kauadevbr",
+    buymeacoffee: "https://buymeacoffee.com/kauabrazduarte",
+  },
+  // Pix (Brazilian instant payment). `payload` is the full BR Code / EMV
+  // "copia e cola" string — it's what the QR on /pix encodes. `key` is the raw
+  // Pix key (CNPJ) for the "copy key" action. Both are public, receive-only.
+  pix: {
+    key: "65661240000182",
+    payload:
+      "00020126360014BR.GOV.BCB.PIX0114656612400001825204000053039865802BR592565.661.240 KAUA BRAZ DUAR6009SAO PAULO62140510Jgwq99ltBg63047C01",
+    city: "São Paulo",
   },
   github: {
     username: "kauabrazduarte",
