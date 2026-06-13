@@ -5,7 +5,11 @@
   },
   "nav": {
     "language": "语言",
-    "theme": "切换主题"
+    "theme": "切换主题",
+    "menu": "菜单",
+    "menuLinks": "链接",
+    "menuPix": "Pix",
+    "menuCoffee": "请我喝杯咖啡"
   },
   "a11y": {
     "skipToContent": "跳到内容"
@@ -84,7 +88,8 @@
     "keyLabel": "Pix 密钥 (CNPJ)",
     "copyKey": "复制 Pix 密钥",
     "copyCode": "复制 Pix 代码",
-    "copied": "已复制！"
+    "copied": "已复制！",
+    "openNubank": "在 Nubank 中打开"
   },
   "footer": {
     "rights": "保留所有权利。",

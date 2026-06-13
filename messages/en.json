@@ -5,7 +5,11 @@
   },
   "nav": {
     "language": "Language",
-    "theme": "Toggle theme"
+    "theme": "Toggle theme",
+    "menu": "Menu",
+    "menuLinks": "Links",
+    "menuPix": "Pix",
+    "menuCoffee": "Buy me a coffee"
   },
   "a11y": {
     "skipToContent": "Skip to content"
@@ -84,7 +88,8 @@
     "keyLabel": "Pix key (CNPJ)",
     "copyKey": "Copy Pix key",
     "copyCode": "Copy Pix code",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "openNubank": "Open in Nubank"
   },
   "footer": {
     "rights": "All rights reserved.",

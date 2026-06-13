@@ -5,7 +5,11 @@
   },
   "nav": {
     "language": "Idioma",
-    "theme": "Mudar tema"
+    "theme": "Mudar tema",
+    "menu": "Menu",
+    "menuLinks": "Links",
+    "menuPix": "Pix",
+    "menuCoffee": "Me pague um café"
   },
   "a11y": {
     "skipToContent": "Pular para o conteúdo"
@@ -84,7 +88,8 @@
     "keyLabel": "Chave Pix (CNPJ)",
     "copyKey": "Copiar chave Pix",
     "copyCode": "Copiar código copia e cola",
-    "copied": "Copiado!"
+    "copied": "Copiado!",
+    "openNubank": "Abrir no Nubank"
   },
   "footer": {
     "rights": "Todos os direitos reservados.",

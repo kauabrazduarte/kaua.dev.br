@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import QRCode from "qrcode";
+import { ExternalLink } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CopyButton } from "@/components/copy-button";
+import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/site";
 
 type Params = Promise<{ locale: string }>;
@@ -19,6 +21,15 @@ export async function generateMetadata({
     description: t("subtitle"),
     alternates: { canonical: `/${locale}/pix` },
   };
+}
+
+// 14-digit CNPJ → ##.###.###/####-## (e.g. 65661240000182 → 65.661.240/0001-82).
+// Only the display is formatted; the copy action still uses the raw digits.
+function formatCnpj(digits: string): string {
+  return digits.replace(
+    /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
+    "$1.$2.$3/$4-$5",
+  );
 }
 
 export default async function PixPage({ params }: { params: Params }) {
@@ -79,7 +90,7 @@ export default async function PixPage({ params }: { params: Params }) {
           {t("keyLabel")}
         </span>
         <p className="mt-1 break-all font-mono text-sm text-foreground">
-          {siteConfig.pix.key}
+          {formatCnpj(siteConfig.pix.key)}
         </p>
       </div>
 
@@ -97,6 +108,16 @@ export default async function PixPage({ params }: { params: Params }) {
           variant="outline"
           className="w-full"
         />
+        <Button asChild variant="outline" className="w-full">
+          <a
+            href={siteConfig.pix.nubankUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <ExternalLink />
+            {t("openNubank")}
+          </a>
+        </Button>
       </div>
     </div>
   );

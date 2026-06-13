@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageToggle } from "@/components/language-toggle";
+import { MenuToggle } from "@/components/menu-toggle";
 
 export function SiteHeader() {
   return (
@@ -17,6 +18,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-0.5">
           <LanguageToggle />
           <ThemeToggle />
+          <MenuToggle />
         </div>
       </div>
     </header>

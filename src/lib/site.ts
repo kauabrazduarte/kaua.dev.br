@@ -53,7 +53,10 @@ export const siteConfig = {
     key: "65661240000182",
     payload:
       "00020126360014BR.GOV.BCB.PIX0114656612400001825204000053039865802BR592565.661.240 KAUA BRAZ DUAR6009SAO PAULO62140510Jgwq99ltBg63047C01",
-    city: "São Paulo",
+    city: "Minas Gerais",
+    // Nubank "cobrar" page — opens the payment directly in the bank/app flow.
+    nubankUrl:
+      "https://nubank.com.br/cobrar/78w9ww/6a2d8ff1-bf39-45f3-b616-5f3a7527b669",
   },
   github: {
     username: "kauabrazduarte",
