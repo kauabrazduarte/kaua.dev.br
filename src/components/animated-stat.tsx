@@ -3,9 +3,9 @@
 import { Calligraph } from "calligraph";
 import { useEffect, useRef, useState } from "react";
 
-// A GitHub stat number that rolls up from 0 to its real value the moment it
-// first appears on screen. Calligraph's number variant animates each digit like
-// an odometer. The outer span carries the IntersectionObserver target since
+// A GitHub stat number that rolls up from 0 to its real value the first time it
+// scrolls into view. Calligraph's number variant animates each digit like an
+// odometer. The outer span carries the IntersectionObserver target since
 // Calligraph itself doesn't forward a ref.
 export function AnimatedStat({ value }: { value: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -25,8 +25,7 @@ export function AnimatedStat({ value }: { value: number }) {
         setShown(value);
         io.disconnect();
       },
-      // threshold 0 → fire the instant the first pixel scrolls into view.
-      { threshold: 0 },
+      { threshold: 0.6 },
     );
     io.observe(el);
     return () => io.disconnect();
