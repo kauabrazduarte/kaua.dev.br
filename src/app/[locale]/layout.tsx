@@ -7,6 +7,7 @@ import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { Fireworks } from "@/components/fireworks";
 import { siteConfig } from "@/lib/site";
 
 const geistSans = Geist({
@@ -363,6 +364,7 @@ export default async function LocaleLayout({
                 </figcaption>
               </figure>
             </div>
+            <Fireworks />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
