@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
   compress: true,
   experimental: {
     optimizePackageImports: ["lucide-react", "developer-icons"],
+    // Inline atomic Tailwind CSS into the <head> as <style> instead of a
+    // render-blocking <link>. Kills the CSS request waterfall that delays
+    // FCP/LCP for first-time (mobile) visitors. Production-only; safe for
+    // small atomic CSS like Tailwind. See PageSpeed "render-blocking requests".
+    inlineCss: true,
   },
   images: {
     formats: ["image/avif", "image/webp"],
