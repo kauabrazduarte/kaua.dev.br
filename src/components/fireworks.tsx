@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useTheme } from "next-themes";
 
-// Desktop-only easter egg: double-click anywhere to launch a firework at the
+// Desktop-only easter egg: right-click anywhere to launch a firework at the
 // pointer, themed (light → orange, dark → purple). canvas-confetti is loaded
 // lazily inside the handler, so the chunk is fetched only on the first burst
 // and NEVER on touch devices (the listener isn't even attached there).
@@ -22,7 +22,9 @@ export function Fireworks() {
 
     let cancelled = false;
 
-    const handleDoubleClick = async (e: MouseEvent) => {
+    const handleContextMenu = async (e: MouseEvent) => {
+      // Suppress the native context menu so the firework is the action.
+      e.preventDefault();
       const x = e.clientX / window.innerWidth;
       const y = e.clientY / window.innerHeight;
 
@@ -59,10 +61,10 @@ export function Fireworks() {
       });
     };
 
-    window.addEventListener("dblclick", handleDoubleClick);
+    window.addEventListener("contextmenu", handleContextMenu);
     return () => {
       cancelled = true;
-      window.removeEventListener("dblclick", handleDoubleClick);
+      window.removeEventListener("contextmenu", handleContextMenu);
     };
   }, [resolvedTheme]);
 
