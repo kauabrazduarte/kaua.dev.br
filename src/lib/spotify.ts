@@ -119,12 +119,19 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
   const remainingMs = data.item.duration_ms - (data.progress_ms ?? 0);
   const revalidateIn = Math.ceil((remainingMs + 5_000) / 1_000);
 
+  // Local files and some remixes carry no external URL. Fall back to a Spotify
+  // search for the track so the rendered link always has a real, crawlable
+  // destination (an empty href reads as a non-crawlable link to search engines).
+  const url =
+    data.item.external_urls?.spotify ||
+    `https://open.spotify.com/search/${encodeURIComponent(`${data.item.name} ${artist}`)}`;
+
   return {
     isPlaying: data.is_playing,
     title: data.item.name,
     artist,
     album: data.item.album.name,
-    url: data.item.external_urls.spotify,
+    url,
     albumArt: smallestArt?.url,
     revalidateIn,
   };
