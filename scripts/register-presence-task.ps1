@@ -13,8 +13,14 @@ $ErrorActionPreference = 'Stop'
 $script = Join-Path $PSScriptRoot 'presence-process-watch.ps1'
 if (-not (Test-Path $script)) { throw "Nao encontrei $script" }
 
-$action = New-ScheduledTaskAction -Execute 'powershell.exe' `
-  -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$script`""
+$launcher = Join-Path $PSScriptRoot 'run-hidden.vbs'
+if (-not (Test-Path $launcher)) { throw "Nao encontrei $launcher" }
+
+# Launch through wscript.exe + run-hidden.vbs so no console window ever flashes.
+# Running powershell.exe directly (even -WindowStyle Hidden) blinks a console
+# every time the task fires.
+$action = New-ScheduledTaskAction -Execute 'wscript.exe' `
+  -Argument "`"$launcher`" `"$script`""
 
 # Fire shortly after logon, then repeat every 10 minutes indefinitely. The 30-min
 # server TTL means a missed beat or two never flips you offline mid-session.
