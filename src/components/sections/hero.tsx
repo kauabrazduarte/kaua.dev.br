@@ -1,4 +1,5 @@
 import Image from "next/image";
+import BrazilFlag from "country-flag-icons/react/3x2/BR";
 import { useTranslations } from "next-intl";
 import { siteConfig } from "@/lib/site";
 import { ThemedCatLottie } from "@/components/themed-cat-lottie";
@@ -28,10 +29,11 @@ export function HeroSection() {
             <h1 className="text-xl font-medium tracking-tight text-foreground sm:text-2xl">
               {siteConfig.name}
             </h1>
-            <p className="font-mono text-xs text-muted-foreground">
-              <span className="mr-1.5" aria-hidden="true">
-                🇺🇸🇧🇷
-              </span>
+            <p className="flex items-center font-mono text-xs text-muted-foreground">
+              <BrazilFlag
+                aria-hidden="true"
+                className="mr-1.5 inline-block h-3 w-auto rounded-[1px]"
+              />
               <span className="sr-only">{t("flagsLabel")}, </span>
               {t("role")} · {t("based")}
             </p>
