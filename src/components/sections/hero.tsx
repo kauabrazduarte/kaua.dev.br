@@ -35,7 +35,10 @@ export function HeroSection() {
                 className="mr-1.5 inline-block h-3 w-auto rounded-[1px]"
               />
               <span className="sr-only">{t("flagsLabel")}, </span>
-              {t("role")} · {t("based")}
+              {/* Short role on mobile, full role from sm up. */}
+              <span className="sm:hidden">{t("roleShort")}</span>
+              <span className="hidden sm:inline">{t("role")}</span> ·{" "}
+              {t("based")}
             </p>
           </div>
         </div>

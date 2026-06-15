@@ -26,6 +26,7 @@
     "statusOnline": "Programando ahora",
     "greeting": "Hola, soy Kauã",
     "role": "Desarrollador Full-Stack",
+    "roleShort": "Dev Full-Stack",
     "tagline": "Construyo aplicaciones web y {accent} con Bun, Node.js y TypeScript.",
     "taglineAccent": "automatizaciones con IA",
     "primaryCta": "Dónde he trabajado",
