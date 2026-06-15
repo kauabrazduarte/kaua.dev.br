@@ -29,6 +29,9 @@ export function HeroSection() {
               {siteConfig.name}
             </h1>
             <p className="font-mono text-xs text-muted-foreground">
+              <span className="mr-1.5" role="img" aria-label={t("flagsLabel")}>
+                🇺🇸🇧🇷
+              </span>
               {t("role")} · {t("based")}
             </p>
           </div>
