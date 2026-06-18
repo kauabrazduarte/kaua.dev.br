@@ -25,21 +25,26 @@
     "status": "Aberto a conversar",
     "statusOnline": "Codando agora",
     "greeting": "Olá, eu sou o Kauã",
-    "role": "Desenvolvedor Full-Stack",
-    "roleShort": "Dev Full-Stack",
+    "roles": [
+      "Desenvolvedor full-stack",
+      "Gosta dos detalhes",
+      "Criador de produtos",
+      "Curioso"
+    ],
     "tagline": "Construo aplicações web e {accent} com Bun, Node.js e TypeScript.",
     "taglineAccent": "automações com IA",
     "primaryCta": "Onde trabalhei",
     "secondaryCta": "Falar comigo",
-    "based": "Remoto",
-    "flagsLabel": "Brasil"
+    "locationLabel": "Localização",
+    "location": "MG, Brasil",
+    "emailLabel": "E-mail"
   },
   "about": {
     "kicker": "Sobre",
     "title": "Sobre mim",
-    "p1": "Sou desenvolvedor full-stack, {age} anos, focado em construir aplicações web e automações usando Bun, Node.js e TypeScript. Eventualmente me aventuro em outras linguagens como Python e PHP.",
-    "p3": "Sou especialista em automações com IA — se uma API tem um endpoint, eu integro. No dia a dia uso bastante Claude Code e Codex.",
-    "p4": "Não estou aceitando trabalhos ativamente no momento, mas se você tem uma proposta interessante, me chama."
+    "p1": "Construo aplicações web full-stack do início ao fim. Se uma API tem endpoint, eu integro.",
+    "p3": "Trabalho com TypeScript, Bun e Node.js, e eventualmente me aventuro em Python e PHP quando não tem jeito.",
+    "p4": "No momento não estou aceitando trabalhos ativamente, mas se a proposta for boa, é só chamar."
   },
   "skills": {
     "kicker": "Stack",
@@ -75,7 +80,9 @@
     "repos": "Repositórios",
     "followers": "Seguidores",
     "following": "Seguindo",
-    "stars": "Stars recebidas"
+    "stars": "Stars recebidas",
+    "contributions": "{count, plural, =0 {Nenhuma contribuição} one {# contribuição} other {# contribuições}}",
+    "graphAria": "{count, number} contribuições no GitHub no último ano"
   },
   "contact": {
     "kicker": "Contato",

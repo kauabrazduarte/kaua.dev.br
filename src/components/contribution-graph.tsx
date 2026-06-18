@@ -1,3 +1,5 @@
+import { getLocale, getTranslations } from "next-intl/server";
+import { ContributionCells, LEVEL_CLASS, type Cell } from "@/components/contribution-cells";
 import { siteConfig } from "@/lib/site";
 
 interface Day {
@@ -25,16 +27,6 @@ async function fetchContributions(): Promise<Response | null> {
     return null;
   }
 }
-
-// Tints of --primary (amber-600 in light, violet-400 in dark) via Tailwind
-// arbitrary opacity utilities — JIT picks them up at build time.
-const LEVEL_CLASS: Record<Day["level"], string> = {
-  0: "bg-muted",
-  1: "bg-primary/20",
-  2: "bg-primary/40",
-  3: "bg-primary/65",
-  4: "bg-primary",
-};
 
 const MONTH_LABEL = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -79,11 +71,32 @@ function buildWeeks(contributions: Day[]) {
 }
 
 export async function ContributionGraph() {
-  const data = await fetchContributions();
+  const [data, t, locale] = await Promise.all([
+    fetchContributions(),
+    getTranslations("stats"),
+    getLocale(),
+  ]);
   if (!data) return null;
 
   const { weeks, months } = buildWeeks(data.contributions);
   const totalThisYear = Object.values(data.total).reduce((acc, n) => acc + n, 0);
+
+  // Pre-format each day's tooltip text on the server, where translations and
+  // the active locale live, then hand plain strings to the client cells.
+  const dateFmt = new Intl.DateTimeFormat(locale, {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const toCell = (day: Day | null): Cell | null =>
+    day
+      ? {
+          level: day.level,
+          countLabel: t("contributions", { count: day.count }),
+          dateLabel: dateFmt.format(new Date(day.date)),
+        }
+      : null;
+  const cellWeeks: (Cell | null)[][] = weeks.map((week) => week.map(toCell));
 
   return (
     <div className="mt-5">
@@ -114,30 +127,12 @@ export async function ContributionGraph() {
             })}
           </div>
 
-          {/* The grid itself — columns are weeks, rows are weekdays (Sun→Sat). */}
-          <div
-            className="grid"
-            role="img"
-            aria-label={`${totalThisYear} GitHub contributions in the last year`}
-            style={{
-              gridTemplateColumns: `repeat(${weeks.length}, 9px)`,
-              gridTemplateRows: "repeat(7, 9px)",
-              gridAutoFlow: "column",
-              gap: 2,
-            }}
-          >
-            {weeks.flat().map((day, i) =>
-              day ? (
-                <div
-                  key={i}
-                  className={`rounded-[2px] ${LEVEL_CLASS[day.level]}`}
-                  title={`${day.count} on ${day.date}`}
-                />
-              ) : (
-                <div key={i} className="rounded-[2px] bg-transparent" />
-              ),
-            )}
-          </div>
+          {/* The grid itself — columns are weeks, rows are weekdays (Sun→Sat).
+              Rendered client-side so each cell can carry a Radix tooltip. */}
+          <ContributionCells
+            weeks={cellWeeks}
+            ariaLabel={t("graphAria", { count: totalThisYear })}
+          />
         </div>
       </div>
 

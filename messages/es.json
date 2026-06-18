@@ -25,21 +25,26 @@
     "status": "Abierto a charlar",
     "statusOnline": "Programando ahora",
     "greeting": "Hola, soy Kauã",
-    "role": "Desarrollador Full-Stack",
-    "roleShort": "Dev Full-Stack",
+    "roles": [
+      "Desarrollador full-stack",
+      "Cuida los detalles",
+      "Creador de productos",
+      "Curioso"
+    ],
     "tagline": "Construyo aplicaciones web y {accent} con Bun, Node.js y TypeScript.",
     "taglineAccent": "automatizaciones con IA",
     "primaryCta": "Dónde he trabajado",
     "secondaryCta": "Hablemos",
-    "based": "Remoto",
-    "flagsLabel": "Brasil"
+    "locationLabel": "Ubicación",
+    "location": "MG, Brasil",
+    "emailLabel": "Correo"
   },
   "about": {
     "kicker": "Sobre mí",
     "title": "Sobre mí",
-    "p1": "Soy desarrollador full-stack, {age} años, enfocado en construir aplicaciones web y automatizaciones con Bun, Node.js y TypeScript. Ocasionalmente exploro otros lenguajes como Python y PHP.",
-    "p3": "Soy especialista en automatizaciones con IA — si una API tiene un endpoint, lo integro. En el día a día uso bastante Claude Code y Codex.",
-    "p4": "No estoy aceptando trabajos activamente en este momento, pero si tienes una propuesta interesante, escríbeme."
+    "p1": "Construyo aplicaciones web full-stack de principio a fin. Si una API tiene un endpoint, lo integro.",
+    "p3": "Trabajo con TypeScript, Bun y Node.js, y de vez en cuando me aventuro en Python y PHP cuando no queda otra.",
+    "p4": "Por ahora no estoy aceptando trabajos activamente, pero si la propuesta es buena, solo escríbeme."
   },
   "skills": {
     "kicker": "Stack",
@@ -75,7 +80,9 @@
     "repos": "Repositorios",
     "followers": "Seguidores",
     "following": "Siguiendo",
-    "stars": "Estrellas recibidas"
+    "stars": "Estrellas recibidas",
+    "contributions": "{count, plural, =0 {Sin contribuciones} one {# contribución} other {# contribuciones}}",
+    "graphAria": "{count, number} contribuciones en GitHub en el último año"
   },
   "contact": {
     "kicker": "Contacto",

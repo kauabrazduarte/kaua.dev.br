@@ -25,21 +25,26 @@
     "status": "Open to chat",
     "statusOnline": "Coding right now",
     "greeting": "Hey, I'm Kauã",
-    "role": "Full-Stack Developer",
-    "roleShort": "Full-Stack Dev",
+    "roles": [
+      "Full-stack developer",
+      "Sweats the details",
+      "Product builder",
+      "Curious"
+    ],
     "tagline": "I build web apps and {accent} with Bun, Node.js and TypeScript.",
     "taglineAccent": "AI automations",
     "primaryCta": "Where I worked",
     "secondaryCta": "Get in touch",
-    "based": "Remote",
-    "flagsLabel": "Brazil"
+    "locationLabel": "Location",
+    "location": "MG, Brazil",
+    "emailLabel": "Email"
   },
   "about": {
     "kicker": "About",
     "title": "About me",
-    "p1": "I'm a full-stack developer, {age} years old, focused on shipping web apps and automations with Bun, Node.js and TypeScript. I occasionally venture into Python and PHP.",
-    "p3": "I specialize in AI automation — if an API has an endpoint, I'll integrate it. I lean heavily on Claude Code and Codex in my daily workflow.",
-    "p4": "I'm not actively taking on work right now, but if you have an interesting proposal, drop me a line."
+    "p1": "I build full-stack web apps end to end. If an API has an endpoint, I'll integrate it.",
+    "p3": "I work with TypeScript, Bun and Node.js, and occasionally venture into Python and PHP when there's no way around it.",
+    "p4": "I'm not actively taking on work right now, but if the proposal is good, just reach out."
   },
   "skills": {
     "kicker": "Stack",
@@ -75,7 +80,9 @@
     "repos": "Repositories",
     "followers": "Followers",
     "following": "Following",
-    "stars": "Stars received"
+    "stars": "Stars received",
+    "contributions": "{count, plural, =0 {No contributions} one {# contribution} other {# contributions}}",
+    "graphAria": "{count, number} GitHub contributions in the last year"
   },
   "contact": {
     "kicker": "Contact",
