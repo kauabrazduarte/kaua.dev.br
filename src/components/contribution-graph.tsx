@@ -1,6 +1,13 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import { ContributionCells, LEVEL_CLASS, type Cell } from "@/components/contribution-cells";
+import { ContributionCells } from "@/components/contribution-cells";
+import {
+  CELL_PX,
+  LEVEL_CLASS,
+  type Cell,
+} from "@/components/contribution-graph.shared";
 import { siteConfig } from "@/lib/site";
+
+const LEVELS: Cell["level"][] = [0, 1, 2, 3, 4];
 
 interface Day {
   date: string;
@@ -108,7 +115,7 @@ export async function ContributionGraph() {
           <div
             className="grid items-end pb-1 text-[10px] text-muted-foreground"
             style={{
-              gridTemplateColumns: `repeat(${weeks.length}, 9px)`,
+              gridTemplateColumns: `repeat(${weeks.length}, ${CELL_PX}px)`,
               columnGap: 2,
             }}
             aria-hidden
@@ -138,20 +145,19 @@ export async function ContributionGraph() {
 
       {/* Total + legend */}
       <div className="mt-3 flex items-center justify-between text-[11px] text-muted-foreground">
-        <span className="font-mono">
-          {totalThisYear.toLocaleString()} contributions · last 12 months
-        </span>
+        <span className="font-mono">{t("summary", { count: totalThisYear })}</span>
         <div className="flex items-center gap-1.5">
-          <span className="font-mono">less</span>
+          <span className="font-mono">{t("legendLess")}</span>
           <div className="flex gap-[2px]">
-            {(Object.keys(LEVEL_CLASS) as unknown as Day["level"][]).map((lvl) => (
+            {LEVELS.map((lvl) => (
               <div
                 key={lvl}
-                className={`h-2.5 w-2.5 rounded-[2px] ${LEVEL_CLASS[lvl]}`}
+                className={`rounded-[2px] ${LEVEL_CLASS[lvl]}`}
+                style={{ width: CELL_PX, height: CELL_PX }}
               />
             ))}
           </div>
-          <span className="font-mono">more</span>
+          <span className="font-mono">{t("legendMore")}</span>
         </div>
       </div>
     </div>

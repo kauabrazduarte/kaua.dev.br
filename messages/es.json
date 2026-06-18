@@ -27,9 +27,8 @@
     "greeting": "Hola, soy Kauã",
     "roles": [
       "Desarrollador full-stack",
-      "Cuida los detalles",
       "Creador de productos",
-      "Curioso"
+      "Entusiasta de la programación"
     ],
     "tagline": "Construyo aplicaciones web y {accent} con Bun, Node.js y TypeScript.",
     "taglineAccent": "automatizaciones con IA",
@@ -42,9 +41,7 @@
   "about": {
     "kicker": "Sobre mí",
     "title": "Sobre mí",
-    "p1": "Construyo aplicaciones web full-stack de principio a fin. Si una API tiene un endpoint, lo integro.",
-    "p3": "Trabajo con TypeScript, Bun y Node.js, y de vez en cuando me aventuro en Python y PHP cuando no queda otra.",
-    "p4": "Por ahora no estoy aceptando trabajos activamente, pero si la propuesta es buena, solo escríbeme."
+    "body": "Construyo aplicaciones web full-stack de principio a fin. Si una API tiene un endpoint, lo integro. Trabajo con TypeScript, Bun y Node.js, y de vez en cuando me aventuro en Python y PHP cuando no queda otra. Por ahora no estoy aceptando trabajos activamente, pero si la propuesta es buena, solo escríbeme."
   },
   "skills": {
     "kicker": "Stack",
@@ -82,7 +79,10 @@
     "following": "Siguiendo",
     "stars": "Estrellas recibidas",
     "contributions": "{count, plural, =0 {Sin contribuciones} one {# contribución} other {# contribuciones}}",
-    "graphAria": "{count, number} contribuciones en GitHub en el último año"
+    "graphAria": "{count, number} contribuciones en GitHub en el último año",
+    "summary": "{count, number} contribuciones · últimos 12 meses",
+    "legendLess": "menos",
+    "legendMore": "más"
   },
   "contact": {
     "kicker": "Contacto",

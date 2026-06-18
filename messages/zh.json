@@ -27,9 +27,8 @@
     "greeting": "嗨，我是 Kauã",
     "roles": [
       "全栈开发者",
-      "注重细节",
       "产品创造者",
-      "充满好奇"
+      "编程爱好者"
     ],
     "tagline": "我使用 Bun、Node.js 和 TypeScript 构建 Web 应用和 {accent}。",
     "taglineAccent": "AI 自动化",
@@ -42,9 +41,7 @@
   "about": {
     "kicker": "关于",
     "title": "关于我",
-    "p1": "我从头到尾构建全栈 Web 应用。只要 API 有接口，我就能对接。",
-    "p3": "我使用 TypeScript、Bun 和 Node.js，偶尔在实在没办法时也会涉足 Python 和 PHP。",
-    "p4": "目前我没有积极接活，但如果有好的提案，尽管联系我。"
+    "body": "我从头到尾构建全栈 Web 应用。只要 API 有接口，我就能对接。我使用 TypeScript、Bun 和 Node.js，偶尔在实在没办法时也会涉足 Python 和 PHP。目前我没有积极接活，但如果有好的提案，尽管联系我。"
   },
   "skills": {
     "kicker": "技术栈",
@@ -82,7 +79,10 @@
     "following": "关注中",
     "stars": "获得的星标",
     "contributions": "{count, plural, =0 {没有贡献} other {# 次贡献}}",
-    "graphAria": "过去一年在 GitHub 的 {count, number} 次贡献"
+    "graphAria": "过去一年在 GitHub 的 {count, number} 次贡献",
+    "summary": "过去 12 个月 {count, number} 次贡献",
+    "legendLess": "少",
+    "legendMore": "多"
   },
   "contact": {
     "kicker": "联系",

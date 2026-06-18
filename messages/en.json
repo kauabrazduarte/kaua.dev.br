@@ -27,9 +27,8 @@
     "greeting": "Hey, I'm Kauã",
     "roles": [
       "Full-stack developer",
-      "Sweats the details",
       "Product builder",
-      "Curious"
+      "Programming enthusiast"
     ],
     "tagline": "I build web apps and {accent} with Bun, Node.js and TypeScript.",
     "taglineAccent": "AI automations",
@@ -42,9 +41,7 @@
   "about": {
     "kicker": "About",
     "title": "About me",
-    "p1": "I build full-stack web apps end to end. If an API has an endpoint, I'll integrate it.",
-    "p3": "I work with TypeScript, Bun and Node.js, and occasionally venture into Python and PHP when there's no way around it.",
-    "p4": "I'm not actively taking on work right now, but if the proposal is good, just reach out."
+    "body": "I build full-stack web apps end to end. If an API has an endpoint, I'll integrate it. I work with TypeScript, Bun and Node.js, and occasionally venture into Python and PHP when there's no way around it. I'm not actively taking on work right now, but if the proposal is good, just reach out."
   },
   "skills": {
     "kicker": "Stack",
@@ -82,7 +79,10 @@
     "following": "Following",
     "stars": "Stars received",
     "contributions": "{count, plural, =0 {No contributions} one {# contribution} other {# contributions}}",
-    "graphAria": "{count, number} GitHub contributions in the last year"
+    "graphAria": "{count, number} GitHub contributions in the last year",
+    "summary": "{count, number} contributions · last 12 months",
+    "legendLess": "less",
+    "legendMore": "more"
   },
   "contact": {
     "kicker": "Contact",

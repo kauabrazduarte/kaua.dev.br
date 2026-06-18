@@ -6,22 +6,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-export interface Cell {
-  level: 0 | 1 | 2 | 3 | 4;
-  countLabel: string;
-  dateLabel: string;
-}
-
-// Tints of --primary (amber-600 in light, violet-400 in dark) via Tailwind
-// arbitrary opacity utilities — JIT picks them up at build time.
-export const LEVEL_CLASS: Record<Cell["level"], string> = {
-  0: "bg-muted",
-  1: "bg-primary/20",
-  2: "bg-primary/40",
-  3: "bg-primary/65",
-  4: "bg-primary",
-};
+import {
+  CELL_PX,
+  LEVEL_CLASS,
+  type Cell,
+} from "@/components/contribution-graph.shared";
 
 interface Props {
   /** Weeks as columns, each a 7-slot column (Sun→Sat). null = padding cell. */
@@ -38,8 +27,8 @@ export function ContributionCells({ weeks, ariaLabel }: Props) {
         role="img"
         aria-label={ariaLabel}
         style={{
-          gridTemplateColumns: `repeat(${weeks.length}, 9px)`,
-          gridTemplateRows: "repeat(7, 9px)",
+          gridTemplateColumns: `repeat(${weeks.length}, ${CELL_PX}px)`,
+          gridTemplateRows: `repeat(7, ${CELL_PX}px)`,
           gridAutoFlow: "column",
           gap: 2,
         }}
