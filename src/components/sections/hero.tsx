@@ -1,13 +1,16 @@
 import Image from "next/image";
-import BrazilFlag from "country-flag-icons/react/3x2/BR";
 import { useTranslations } from "next-intl";
 import { siteConfig } from "@/lib/site";
 import { ThemedCatLottie } from "@/components/themed-cat-lottie";
 import { NowPlaying } from "@/components/now-playing";
 import { PresenceStatus } from "@/components/presence-status";
+import { RotatingRoles } from "@/components/rotating-roles";
+import { HeroContactInfo } from "@/components/hero-contact-info";
 
 export function HeroSection() {
   const t = useTranslations("hero");
+  const roles = t.raw("roles") as string[];
+  const email = siteConfig.links.email.replace(/^mailto:/, "");
 
   return (
     <section id="top" className="scroll-mt-20">
@@ -29,23 +32,25 @@ export function HeroSection() {
             <h1 className="text-xl font-medium tracking-tight text-foreground sm:text-2xl">
               {siteConfig.name}
             </h1>
-            <p className="flex items-center font-mono text-xs text-muted-foreground">
-              <BrazilFlag
-                aria-hidden="true"
-                className="mr-1.5 inline-block h-3 w-auto rounded-[1px]"
-              />
-              <span className="sr-only">{t("flagsLabel")}, </span>
-              {/* Short role on mobile, full role from sm up. */}
-              <span className="sm:hidden">{t("roleShort")}</span>
-              <span className="hidden sm:inline">{t("role")}</span> ·{" "}
-              {t("based")}
-            </p>
+            {/* Role labels roll through every few seconds via slot-text. */}
+            <div className="mt-0.5">
+              <RotatingRoles phrases={roles} />
+            </div>
           </div>
         </div>
 
         {/* Sits below the avatar block so it always has full width — keeps
             mobile from breaking when track titles are long. */}
         <NowPlaying className="mt-3" />
+
+        {/* Location + email, each with its own hover-animated icon. */}
+        <HeroContactInfo
+          locationLabel={t("locationLabel")}
+          location={t("location")}
+          emailLabel={t("emailLabel")}
+          email={email}
+          emailHref={siteConfig.links.email}
+        />
 
         <div className="mt-6 grid items-center gap-6 sm:grid-cols-[1fr_0.5fr] sm:gap-4">
           <div className="min-w-0">
