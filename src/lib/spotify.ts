@@ -18,18 +18,37 @@ export interface NowPlaying {
   revalidateIn: number;
 }
 
-// Artists whose tracks should never surface on the site. Matching is
-// whole-word: the artist string is normalized (lowercase, accents stripped,
-// any non-alphanumeric — including punctuation — collapsed into spaces),
-// then we look for the blocked term surrounded by spaces. So "key" matches
-// "Key" or "Key Sounds Label" but NOT "Monkey" or "Keys".
-const ARTIST_BLOCKLIST: string[] = [
-  "chata",
-  "riya",
-  "celine dion",
+// Tracks whose title, album, or artist contains any of these terms should
+// never surface on the site. Matching is a plain "contains": each term and the
+// haystack are normalized (lowercase, accents stripped, any non-alphanumeric —
+// including punctuation — collapsed into single spaces), then we check for the
+// term anywhere in the string. No word boundaries — "chata" matches "Chata"
+// and "Enchatada" alike.
+const BLOCKLIST: string[] = [
+  "bxkq",
+  "sayfalse",
+  "belinda",
+  "icedmane",
+  "hwungii",
+  "qmiir",
+  "dj zarek",
+  "irokz",
+  "zaylo",
+  "dr mob",
+  "y3llavision",
+  "dj asul",
+  "trvxer",
+  "enmity",
+  "kryd",
+  "gigi perez",
   "sawano",
+  "oblxkq",
+  "creepy nuts",
+  "celine",
+  "chata",
   "visual arts",
-  "key",
+  "samuel kim",
+  "rosa walton",
 ];
 
 function normalize(s: string): string {
@@ -41,9 +60,9 @@ function normalize(s: string): string {
     .trim();
 }
 
-function isBlocked(artist: string): boolean {
-  const padded = ` ${normalize(artist)} `;
-  return ARTIST_BLOCKLIST.some((blocked) => padded.includes(` ${blocked} `));
+function isBlocked(...fields: (string | undefined)[]): boolean {
+  const haystack = normalize(fields.filter(Boolean).join(" "));
+  return BLOCKLIST.some((blocked) => haystack.includes(blocked));
 }
 
 function basicAuthHeader(): string | null {
@@ -78,8 +97,8 @@ async function getAccessToken(): Promise<string | null> {
 }
 
 // Fetch the currently-playing track. Returns null when nothing is playing,
-// when the user isn't authenticated, when the artist is on the blocklist, or
-// on any network error.
+// when the user isn't authenticated, when the track's title/album/artist hits
+// the blocklist, or on any network error.
 export async function getNowPlaying(): Promise<NowPlaying | null> {
   const token = await getAccessToken();
   if (!token) return null;
@@ -108,7 +127,7 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
   if (!data?.item) return null;
 
   const artist = data.item.artists.map((a) => a.name).join(", ");
-  if (isBlocked(artist)) return null;
+  if (isBlocked(data.item.name, data.item.album.name, artist)) return null;
 
   const smallestArt = data.item.album.images.reduce<typeof data.item.album.images[number] | undefined>(
     (min, img) =>
