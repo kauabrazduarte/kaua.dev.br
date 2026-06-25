@@ -9,7 +9,7 @@ interface Props {
   locationLabel: string;
   location: string;
   emailLabel: string;
-  /** Address shown to the user, e.g. "contato@kaua.dev.br". */
+  /** Address shown to the user, e.g. "eu@kaua.dev.br". */
   email: string;
   /** Full `mailto:` href. */
   emailHref: string;

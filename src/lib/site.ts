@@ -42,7 +42,7 @@ export const siteConfig = {
   ],
   links: {
     github: "https://github.com/kauabrazduarte",
-    email: "mailto:contato@kaua.dev.br",
+    email: "mailto:eu@kaua.dev.br",
     x: "https://x.com/kauadevbr",
     buymeacoffee: "https://buymeacoffee.com/kauabrazduarte",
   },
