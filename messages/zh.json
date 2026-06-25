@@ -19,7 +19,8 @@
     "cta": "返回首页"
   },
   "nowPlaying": {
-    "label": "正在听"
+    "label": "正在听",
+    "recent": "最近播放"
   },
   "hero": {
     "status": "欢迎联系",

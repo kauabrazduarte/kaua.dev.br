@@ -102,6 +102,7 @@ export function NowPlaying({ className = "" }: { className?: string }) {
 
   const isOverflowing = overflowPx > 0;
   const duration = marqueeDurationSeconds(overflowPx);
+  const label = track.isPlaying ? t("label") : t("recent");
 
   return (
     <a
@@ -109,10 +110,10 @@ export function NowPlaying({ className = "" }: { className?: string }) {
       target="_blank"
       rel="noopener noreferrer"
       className={`group flex w-full min-w-0 items-center gap-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:text-foreground ${className}`}
-      aria-label={`${t("label")} — ${track.artist} · ${track.title}`}
+      aria-label={`${label} — ${track.artist} · ${track.title}`}
     >
       <SpotifyIcon size={12} />
-      <span className="shrink-0 text-foreground/70">{t("label")}</span>
+      <span className="shrink-0 text-foreground/70">{label}</span>
       <span aria-hidden className="shrink-0 text-muted-foreground/60">
         {"—"}
       </span>

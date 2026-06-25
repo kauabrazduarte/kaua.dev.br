@@ -19,7 +19,8 @@
     "cta": "Voltar ao início"
   },
   "nowPlaying": {
-    "label": "Ouvindo"
+    "label": "Ouvindo",
+    "recent": "Última música"
   },
   "hero": {
     "status": "Aberto a conversar",

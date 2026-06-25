@@ -19,7 +19,8 @@
     "cta": "Back to home"
   },
   "nowPlaying": {
-    "label": "Listening"
+    "label": "Listening",
+    "recent": "Last track"
   },
   "hero": {
     "status": "Open to chat",

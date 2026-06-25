@@ -5,7 +5,15 @@ const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const NOW_PLAYING_URL = "https://api.spotify.com/v1/me/player/currently-playing";
 
 export const SPOTIFY_REDIRECT_PATH = "/api/spotify/callback";
-export const SPOTIFY_SCOPES = "user-read-currently-playing user-read-playback-state";
+export const SPOTIFY_SCOPES =
+  "user-read-currently-playing user-read-playback-state user-read-recently-played";
+
+const RECENTLY_PLAYED_URL =
+  "https://api.spotify.com/v1/me/player/recently-played?limit=1";
+
+// Idle poll cadence (seconds) used as revalidateIn when the shown track isn't
+// actively playing, so the client keeps checking for a fresh now-playing.
+const IDLE_REVALIDATE_S = 30;
 
 export interface NowPlaying {
   isPlaying: boolean;
@@ -49,6 +57,8 @@ const BLOCKLIST: string[] = [
   "visual arts",
   "samuel kim",
   "rosa walton",
+  "i like the way",
+  "sex drugs",
 ];
 
 function normalize(s: string): string {
@@ -96,9 +106,76 @@ async function getAccessToken(): Promise<string | null> {
   return data.access_token ?? null;
 }
 
-// Fetch the currently-playing track. Returns null when nothing is playing,
-// when the user isn't authenticated, when the track's title/album/artist hits
-// the blocklist, or on any network error.
+// Shape of a Spotify track object, shared by the currently-playing and
+// recently-played endpoints.
+type TrackItem = {
+  name: string;
+  duration_ms: number;
+  external_urls: { spotify: string };
+  artists: { name: string }[];
+  album: { name: string; images: { url: string; height: number; width: number }[] };
+};
+
+// Map a raw Spotify track into our NowPlaying shape. Returns null when the
+// track's title/album/artist hits the blocklist. `progressMs` is the playback
+// position (null/undefined for recently-played tracks).
+function mapTrack(
+  item: TrackItem,
+  isPlaying: boolean,
+  progressMs: number | null,
+): NowPlaying | null {
+  const artist = item.artists.map((a) => a.name).join(", ");
+  if (isBlocked(item.name, item.album.name, artist)) return null;
+
+  const smallestArt = item.album.images.reduce<typeof item.album.images[number] | undefined>(
+    (min, img) => (!min || (img.height ?? 0) < (min.height ?? 0) ? img : min),
+    undefined,
+  );
+
+  // When actively playing, revalidate right after the track ends (+5s buffer);
+  // otherwise fall back to the idle cadence so we keep polling for a new song.
+  const revalidateIn = isPlaying
+    ? Math.ceil((item.duration_ms - (progressMs ?? 0) + 5_000) / 1_000)
+    : IDLE_REVALIDATE_S;
+
+  // Local files and some remixes carry no external URL. Fall back to a Spotify
+  // search for the track so the rendered link always has a real, crawlable
+  // destination (an empty href reads as a non-crawlable link to search engines).
+  const url =
+    item.external_urls?.spotify ||
+    `https://open.spotify.com/search/${encodeURIComponent(`${item.name} ${artist}`)}`;
+
+  return {
+    isPlaying,
+    title: item.name,
+    artist,
+    album: item.album.name,
+    url,
+    albumArt: smallestArt?.url,
+    revalidateIn,
+  };
+}
+
+// Fetch the most recently played track as a fallback for when nothing is
+// playing. Returns null on error or when the track hits the blocklist.
+async function getRecentlyPlayed(token: string): Promise<NowPlaying | null> {
+  const res = await fetch(RECENTLY_PLAYED_URL, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+  if (!res.ok) return null;
+
+  const data = (await res.json()) as { items?: { track: TrackItem | null }[] };
+  const item = data.items?.[0]?.track;
+  if (!item) return null;
+
+  return mapTrack(item, false, null);
+}
+
+// Fetch what's on the player: the currently-playing track when something is
+// playing, otherwise the most recently played one (isPlaying: false). Returns
+// null when the user isn't authenticated, when the track hits the blocklist,
+// or on any network error.
 export async function getNowPlaying(): Promise<NowPlaying | null> {
   const token = await getAccessToken();
   if (!token) return null;
@@ -108,52 +185,20 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
     cache: "no-store",
   });
 
-  // 204 = nothing playing right now; non-OK = error.
-  if (res.status === 204 || !res.ok) return null;
+  // 204 = nothing playing right now → fall back to recently played.
+  if (res.status === 204) return getRecentlyPlayed(token);
+  if (!res.ok) return null;
 
-  type Track = {
+  type CurrentlyPlaying = {
     is_playing: boolean;
     progress_ms: number | null;
-    item: {
-      name: string;
-      duration_ms: number;
-      external_urls: { spotify: string };
-      artists: { name: string }[];
-      album: { name: string; images: { url: string; height: number; width: number }[] };
-    } | null;
+    item: TrackItem | null;
   };
 
-  const data = (await res.json()) as Track;
-  if (!data?.item) return null;
+  const data = (await res.json()) as CurrentlyPlaying;
+  if (!data?.item) return getRecentlyPlayed(token);
 
-  const artist = data.item.artists.map((a) => a.name).join(", ");
-  if (isBlocked(data.item.name, data.item.album.name, artist)) return null;
-
-  const smallestArt = data.item.album.images.reduce<typeof data.item.album.images[number] | undefined>(
-    (min, img) =>
-      !min || (img.height ?? 0) < (min.height ?? 0) ? img : min,
-    undefined,
-  );
-
-  const remainingMs = data.item.duration_ms - (data.progress_ms ?? 0);
-  const revalidateIn = Math.ceil((remainingMs + 5_000) / 1_000);
-
-  // Local files and some remixes carry no external URL. Fall back to a Spotify
-  // search for the track so the rendered link always has a real, crawlable
-  // destination (an empty href reads as a non-crawlable link to search engines).
-  const url =
-    data.item.external_urls?.spotify ||
-    `https://open.spotify.com/search/${encodeURIComponent(`${data.item.name} ${artist}`)}`;
-
-  return {
-    isPlaying: data.is_playing,
-    title: data.item.name,
-    artist,
-    album: data.item.album.name,
-    url,
-    albumArt: smallestArt?.url,
-    revalidateIn,
-  };
+  return mapTrack(data.item, data.is_playing, data.progress_ms);
 }
 
 // Resolve the OAuth redirect URI from env. Same value must be registered in
