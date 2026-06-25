@@ -1,24 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Geist, Geist_Mono } from "next/font/google";
+import { commitMono } from "@/app/fonts";
 import "./globals.css";
 
 // Global fallback 404 — rendered for paths OUTSIDE the [locale] segment, where
 // the minimal root layout provides no <html>/<body>, fonts, theme or i18n. So
 // this page is fully self-contained. Locale-specific 404s live in
 // [locale]/not-found.tsx (translated); this one is the neutral last resort.
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Not found",
@@ -36,7 +24,7 @@ export default function GlobalNotFound() {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={commitMono.variable}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
