@@ -50,6 +50,9 @@ export function HeroSection() {
           emailLabel={t("emailLabel")}
           email={email}
           emailHref={siteConfig.links.email}
+          whatsappLabel={t("whatsappLabel")}
+          whatsapp={siteConfig.whatsapp.display}
+          whatsappHref={siteConfig.links.whatsapp}
         />
 
         <div className="mt-6 grid items-center gap-6 sm:grid-cols-[1fr_0.5fr] sm:gap-4">

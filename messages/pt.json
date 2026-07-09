@@ -37,7 +37,8 @@
     "secondaryCta": "Falar comigo",
     "locationLabel": "Localização",
     "location": "MG, Brasil",
-    "emailLabel": "E-mail"
+    "emailLabel": "E-mail",
+    "whatsappLabel": "WhatsApp"
   },
   "about": {
     "kicker": "Sobre",

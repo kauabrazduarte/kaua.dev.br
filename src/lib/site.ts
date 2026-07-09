@@ -44,7 +44,11 @@ export const siteConfig = {
     github: "https://github.com/kauabrazduarte",
     email: "mailto:eu@kaua.dev.br",
     x: "https://x.com/kauadevbr",
+    whatsapp: "https://wa.me/5532998619211",
     buymeacoffee: "https://buymeacoffee.com/kauabrazduarte",
+  },
+  whatsapp: {
+    display: "+55 32 99861-9211",
   },
   // Pix (Brazilian instant payment). `payload` is the full BR Code / EMV
   // "copia e cola" string — it's what the QR on /pix encodes. `key` is the raw

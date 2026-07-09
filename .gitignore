@@ -40,6 +40,35 @@ yarn-error.log*
 .claude/settings.local.json
 .claude/presence.local.json
 
+# AI/agent tool configs — machine-local
+.adal/
+.agents/
+.augment/
+.codebuddy/
+.commandcode/
+.continue/
+.factory/
+.iflow/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.openhands/
+.pochi/
+.qoder/
+.qwen/
+.riggr-tmp/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+kauadevbr.riggr
+skills/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

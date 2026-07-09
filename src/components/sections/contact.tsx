@@ -36,6 +36,7 @@ export function ContactSection() {
           />
           <SocialIcon href={siteConfig.links.x} label="X" kind="x" />
           <SocialIcon href={siteConfig.links.email} label="Email" kind="email" />
+          <SocialIcon href={siteConfig.links.whatsapp} label="WhatsApp" kind="whatsapp" />
         </div>
       </div>
     </Section>

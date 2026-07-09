@@ -37,7 +37,8 @@
     "secondaryCta": "Get in touch",
     "locationLabel": "Location",
     "location": "MG, Brazil",
-    "emailLabel": "Email"
+    "emailLabel": "Email",
+    "whatsappLabel": "WhatsApp"
   },
   "about": {
     "kicker": "About",
