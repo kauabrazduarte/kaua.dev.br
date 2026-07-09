@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { siteConfig } from "@/lib/site";
 import { ThemedCatLottie } from "@/components/themed-cat-lottie";
@@ -6,6 +5,7 @@ import { NowPlaying } from "@/components/now-playing";
 import { PresenceStatus } from "@/components/presence-status";
 import { RotatingRoles } from "@/components/rotating-roles";
 import { HeroContactInfo } from "@/components/hero-contact-info";
+import { AvatarLightbox } from "@/components/avatar-lightbox";
 
 export function HeroSection() {
   const t = useTranslations("hero");
@@ -20,13 +20,12 @@ export function HeroSection() {
         <PresenceStatus />
 
         <div className="mt-6 flex items-center gap-4">
-          <Image
+          <AvatarLightbox
             src={siteConfig.github.avatar}
             alt={siteConfig.name}
-            width={56}
-            height={56}
+            size={56}
+            thumbClassName="size-12"
             priority
-            className="size-12 shrink-0 rounded-full"
           />
           <div className="min-w-0 leading-snug">
             <h1 className="text-xl font-medium tracking-tight text-foreground sm:text-2xl">

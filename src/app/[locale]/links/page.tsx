@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { ArrowUpRight, Coffee, Mail, QrCode } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { AvatarLightbox } from "@/components/avatar-lightbox";
 
 type Params = Promise<{ locale: string }>;
 
@@ -110,19 +110,25 @@ export default async function LinksPage({ params }: { params: Params }) {
   return (
     <div className="mx-auto w-full max-w-md px-6 py-12 sm:py-16">
       <header className="flex flex-col items-center text-center">
-        <Image
+        <AvatarLightbox
           src={siteConfig.github.avatar}
           alt={siteConfig.name}
-          width={72}
-          height={72}
+          size={72}
+          thumbClassName="size-16"
           priority
-          className="size-16 rounded-full"
         />
         <h1 className="mt-4 text-lg font-medium tracking-tight text-foreground">
           {siteConfig.name}
         </h1>
         <p className="mt-1 font-mono text-xs text-muted-foreground">
-          {siteConfig.handle}
+          <a
+            href={siteConfig.links.x}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-foreground"
+          >
+            {siteConfig.handle}
+          </a>
         </p>
         <p className="mt-3 text-sm text-muted-foreground">{t("subtitle")}</p>
       </header>

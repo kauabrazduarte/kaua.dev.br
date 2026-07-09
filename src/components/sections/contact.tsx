@@ -23,9 +23,14 @@ export function ContactSection() {
           </a>
           <span className="ml-3 text-muted-foreground">
             {t("or")}{" "}
-            <span className="font-mono text-foreground">
+            <a
+              href={siteConfig.links.x}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-foreground transition-colors hover:text-primary"
+            >
               {siteConfig.handle}
-            </span>
+            </a>
           </span>
         </p>
         <div className="-mx-1.5 flex items-center">
