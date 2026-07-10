@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { ContributionCells } from "@/components/contribution-cells";
+import { ScrollXToEnd } from "@/components/scroll-x-to-end";
 import {
   CELL_PX,
   LEVEL_CLASS,
@@ -108,8 +109,9 @@ export async function ContributionGraph() {
   return (
     <div className="mt-5">
       {/* Horizontal scroll on small screens so the calendar always shows
-          its full 53 weeks without squishing the cells. */}
-      <div className="scrollbar-none -mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0">
+          its full 53 weeks without squishing the cells. Starts scrolled to
+          the right edge so the most recent weeks are visible first. */}
+      <ScrollXToEnd className="scrollbar-none -mx-6 overflow-x-auto px-6 sm:mx-0 sm:px-0">
         <div className="inline-block min-w-max">
           {/* Month labels row */}
           <div
@@ -141,7 +143,7 @@ export async function ContributionGraph() {
             ariaLabel={t("graphAria", { count: totalThisYear })}
           />
         </div>
-      </div>
+      </ScrollXToEnd>
 
       {/* Total + legend */}
       <div className="mt-3 flex items-center justify-between text-[11px] text-muted-foreground">
