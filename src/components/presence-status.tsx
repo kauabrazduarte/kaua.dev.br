@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { GradientSpinner } from "@/components/gradient-spinner";
+
+const noop = () => () => {};
 
 // Poll the live presence endpoint. The server caches it for ~15s, so 60s here
 // keeps the dot fresh without hammering the API from every open tab.
@@ -13,6 +16,8 @@ const POLL_MS = 60 * 1000;
 export function PresenceStatus({ className = "" }: { className?: string }) {
   const t = useTranslations("hero");
   const [working, setWorking] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const mounted = useSyncExternalStore(noop, () => true, () => false);
 
   useEffect(() => {
     let cancelled = false;
@@ -26,7 +31,9 @@ export function PresenceStatus({ className = "" }: { className?: string }) {
         // silent — keep the last known state
       }
     }
-    load();
+    load().finally(() => {
+      if (!cancelled) setLoading(false);
+    });
     const id = setInterval(load, POLL_MS);
     return () => {
       cancelled = true;
@@ -39,8 +46,21 @@ export function PresenceStatus({ className = "" }: { className?: string }) {
       {/* Dot stays green + pulsing in both states; only the text changes
           between "coding right now" and "open to chat". */}
       <span className="relative flex size-2" aria-hidden>
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70" />
-        <span className="relative inline-flex size-2 rounded-full bg-success" />
+        {mounted && loading ? (
+          <GradientSpinner
+            rows={2}
+            cols={2}
+            cellSize={3}
+            cellGap={1.5}
+            period={650}
+            label="Verificando presença"
+          />
+        ) : (
+          <>
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success/70" />
+            <span className="relative inline-flex size-2 rounded-full bg-success" />
+          </>
+        )}
       </span>
       <span
         aria-live="polite"

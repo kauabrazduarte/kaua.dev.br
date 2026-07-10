@@ -1,13 +1,14 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { convertToModelMessages, streamText, type UIMessage } from "ai";
+import { convertToModelMessages, streamText, isStepCount, type UIMessage } from "ai";
 import {
   CHAT_MODEL_ID,
   OPENROUTER_BASE_URL,
   buildAgentSystemPrompt,
 } from "@/lib/agent-context";
+import { getChatTools } from "@/lib/chat-tools";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 30;
+export const maxDuration = 45;
 
 const openrouter = createOpenAI({
   baseURL: OPENROUTER_BASE_URL,
@@ -33,8 +34,8 @@ export async function POST(req: Request) {
   } catch {
     return new Response(JSON.stringify({ error: "Invalid request body." }), {
       status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
+      headers: { "Content-Type": "application/json" } },
+    );
   }
 
   const messages = await convertToModelMessages(body.messages);
@@ -43,8 +44,11 @@ export async function POST(req: Request) {
     model: openrouter(CHAT_MODEL_ID),
     system: buildAgentSystemPrompt(),
     messages,
+    tools: getChatTools(),
+    toolChoice: "auto",
     temperature: 0.7,
     maxRetries: 2,
+    stopWhen: isStepCount(6),
   });
 
   return result.toUIMessageStreamResponse();
