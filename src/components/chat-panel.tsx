@@ -819,7 +819,7 @@ function MessageBubble({
                     />
                   ),
                   table: ({ ...props }) => (
-                    <div className="my-2 overflow-x-auto">
+                    <div className="my-2 overflow-x-auto rounded-md border border-border/80 dark:border-border/60">
                       <table
                         {...props}
                         className="w-full border-collapse text-xs"
@@ -829,19 +829,19 @@ function MessageBubble({
                   thead: ({ ...props }) => (
                     <thead
                       {...props}
-                      className="border-b border-border/60"
+                      className="border-b-2 border-border/80 bg-muted/30 dark:border-muted-foreground/30 dark:bg-muted/40"
                     />
                   ),
                   th: ({ ...props }) => (
                     <th
                       {...props}
-                      className="border border-border/40 px-2 py-1 text-left font-semibold"
+                      className="border border-border/80 px-2 py-1 text-left font-semibold dark:border-muted-foreground/25"
                     />
                   ),
                   td: ({ ...props }) => (
                     <td
                       {...props}
-                      className="border border-border/40 px-2 py-1"
+                      className="border border-border/60 px-2 py-1 dark:border-muted-foreground/20"
                     />
                   ),
                   blockquote: ({ ...props }) => (
