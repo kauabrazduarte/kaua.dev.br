@@ -7,6 +7,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Fireworks } from "@/components/fireworks";
+import { ChatProvider } from "@/components/chat-provider";
+import { ChatPanel } from "@/components/chat-panel";
 import { siteConfig } from "@/lib/site";
 import { commitMono } from "@/app/fonts";
 
@@ -321,6 +323,7 @@ export default async function LocaleLayout({
             enableSystem={false}
             disableTransitionOnChange
           >
+            <ChatProvider>
             <div className="relative flex min-h-dvh flex-col">
               {/* Skip link — only visible when focused via keyboard tab.
                   Lets keyboard / screen-reader users jump past the header. */}
@@ -352,7 +355,9 @@ export default async function LocaleLayout({
                 </figcaption>
               </figure>
             </div>
+            <ChatPanel />
             <Fireworks />
+            </ChatProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

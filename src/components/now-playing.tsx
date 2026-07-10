@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { GradientSpinner } from "@/components/gradient-spinner";
 
 interface Track {
   isPlaying: boolean;
@@ -43,6 +44,7 @@ function marqueeDurationSeconds(overflowPx: number): number {
 export function NowPlaying({ className = "" }: { className?: string }) {
   const t = useTranslations("nowPlaying");
   const [track, setTrack] = useState<Track | null>(null);
+  const [loading, setLoading] = useState(true);
   const viewportRef = useRef<HTMLSpanElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const [overflowPx, setOverflowPx] = useState(0);
@@ -65,6 +67,7 @@ export function NowPlaying({ className = "" }: { className?: string }) {
       } catch {
         // silent fail — retry after fallback delay
       }
+      if (!cancelled) setLoading(false);
       if (!cancelled) timeoutId = setTimeout(load, delayS * 1_000);
     }
 
@@ -98,7 +101,26 @@ export function NowPlaying({ className = "" }: { className?: string }) {
     return () => ro.disconnect();
   }, [track]);
 
-  if (!track) return null;
+  if (!track) {
+    if (loading) {
+      return (
+        <div
+          className={`flex items-center gap-2 font-mono text-[11px] text-muted-foreground ${className}`}
+          aria-live="polite"
+        >
+          <GradientSpinner
+            rows={2}
+            cols={2}
+            cellSize={3}
+            cellGap={1.5}
+            period={650}
+            label={t("label")}
+          />
+        </div>
+      );
+    }
+    return null;
+  }
 
   const isOverflowing = overflowPx > 0;
   const duration = marqueeDurationSeconds(overflowPx);

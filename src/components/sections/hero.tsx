@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 import { siteConfig } from "@/lib/site";
-import { ThemedCatLottie } from "@/components/themed-cat-lottie";
+import { CatWithChat } from "@/components/cat-with-chat";
 import { NowPlaying } from "@/components/now-playing";
 import { PresenceStatus } from "@/components/presence-status";
 import { RotatingRoles } from "@/components/rotating-roles";
@@ -80,7 +80,7 @@ export function HeroSection() {
           </div>
 
           <div className="order-first mx-auto w-full max-w-[180px] sm:order-none sm:max-w-none">
-            <ThemedCatLottie className="w-full" />
+            <CatWithChat className="w-full" />
           </div>
         </div>
       </div>

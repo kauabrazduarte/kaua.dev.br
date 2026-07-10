@@ -187,6 +187,15 @@
   animation: spotify-beat 0.85s ease-in-out infinite;
 }
 
+/* Gentle floating bob for the assistant cat's speech bubble. */
+@keyframes cat-bubble-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+.cat-bubble {
+  animation: cat-bubble-bob 3s ease-in-out infinite;
+}
+
 /* Marquee: text scrolls from start → end → back to start, pausing at each
    extreme. Only applied when the content actually overflows its container.
    `--marquee-distance` is set per-instance by the component as a negative

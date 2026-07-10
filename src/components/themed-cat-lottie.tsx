@@ -3,8 +3,22 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
+import { GradientSpinner } from "@/components/gradient-spinner";
 
 const noopSubscribe = () => () => {};
+
+function CatLoadingSpinner() {
+  return (
+    <GradientSpinner
+      rows={4}
+      cols={4}
+      cellSize={4}
+      cellGap={2}
+      period={900}
+      label="Carregando gatinho…"
+    />
+  );
+}
 
 function subscribeReducedMotion(cb: () => void) {
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -18,7 +32,11 @@ const Lottie = dynamic(() => import("lottie-react"), {
 });
 
 function Placeholder() {
-  return <div className="aspect-[280/200] w-full" aria-hidden />;
+  return (
+    <div className="flex aspect-[280/200] w-full items-center justify-center" aria-hidden>
+      <CatLoadingSpinner />
+    </div>
+  );
 }
 
 // Map keyed by the original color's RGB triplet (exact float values from cat.json).
@@ -127,7 +145,11 @@ export function ThemedCatLottie({ className = "" }: { className?: string }) {
   }, [raw, mounted, variant]);
 
   if (!animationData) {
-    return <div className={`aspect-[280/200] w-full ${className}`} aria-hidden />;
+    return (
+      <div className={`flex aspect-[280/200] w-full items-center justify-center ${className}`} aria-hidden>
+        <CatLoadingSpinner />
+      </div>
+    );
   }
 
   return (
