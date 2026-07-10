@@ -381,7 +381,10 @@ export function ChatPanel() {
               <div className="flex items-center gap-2">
                 <span
                   onClick={handleAvatarTripleClick}
-                  className="chat-avatar-glow relative flex size-9 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border/60"
+                  className={cn(
+                    "relative flex size-9 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border/60",
+                    !showEggs && "chat-avatar-glow",
+                  )}
                   aria-hidden
                   title={t("easterEggToggle")}
                 >
