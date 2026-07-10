@@ -114,7 +114,9 @@
   },
   "chat": {
     "title": "Kauã's Assistant",
-    "subtitle": "Ask about Kauã",
+    "subtitle": "Ask about Kauã or send",
+    "subtitlePrefix": "Ask about Kauã or send",
+    "commandsLink": "commands",
     "panelLabel": "Chat with Kauã's assistant",
     "openChat": "Open a conversation with the assistant cat",
     "introHeading": "Hi! I'm the kitty from Kauã's portfolio 👋",

@@ -114,7 +114,9 @@
   },
   "chat": {
     "title": "Kauã 的助手",
-    "subtitle": "向 Kauã 提问",
+    "subtitle": "询问关于 Kauã 或发送",
+    "subtitlePrefix": "询问关于 Kauã 或发送",
+    "commandsLink": "命令",
     "panelLabel": "与 Kauã 的助手聊天",
     "openChat": "打开与助手小猫的对话",
     "introHeading": "嗨！我是 Kauã 作品集里的小猫 👋",

@@ -114,7 +114,9 @@
   },
   "chat": {
     "title": "Asistente de Kauã",
-    "subtitle": "Pregunta sobre Kauã",
+    "subtitle": "Pregunta sobre Kauã o envía",
+    "subtitlePrefix": "Pregunta sobre Kauã o envía",
+    "commandsLink": "comandos",
     "panelLabel": "Chat con el asistente de Kauã",
     "openChat": "Abrir una conversación con el gato asistente",
     "introHeading": "¡Hola! Soy el gatito del portafolio de Kauã 👋",

@@ -224,6 +224,29 @@ export function ChatPanel() {
     el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [messages, lastIsAssistantStreaming]);
 
+  // Trava o scroll da página de fundo quando o chat está aberto — o chat
+  // vira uma "tela nova", sem o fundo rolando junto (especialmente mobile).
+  useEffect(() => {
+    if (!open) return;
+    const body = document.body;
+    const prev = body.style.overflow;
+    body.style.overflow = "hidden";
+    return () => {
+      body.style.overflow = prev;
+    };
+  }, [open]);
+
+  // Ao abrir o chat, rola o histórico de mensagens para o final (padrão de
+  // chats com bastante conversa salva).
+  useEffect(() => {
+    if (!open) return;
+    const raf = requestAnimationFrame(() => {
+      const el = scrollRef.current;
+      if (el) el.scrollTop = el.scrollHeight;
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [open]);
+
   useEffect(() => {
     if (!open) return;
     const raf = requestAnimationFrame(() => inputRef.current?.focus());
@@ -358,24 +381,33 @@ export function ChatPanel() {
               <div className="flex items-center gap-2">
                 <span
                   onClick={handleAvatarTripleClick}
-                  className="flex size-7 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border/60 transition-shadow"
+                  className="chat-avatar-glow relative flex size-9 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border/60"
                   aria-hidden
+                  title={t("easterEggToggle")}
                 >
                   <Image
                     src={siteConfig.github.avatar}
                     alt=""
-                    width={28}
-                    height={28}
+                    width={36}
+                    height={36}
                     className="size-full object-cover"
                     unoptimized
                   />
+                  <span className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-transparent to-primary/30 opacity-0 transition-opacity duration-300 hover:opacity-100" />
                 </span>
                 <div className="min-w-0 leading-tight">
                   <p className="truncate text-sm font-medium text-foreground">
                     {t("title")}
                   </p>
                   <p className="truncate font-mono text-[10px] text-muted-foreground">
-                    {t("subtitle")}
+                    {t("subtitlePrefix")}{" "}
+                    <button
+                      type="button"
+                      onClick={() => setShowEggs(true)}
+                      className="text-primary/70 underline decoration-primary/30 underline-offset-2 transition-colors hover:text-primary hover:decoration-primary"
+                    >
+                      {t("commandsLink")}
+                    </button>
                   </p>
                 </div>
               </div>
@@ -484,21 +516,9 @@ export function ChatPanel() {
                   </button>
                 )}
               </div>
-              <div className="mt-2 flex items-center justify-between">
-                <p className="font-mono text-[10px] text-muted-foreground/60">
-                  {t("disclaimer")}
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setShowEggs((v) => !v)}
-                  className="font-mono text-[10px] text-muted-foreground/40 transition-colors hover:text-foreground"
-                  title={t("easterEggToggle")}
-                  aria-label={t("easterEggToggle")}
-                >
-                  {showEggs ? "× " : ""}
-                  {t("easterEggToggle")}
-                </button>
-              </div>
+              <p className="mt-2 font-mono text-[10px] text-muted-foreground/60">
+                {t("disclaimer")}
+              </p>
             </footer>
           </motion.aside>
         </>
