@@ -38,13 +38,15 @@ export async function POST(req: Request) {
     );
   }
 
-  const messages = await convertToModelMessages(body.messages);
+  const tools = getChatTools();
+
+  const messages = await convertToModelMessages(body.messages, { tools });
 
   const result = streamText({
     model: openrouter(CHAT_MODEL_ID),
     system: buildAgentSystemPrompt(),
     messages,
-    tools: getChatTools(),
+    tools,
     toolChoice: "auto",
     temperature: 0.7,
     maxRetries: 2,

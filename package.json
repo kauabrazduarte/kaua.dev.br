@@ -33,6 +33,7 @@
     "react-dom": "19.2.4",
     "react-markdown": "^10.1.0",
     "redis": "^6.0.0",
+    "remark-gfm": "^4.0.1",
     "slot-text": "^0.3.1",
     "tailwind-merge": "^3.6.0"
   },

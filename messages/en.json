@@ -164,6 +164,32 @@
       "Leave your question",
       "I'm at your service",
       "Meow! Shall we?"
+    ],
+    "easterEggToggle": "Secret commands",
+    "easterEggTitle": "Hidden commands",
+    "easterEggSubtitle": "Ask the kitty to run these actions:",
+    "easterEggHint": "Or type !tools to open this list. Triple-click the avatar to toggle.",
+    "easterEggItems": [
+      { "cmd": "Change theme", "desc": "Light or dark" },
+      { "cmd": "Fire fireworks", "desc": "Burst of fireworks" },
+      { "cmd": "Confetti rain", "desc": "Confetti from the top" },
+      { "cmd": "Rockets", "desc": "Rockets from bottom to top" },
+      { "cmd": "Scroll to a section", "desc": "About, skills, experience…" },
+      { "cmd": "Open a link", "desc": "GitHub, X, WhatsApp, Pix…" },
+      { "cmd": "Change language", "desc": "PT, EN, ES or ZH" },
+      { "cmd": "Copy something", "desc": "Copy text to clipboard" },
+      { "cmd": "Earthquake", "desc": "Shake the page" },
+      { "cmd": "Invert colors", "desc": "Temporary negative mode" },
+      { "cmd": "Widen the chat", "desc": "Resize the panel (desktop)" },
+      { "cmd": "Balloon phrase", "desc": "Make the cat say something" },
+      { "cmd": "Wake the cat", "desc": "Shake the kitty" },
+      { "cmd": "Silence the cat", "desc": "Hide the balloon for a while" },
+      { "cmd": "Glow avatar", "desc": "Make the avatar glow" },
+      { "cmd": "Notification", "desc": "Show a custom toast" },
+      { "cmd": "Pulse element", "desc": "Pulse avatar, cat or header" },
+      { "cmd": "Highlight section", "desc": "Colored border on a section" },
+      { "cmd": "Simulate presence", "desc": "Fake online/offline" },
+      { "cmd": "Go to the cat", "desc": "Scroll to the kitty at the top" }
     ]
   }
 }

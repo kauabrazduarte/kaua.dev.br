@@ -12,8 +12,14 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "motion/react";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport, type UIMessage } from "ai";
+import {
+  DefaultChatTransport,
+  isToolUIPart,
+  getToolName,
+  type UIMessage,
+} from "ai";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useChatStore } from "@/components/chat-provider";
 import { GradientSpinner } from "@/components/gradient-spinner";
 import { dispatchChatToolResult } from "@/lib/chat-tools";
@@ -57,40 +63,60 @@ function persistMessages(messages: UIMessage[]) {
   }
 }
 
+// Extrai apenas o texto das partes da mensagem (ignora tool parts).
 function messageText(message: UIMessage): string {
   let out = "";
-  const toolNamesSeen = new Set<string>();
   for (const part of message.parts) {
     if (part.type === "text") {
-      out += part.text;
-    } else if (
-      (part.type === "tool-invocation" ||
-        part.type.startsWith("tool-")) &&
-      typeof (part as { toolInvocation?: { toolName?: string } })
-        .toolInvocation === "object"
-    ) {
-      const partAny = part as unknown as {
-        toolInvocation?: { toolName: string; state: string };
-      };
-      if (partAny.toolInvocation) {
-        toolNamesSeen.add(partAny.toolInvocation.toolName);
-        if (partAny.toolInvocation.state === "result") {
-          dispatchChatToolResult(
-            partAny.toolInvocation.toolName,
-            undefined,
-          );
-        }
-      }
+      out += (part as { text: string }).text;
     }
   }
   return out;
 }
 
+// Extrai as tool parts de uma mensagem usando os helpers do AI SDK v7.
+function messageToolParts(
+  message: UIMessage,
+): Array<{
+  toolName: string;
+  state: string;
+  input?: unknown;
+  part: UIMessage["parts"][number];
+}> {
+  const parts: Array<{
+    toolName: string;
+    state: string;
+    input?: unknown;
+    part: UIMessage["parts"][number];
+  }> = [];
+  for (const part of message.parts) {
+    if (isToolUIPart(part)) {
+      const toolName = getToolName(
+        part as Parameters<typeof getToolName>[0],
+      );
+      const p = part as unknown as {
+        state: string;
+        input?: unknown;
+      };
+      parts.push({
+        toolName,
+        state: p.state,
+        input: p.input,
+        part,
+      });
+    }
+  }
+  return parts;
+}
+
+// Conjunto de toolCallIds já despachados — evita despachar a mesma
+// tool result múltiplas vezes quando o componente re-renderiza.
+const dispatchedTools = new Set<string>();
+
 export function ChatPanel() {
   const t = useTranslations("chat");
   const { open, setOpen } = useChatStore();
 
-  // Desktop width (persisted). Mobile always uses full width.
   const [width, setWidth] = useState(() => {
     if (typeof window === "undefined") return DEFAULT_W;
     const stored = Number(localStorage.getItem(RESIZE_WIDTH_KEY));
@@ -99,8 +125,9 @@ export function ChatPanel() {
       : DEFAULT_W;
   });
 
-  const isDesktop = typeof window !== "undefined"
-    && window.matchMedia("(min-width: 768px)").matches;
+  const isDesktop =
+    typeof window !== "undefined" &&
+    window.matchMedia("(min-width: 768px)").matches;
 
   const chat = useChat<UIMessage>({
     id: "kaua-assistant",
@@ -109,9 +136,10 @@ export function ChatPanel() {
     onFinish: ({ messages }) => persistMessages(messages as UIMessage[]),
   });
 
-  // Expose width setter so tools (set_chat_width) can resize the panel.
   useEffect(() => {
-    (window as unknown as { __chatSetWidth?: (w: number) => void }).__chatSetWidth = (w: number) => {
+    (
+      window as unknown as { __chatSetWidth?: (w: number) => void }
+    ).__chatSetWidth = (w: number) => {
       const clamped = Math.max(MIN_W, Math.min(MAX_W, Math.round(w)));
       setWidth(clamped);
       try {
@@ -121,33 +149,56 @@ export function ChatPanel() {
       }
     };
     return () => {
-      delete (window as unknown as { __chatSetWidth?: (w: number) => void })
-        .__chatSetWidth;
+      delete (
+        window as unknown as { __chatSetWidth?: (w: number) => void }
+      ).__chatSetWidth;
     };
   }, []);
 
   const { messages, status, sendMessage, setMessages, stop } = chat;
   const [input, setInput] = useState("");
+  const [showEggs, setShowEggs] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Dispatch tool results as they arrive in the message stream.
+  // Easter egg: triplo-clique no avatar do header alterna a lista de comandos.
+  const avatarClickRef = useRef<{ count: number; last: number }>({
+    count: 0,
+    last: 0,
+  });
+  const handleAvatarTripleClick = useCallback(() => {
+    const now = Date.now();
+    const ref = avatarClickRef.current;
+    if (now - ref.last < 500) {
+      ref.count++;
+    } else {
+      ref.count = 1;
+    }
+    ref.last = now;
+    if (ref.count >= 3) {
+      ref.count = 0;
+      setShowEggs((v) => !v);
+    }
+  }, []);
+
+  // Despacha as tool results no cliente quando o estado muda para
+  // "output-available". Roda como efeito colateral (nunca durante render).
   useEffect(() => {
     for (const m of messages) {
-      for (const part of m.parts) {
-        if (part.type === "tool-invocation") {
-          const inv = (
-            part as unknown as {
-              toolInvocation?: {
-                toolName: string;
-                state: string;
-                input?: unknown;
-              };
-            }
-          ).toolInvocation;
-          if (inv && inv.state === "result") {
-            dispatchChatToolResult(inv.toolName, inv.input);
-          }
+      const tools = messageToolParts(m);
+      for (const tool of tools) {
+        const partAny = tool.part as unknown as {
+          toolCallId: string;
+          state: string;
+          input?: unknown;
+        };
+        const dispatchKey = `${m.id}:${partAny.toolCallId}`;
+        if (
+          tool.state === "output-available" &&
+          !dispatchedTools.has(dispatchKey)
+        ) {
+          dispatchedTools.add(dispatchKey);
+          dispatchChatToolResult(tool.toolName, tool.input);
         }
       }
     }
@@ -155,17 +206,17 @@ export function ChatPanel() {
 
   const isBusy = status === "submitted" || status === "streaming";
   const showIntro = messages.length === 0;
-  const lastIsAssistantStreaming =
-    isBusy &&
-    messages.length > 0 &&
-    messages[messages.length - 1].role === "assistant" &&
-    !messages[messages.length - 1].parts.some(
-      (p) => (p as { type: string }).type === "tool-invocation",
-    ) &&
-    messages[messages.length - 1].parts
-      .filter((p) => (p as { type: string }).type === "text")
-      .map((p) => (p as { text?: string }).text ?? "")
-      .join("").length === 0;
+
+  // Verifica se a última mensagem assistente está "pensando" (sem texto e
+  // sem tool parts ainda).
+  const lastIsAssistantStreaming = (() => {
+    if (!isBusy || messages.length === 0) return false;
+    const last = messages[messages.length - 1];
+    if (last.role !== "assistant") return false;
+    const tools = messageToolParts(last);
+    if (tools.length > 0) return false;
+    return messageText(last).length === 0;
+  })();
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -179,16 +230,13 @@ export function ChatPanel() {
     return () => cancelAnimationFrame(raf);
   }, [open]);
 
-  // Push body content right on desktop when panel is open so content doesn't
-  // get hidden behind the overlay (and avoid the mobile keyboard issue).
-  // On mobile, we use a full-screen slide-up panel instead of a side drawer.
-
   const handleReset = useCallback(() => {
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch {
       // ignore
     }
+    dispatchedTools.clear();
     setMessages([]);
   }, [setMessages]);
 
@@ -206,58 +254,69 @@ export function ChatPanel() {
     [input, isBusy, sendMessage],
   );
 
+  // Easter egg: !tools ou !help no input abre a lista de comandos ocultos.
+  const handleInputKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key !== "Enter") return;
+      const trimmed = input.trim().toLowerCase();
+      if (trimmed === "!tools" || trimmed === "!help" || trimmed === "!comandos") {
+        e.preventDefault();
+        setShowEggs(true);
+        setInput("");
+        return;
+      }
+      handleSubmit(e);
+    },
+    [input, handleSubmit],
+  );
+
   // Resize drag handler (desktop).
-  const resizeStartRef = useRef<{ startX: number; startW: number } | null>(null);
+  const resizeStartRef = useRef<{ startX: number; startW: number } | null>(
+    null,
+  );
 
-  const handleResizeStart = useCallback((e: React.PointerEvent) => {
-    e.preventDefault();
-    const startX = e.clientX;
-    const startW = width;
-    resizeStartRef.current = { startX, startW };
-    document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none";
+  const handleResizeStart = useCallback(
+    (e: React.PointerEvent) => {
+      e.preventDefault();
+      const startX = e.clientX;
+      const startW = width;
+      resizeStartRef.current = { startX, startW };
+      document.body.style.cursor = "col-resize";
+      document.body.style.userSelect = "none";
 
-    const onMove = (ev: PointerEvent) => {
-      const s = resizeStartRef.current;
-      if (!s) return;
-      const delta = s.startX - ev.clientX;
-      const next = Math.max(MIN_W, Math.min(MAX_W, s.startW + delta));
-      setWidth(next);
-    };
-    const onUp = () => {
-      if (resizeStartRef.current) {
-        try {
-          localStorage.setItem(
-            RESIZE_WIDTH_KEY,
-            String(
-              Math.max(MIN_W, Math.min(MAX_W, resizeStartRef.current.startW)),
-            ),
-          );
-        } catch {
-          // ignore
-        }
-      }
-      resizeStartRef.current = null;
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
-      // Save final width.
-      try {
-        localStorage.setItem(RESIZE_WIDTH_KEY, String(width));
-      } catch {
-        // ignore
-      }
-    };
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
+      const onMove = (ev: PointerEvent) => {
+        const s = resizeStartRef.current;
+        if (!s) return;
+        const delta = s.startX - ev.clientX;
+        const next = Math.max(MIN_W, Math.min(MAX_W, s.startW + delta));
+        setWidth(next);
+      };
+      const onUp = () => {
+        resizeStartRef.current = null;
+        document.body.style.cursor = "";
+        document.body.style.userSelect = "";
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerup", onUp);
+      };
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+    },
+    [width],
+  );
+
+  // Persiste a largura final no resize.
+  useEffect(() => {
+    try {
+      localStorage.setItem(RESIZE_WIDTH_KEY, String(width));
+    } catch {
+      // ignore
+    }
   }, [width]);
 
   return (
     <AnimatePresence>
       {open ? (
         <>
-          {/* Overlay — desktop: dim background; mobile: full-screen panel. */}
           {isDesktop ? (
             <motion.div
               className="fixed inset-0 z-50 bg-black/25 backdrop-blur-[1px]"
@@ -272,15 +331,12 @@ export function ChatPanel() {
 
           <motion.aside
             className={cn(
-              "fixed z-50 flex flex-col border-border bg-background shadow-2xl sm:border-l",
-              // Mobile: full-screen slide-up; desktop: right drawer.
+              "fixed z-50 flex flex-col border-border bg-background shadow-2xl",
               isDesktop
                 ? "right-0 top-0 h-dvh border-l"
                 : "inset-0 h-dvh w-full border-t",
             )}
-            style={
-              isDesktop ? { width } : undefined
-            }
+            style={isDesktop ? { width } : undefined}
             initial={isDesktop ? { x: "100%" } : { y: "100%" }}
             animate={isDesktop ? { x: 0 } : { y: 0 }}
             exit={isDesktop ? { x: "100%" } : { y: "100%" }}
@@ -289,7 +345,6 @@ export function ChatPanel() {
             aria-modal="true"
             aria-label={t("panelLabel")}
           >
-            {/* Resize handle — desktop only, left edge. */}
             {isDesktop ? (
               <div
                 onPointerDown={handleResizeStart}
@@ -302,7 +357,8 @@ export function ChatPanel() {
             <header className="flex shrink-0 items-center justify-between gap-2 border-b border-border/60 px-4 py-3">
               <div className="flex items-center gap-2">
                 <span
-                  className="flex size-7 items-center justify-center overflow-hidden rounded-full border border-border/60"
+                  onClick={handleAvatarTripleClick}
+                  className="flex size-7 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border/60 transition-shadow"
                   aria-hidden
                 >
                   <Image
@@ -353,8 +409,6 @@ export function ChatPanel() {
               </div>
             </header>
 
-            {/* Message list — this is the scrollable area; the footer is fixed
-                below it so the keyboard only pushes the footer, not the intro. */}
             <div
               ref={scrollRef}
               className="flex-1 overflow-y-auto px-4 py-4"
@@ -371,12 +425,16 @@ export function ChatPanel() {
                     sendMessage({ text: s });
                   }}
                 />
+                <EasterEggPanel
+                  visible={showEggs}
+                  title={t("easterEggTitle")}
+                  subtitle={t("easterEggSubtitle")}
+                  hint={t("easterEggHint")}
+                  items={t.raw("easterEggItems") as Array<{ cmd: string; desc: string }>}
+                  onClose={() => setShowEggs(false)}
+                />
                 {messages.map((m) => (
-                  <MessageBubble
-                    key={m.id}
-                    message={m}
-                    status={status}
-                  />
+                  <MessageBubble key={m.id} message={m} status={status} />
                 ))}
               </div>
             </div>
@@ -387,9 +445,7 @@ export function ChatPanel() {
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleSubmit(e);
-                  }}
+                  onKeyDown={handleInputKeyDown}
                   rows={1}
                   placeholder={t("placeholder")}
                   className="min-h-[38px] max-h-32 flex-1 resize-none rounded-lg border border-border/60 bg-muted/40 px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-border focus:bg-background"
@@ -428,9 +484,21 @@ export function ChatPanel() {
                   </button>
                 )}
               </div>
-              <p className="mt-2 font-mono text-[10px] text-muted-foreground/60">
-                {t("disclaimer")}
-              </p>
+              <div className="mt-2 flex items-center justify-between">
+                <p className="font-mono text-[10px] text-muted-foreground/60">
+                  {t("disclaimer")}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setShowEggs((v) => !v)}
+                  className="font-mono text-[10px] text-muted-foreground/40 transition-colors hover:text-foreground"
+                  title={t("easterEggToggle")}
+                  aria-label={t("easterEggToggle")}
+                >
+                  {showEggs ? "× " : ""}
+                  {t("easterEggToggle")}
+                </button>
+              </div>
             </footer>
           </motion.aside>
         </>
@@ -477,6 +545,94 @@ function ChatIntro({
   );
 }
 
+function EasterEggPanel({
+  visible,
+  title,
+  subtitle,
+  hint,
+  items,
+  onClose,
+}: {
+  visible: boolean;
+  title: string;
+  subtitle: string;
+  hint: string;
+  items: Array<{ cmd: string; desc: string }>;
+  onClose: () => void;
+}) {
+  if (!visible) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
+      className="overflow-hidden rounded-lg border border-primary/20 bg-primary/5"
+    >
+      <div className="flex items-start justify-between gap-2 p-3">
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-foreground">
+            <span className="mr-1" aria-hidden>✨</span>
+            {title}
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="shrink-0 rounded p-0.5 text-muted-foreground transition-colors hover:text-foreground"
+          aria-label="Fechar"
+        >
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <ul className="max-h-48 space-y-0.5 overflow-y-auto px-3 pb-2 scrollbar-none">
+        {items.map((item, i) => (
+          <li
+            key={i}
+            className="flex items-baseline gap-2 text-xs"
+          >
+            <span className="shrink-0 font-mono font-medium text-primary/80">
+              {item.cmd}
+            </span>
+            <span className="text-muted-foreground">— {item.desc}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="border-t border-primary/10 px-3 py-1.5 font-mono text-[10px] text-muted-foreground/60">
+        {hint}
+      </p>
+    </motion.div>
+  );
+}
+
+// Label amigável para o nome da tool.
+const TOOL_LABELS: Record<string, string> = {
+  set_theme: "Alterar tema",
+  toggle_theme: "Alternar tema",
+  fireworks: "Fogos de artifício",
+  confetti_rain: "Chuva de confete",
+  rocket_confetti: "Foguetes de confete",
+  scroll_to: "Rolar até seção",
+  open_link: "Abrir link",
+  change_language: "Mudar idioma",
+  show_toast: "Mostrar notificação",
+  pulse_element: "Pulsar elemento",
+  highlight_section: "Destacar seção",
+  copy_to_clipboard: "Copiar para área de transferência",
+  earthquake: "Terremoto",
+  invert_colors: "Inverter cores",
+  set_chat_width: "Redimensionar chat",
+  trigger_presence: "Simular presença",
+  balloon_phrase: "Frase do balão",
+  shake_cat: "Sacudir gato",
+  hide_balloon: "Esconder balão",
+  glow_avatar: "Brilho no avatar",
+  jump_to_cat: "Ir até o gato",
+};
+
 function MessageBubble({
   message,
   status,
@@ -487,11 +643,7 @@ function MessageBubble({
   const isUser = message.role === "user";
   const isAssistant = message.role === "assistant";
   const text = messageText(message);
-
-  // Detect tool invocations awaiting/done
-  const toolParts = message.parts.filter(
-    (p) => (p as { type: string }).type === "tool-invocation",
-  );
+  const toolParts = messageToolParts(message);
 
   const showThinking =
     isAssistant &&
@@ -528,52 +680,72 @@ function MessageBubble({
           </span>
         ) : null}
 
-        {/* Tool status indicators — visible while tool is running. */}
+        {/* Indicadores de execução de ferramentas — visíveis enquanto a tool
+            roda e também após completar, mostrando o resultado. */}
         {toolParts.length > 0 && (
-          <div className="mb-1 space-y-0.5">
-            {toolParts.map((part, i) => {
-              const inv = (
-                part as unknown as {
-                  toolInvocation?: {
-                    toolName: string;
-                    state: string;
-                  };
-                }
-              ).toolInvocation;
-              if (!inv) return null;
+          <div className="mb-1.5 space-y-1">
+            {toolParts.map((tp, i) => {
+              const label =
+                TOOL_LABELS[tp.toolName] ??
+                tp.toolName.replace(/_/g, " ");
+              const isRunning =
+                tp.state === "input-streaming" ||
+                tp.state === "input-available" ||
+                tp.state === "approval-requested" ||
+                tp.state === "approval-responded";
+              const isDone = tp.state === "output-available";
+              const isError = tp.state === "output-error";
+
               return (
                 <div
-                  key={inv.toolName + i}
-                  className="flex items-center gap-1.5 font-mono text-[10px] text-muted-foreground/70"
+                  key={`${tp.toolName}-${i}`}
+                  className={cn(
+                    "flex items-center gap-2 rounded-md border px-2 py-1 font-mono text-[10px]",
+                    isRunning &&
+                      "border-primary/30 bg-primary/5 text-muted-foreground",
+                    isDone &&
+                      "border-success/30 bg-success/5 text-muted-foreground",
+                    isError &&
+                      "border-destructive/30 bg-destructive/5 text-destructive",
+                  )}
                 >
-                  {inv.state === "input-streaming" ||
-                  inv.state === "input-available" ||
-                  inv.state === "pending" ? (
+                  {isRunning ? (
                     <GradientSpinner
                       rows={2}
                       cols={2}
                       cellSize={2}
                       cellGap={1}
                       period={500}
-                      label="Tool executando"
+                      label="Executando ferramenta"
                     />
-                  ) : null}
-                  <span className="uppercase tracking-wider">
-                    ⚙ {inv.toolName.replace(/_/g, " ")}
+                  ) : (
+                    <span aria-hidden className="text-[11px]">
+                      {isDone ? "✓" : isError ? "✕" : "⚙"}
+                    </span>
+                  )}
+                  <span className="uppercase tracking-wider">{label}</span>
+                  <span className="ml-auto text-muted-foreground/60">
+                    {isRunning
+                      ? "executando…"
+                      : isDone
+                        ? "concluído"
+                        : isError
+                          ? "erro"
+                          : ""}
                   </span>
-                  {inv.state === "result" ? " ✓" : "…"}
                 </div>
               );
             })}
           </div>
         )}
 
-        {/* Markdown content — rendered for assistant messages; plain text for
-            the user bubble to avoid complexity. */}
+        {/* Conteúdo Markdown — renderizado para mensagens do assistente;
+            texto puro para o usuário. */}
         {text ? (
           isAssistant ? (
             <div className="chat-markdown break-words">
               <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
                 components={{
                   a: ({ ...props }) => (
                     <a
@@ -605,7 +777,10 @@ function MessageBubble({
                     );
                   },
                   pre: ({ ...props }) => (
-                    <pre {...props} className="my-1 overflow-x-auto" />
+                    <pre
+                      {...props}
+                      className="my-1 overflow-x-auto text-xs"
+                    />
                   ),
                   ul: ({ ...props }) => (
                     <ul
@@ -618,6 +793,9 @@ function MessageBubble({
                       {...props}
                       className="ml-4 list-decimal space-y-0.5"
                     />
+                  ),
+                  li: ({ ...props }) => (
+                    <li {...props} className="leading-relaxed" />
                   ),
                   p: ({ ...props }) => (
                     <p {...props} className="mb-1 last:mb-0" />
@@ -639,6 +817,50 @@ function MessageBubble({
                       {...props}
                       className="mb-0.5 text-sm font-semibold last:mb-0"
                     />
+                  ),
+                  table: ({ ...props }) => (
+                    <div className="my-2 overflow-x-auto">
+                      <table
+                        {...props}
+                        className="w-full border-collapse text-xs"
+                      />
+                    </div>
+                  ),
+                  thead: ({ ...props }) => (
+                    <thead
+                      {...props}
+                      className="border-b border-border/60"
+                    />
+                  ),
+                  th: ({ ...props }) => (
+                    <th
+                      {...props}
+                      className="border border-border/40 px-2 py-1 text-left font-semibold"
+                    />
+                  ),
+                  td: ({ ...props }) => (
+                    <td
+                      {...props}
+                      className="border border-border/40 px-2 py-1"
+                    />
+                  ),
+                  blockquote: ({ ...props }) => (
+                    <blockquote
+                      {...props}
+                      className="my-1 border-l-2 border-border/60 pl-2 italic text-muted-foreground"
+                    />
+                  ),
+                  hr: ({ ...props }) => (
+                    <hr
+                      {...props}
+                      className="my-2 border-border/40"
+                    />
+                  ),
+                  strong: ({ ...props }) => (
+                    <strong {...props} className="font-semibold" />
+                  ),
+                  em: ({ ...props }) => (
+                    <em {...props} className="italic" />
                   ),
                 }}
               >

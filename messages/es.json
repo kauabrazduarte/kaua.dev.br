@@ -164,6 +164,32 @@
       "Deja tu pregunta",
       "Estoy a tu servicio",
       "¡Miau! ¿Vamos?"
+    ],
+    "easterEggToggle": "Comandos secretos",
+    "easterEggTitle": "Comandos ocultos",
+    "easterEggSubtitle": "Pídele al gatito que ejecute estas acciones:",
+    "easterEggHint": "O escribe !tools para abrir esta lista. Triple clic en el avatar para (des)activar.",
+    "easterEggItems": [
+      { "cmd": "Cambia el tema", "desc": "Claro u oscuro" },
+      { "cmd": "Lanza fuegos", "desc": "Ráfaga de fuegos artificiales" },
+      { "cmd": "Lluvia de confeti", "desc": "Confeti cayendo desde arriba" },
+      { "cmd": "Cohetes", "desc": "Cohetes de abajo hacia arriba" },
+      { "cmd": "Desplázate a una sección", "desc": "Sobre, skills, experiencia…" },
+      { "cmd": "Abre un enlace", "desc": "GitHub, X, WhatsApp, Pix…" },
+      { "cmd": "Cambia el idioma", "desc": "PT, EN, ES o ZH" },
+      { "cmd": "Copia algo", "desc": "Copia texto al portapapeles" },
+      { "cmd": "Terremoto", "desc": "Hace temblar la página" },
+      { "cmd": "Invierte los colores", "desc": "Modo negativo temporal" },
+      { "cmd": "Amplía el chat", "desc": "Redimensiona el panel (escritorio)" },
+      { "cmd": "Frase del globo", "desc": "Haz que el gato diga algo" },
+      { "cmd": "Despierta al gato", "desc": "Sacude al gatito" },
+      { "cmd": "Callar al gato", "desc": "Oculta el globo por un rato" },
+      { "cmd": "Brillo en el avatar", "desc": " Haz que el avatar brille" },
+      { "cmd": "Notificación", "desc": "Muestra un toast personalizado" },
+      { "cmd": "Pulsar elemento", "desc": "Pulsar avatar, gato o header" },
+      { "cmd": "Resaltar sección", "desc": "Borde de color en una sección" },
+      { "cmd": "Simular presencia", "desc": "Online/offline falso" },
+      { "cmd": "Ir al gato", "desc": "Desplázate al gatito arriba" }
     ]
   }
 }

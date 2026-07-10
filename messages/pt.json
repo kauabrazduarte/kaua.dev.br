@@ -164,6 +164,32 @@
       "Deixa sua pergunta",
       "Estou à disposição",
       "Miau! Vamu?"
+    ],
+    "easterEggToggle": "Comandos secretos",
+    "easterEggTitle": "Comandos ocultos",
+    "easterEggSubtitle": "Peça ao gatinho para executar estas ações:",
+    "easterEggHint": "Ou digite !tools para abrir esta lista. Triplo-clique no avatar pra (des)ativar.",
+    "easterEggItems": [
+      { "cmd": "Muda o tema", "desc": "Claro ou escuro" },
+      { "cmd": "Solta fogos", "desc": "Rajada de fogos de artifício" },
+      { "cmd": "Chuva de confete", "desc": "Confete caindo do topo" },
+      { "cmd": "Foguetes", "desc": "Foguetes de baixo pra cima" },
+      { "cmd": "Rola até uma seção", "desc": "Sobre, skills, experiência…" },
+      { "cmd": "Abre um link", "desc": "GitHub, X, WhatsApp, Pix…" },
+      { "cmd": "Muda o idioma", "desc": "PT, EN, ES ou ZH" },
+      { "cmd": "Copia algo", "desc": "Copia texto pra área de transferência" },
+      { "cmd": "Terremoto", "desc": "Faz a página tremer" },
+      { "cmd": "Inverte as cores", "desc": "Modo negativo temporário" },
+      { "cmd": "Aumenta o chat", "desc": "Redimensiona o painel (desktop)" },
+      { "cmd": "Frase do balão", "desc": "Faz o gato dizer algo" },
+      { "cmd": "Acorda o gato", "desc": "Sacode o gatinho" },
+      { "cmd": "Calar o gato", "desc": "Esconde o balão por um tempo" },
+      { "cmd": "Brilho no avatar", "desc": "Faz o avatar brilhar" },
+      { "cmd": "Notificação", "desc": "Mostra um toast personalizado" },
+      { "cmd": "Pulsar elemento", "desc": "Pulsar avatar, gato ou header" },
+      { "cmd": "Destacar seção", "desc": "Borda colorida numa seção" },
+      { "cmd": "Simular presença", "desc": "Online/offline fake" },
+      { "cmd": "Ir até o gato", "desc": "Rola até o gatinho no topo" }
     ]
   }
 }
