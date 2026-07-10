@@ -53,5 +53,9 @@ export async function POST(req: Request) {
     stopWhen: isStepCount(6),
   });
 
-  return result.toUIMessageStreamResponse();
+  return result.toUIMessageStreamResponse({
+    onError: (err) => {
+      return err instanceof Error ? err.message : String(err);
+    },
+  });
 }

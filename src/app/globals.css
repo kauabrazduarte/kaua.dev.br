@@ -196,23 +196,6 @@
   animation: cat-bubble-bob 3s ease-in-out infinite;
 }
 
-/* Animated glow ring for the avatar inside the chat panel header. */
-@keyframes chat-avatar-glow {
-  0%, 100% {
-    box-shadow:
-      0 0 0 0 color-mix(in oklab, var(--primary) 20%, transparent),
-      0 0 6px 1px color-mix(in oklab, var(--primary) 30%, transparent);
-  }
-  50% {
-    box-shadow:
-      0 0 0 3px color-mix(in oklab, var(--primary) 15%, transparent),
-      0 0 14px 3px color-mix(in oklab, var(--primary) 50%, transparent);
-  }
-}
-.chat-avatar-glow {
-  animation: chat-avatar-glow 2.8s ease-in-out infinite;
-}
-
 /* Marquee: text scrolls from start → end → back to start, pausing at each
    extreme. Only applied when the content actually overflows its container.
    `--marquee-distance` is set per-instance by the component as a negative

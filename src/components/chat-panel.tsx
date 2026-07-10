@@ -381,10 +381,7 @@ export function ChatPanel() {
               <div className="flex items-center gap-2">
                 <span
                   onClick={handleAvatarTripleClick}
-                  className={cn(
-                    "relative flex size-9 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border/60",
-                    !showEggs && "chat-avatar-glow",
-                  )}
+                  className="relative flex size-9 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border/60"
                   aria-hidden
                   title={t("easterEggToggle")}
                 >
@@ -499,9 +496,17 @@ export function ChatPanel() {
                   <button
                     type="button"
                     onClick={stop}
-                    className="flex h-[38px] items-center gap-1.5 rounded-lg border border-border/60 px-3 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="flex h-[38px] items-center gap-2 rounded-lg border border-border/60 px-3 text-sm text-muted-foreground transition-colors hover:text-foreground"
                     aria-label={t("stop")}
                   >
+                    <GradientSpinner
+                      cellSize={3}
+                      cellGap={1.5}
+                      rows={2}
+                      cols={2}
+                      period={650}
+                      label={t("stop")}
+                    />
                     <span className="size-2.5 rounded-[2px] bg-current" />
                   </button>
                 ) : (
