@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   const messages = await convertToModelMessages(body.messages, { tools });
 
   const result = streamText({
-    model: openrouter(CHAT_MODEL_ID),
+    model: openrouter.chat(CHAT_MODEL_ID),
     system: buildAgentSystemPrompt(),
     messages,
     tools,

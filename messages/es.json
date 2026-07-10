@@ -135,6 +135,7 @@
     "resetContext": "Reiniciar",
     "resetTitle": "Borrar el chat guardado del navegador",
     "disclaimer": "IA experimental — respuestas del asistente, no del propio Kauã.",
+    "errorPrefix": "Error",
     "greetings": [
       "Habla conmigo",
       "¡Psst! Haz clic aquí",

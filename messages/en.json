@@ -135,6 +135,7 @@
     "resetContext": "Reset",
     "resetTitle": "Clear the saved chat from your browser",
     "disclaimer": "Experimental AI — answers from the assistant, not Kauã himself.",
+    "errorPrefix": "Error",
     "greetings": [
       "Talk to me",
       "Psst! Click here",

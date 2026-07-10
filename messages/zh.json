@@ -135,6 +135,7 @@
     "resetContext": "重置",
     "resetTitle": "清除浏览器中保存的对话",
     "disclaimer": "实验性 AI — 回答来自助手，而非 Kauã 本人的回答。",
+    "errorPrefix": "错误",
     "greetings": [
       "跟我说话",
       "嘘！点这里",

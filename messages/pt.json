@@ -135,6 +135,7 @@
     "resetContext": "Resetar",
     "resetTitle": "Limpar a conversa salva do navegador",
     "disclaimer": "IA experimental — respostas do assistente, não do próprio Kauã.",
+    "errorPrefix": "Erro",
     "greetings": [
       "Fale comigo",
       "Psiti! Clique aqui",

@@ -155,7 +155,7 @@ export function ChatPanel() {
     };
   }, []);
 
-  const { messages, status, sendMessage, setMessages, stop } = chat;
+  const { messages, status, sendMessage, setMessages, stop, error } = chat;
   const [input, setInput] = useState("");
   const [showEggs, setShowEggs] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -471,6 +471,14 @@ export function ChatPanel() {
                 {messages.map((m) => (
                   <MessageBubble key={m.id} message={m} status={status} />
                 ))}
+                {error ? (
+                  <div className="flex justify-start">
+                    <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                      {t("errorPrefix")}{" "}
+                      {error.message || String(error)}
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
 
