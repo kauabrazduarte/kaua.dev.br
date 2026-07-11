@@ -377,8 +377,8 @@ export function ChatPanel() {
               />
             ) : null}
 
-            <header className="flex shrink-0 items-center justify-between gap-2 border-b border-border/60 px-4 py-3">
-              <div className="flex items-center gap-2">
+            <header className="flex shrink-0 items-center justify-between gap-2 overflow-hidden border-b border-border/60 px-4 py-3">
+              <div className="flex min-w-0 flex-1 items-center gap-2">
                 <span
                   onClick={handleAvatarTripleClick}
                   className="relative flex size-9 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-border/60"
@@ -411,11 +411,11 @@ export function ChatPanel() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex shrink-0 items-center gap-1">
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="flex items-center gap-1 rounded-md border border-border/50 px-2 py-1 font-mono text-[10px] text-muted-foreground transition-colors hover:text-foreground"
+                  className="flex shrink-0 items-center gap-1 rounded-md border border-border/50 px-2 py-1 font-mono text-[10px] text-muted-foreground transition-colors hover:text-foreground"
                   title={t("resetTitle")}
                 >
                   {t("resetContext")}
@@ -423,7 +423,7 @@ export function ChatPanel() {
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  className="flex size-7 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                   aria-label={t("close")}
                 >
                   <svg
