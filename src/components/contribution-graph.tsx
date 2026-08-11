@@ -22,11 +22,13 @@ interface Response {
 }
 
 // Public, tokenless API maintained by @jogruber that mirrors the GitHub
-// contributions calendar. We revalidate every 6 hours.
+// contributions calendar. We revalidate every 6 hours. `y=<year>` returns the
+// current calendar year only (Jan 1 → Dec 31) instead of a rolling 12 months.
 async function fetchContributions(): Promise<Response | null> {
   try {
+    const year = new Date().getFullYear();
     const res = await fetch(
-      `https://github-contributions-api.jogruber.de/v4/${siteConfig.github.username}?y=last`,
+      `https://github-contributions-api.jogruber.de/v4/${siteConfig.github.username}?y=${year}`,
       { next: { revalidate: 60 * 60 * 6 } },
     );
     if (!res.ok) return null;
@@ -86,7 +88,12 @@ export async function ContributionGraph() {
   ]);
   if (!data) return null;
 
-  const { weeks, months } = buildWeeks(data.contributions);
+  // Drop future days of the current year so the grid ends on the present week
+  // (the API returns the full Jan 1 → Dec 31 range, with future days empty).
+  const today = new Date().toISOString().slice(0, 10);
+  const days = data.contributions.filter((d) => d.date <= today);
+
+  const { weeks, months } = buildWeeks(days);
   const totalThisYear = Object.values(data.total).reduce((acc, n) => acc + n, 0);
 
   // Pre-format each day's tooltip text on the server, where translations and

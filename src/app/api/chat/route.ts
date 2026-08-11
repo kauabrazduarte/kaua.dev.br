@@ -2,7 +2,7 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { convertToModelMessages, streamText, isStepCount, type UIMessage } from "ai";
 import {
   CHAT_MODEL_ID,
-  OPENROUTER_BASE_URL,
+  OPENCODE_BASE_URL,
   buildAgentSystemPrompt,
 } from "@/lib/agent-context";
 import { getChatTools } from "@/lib/chat-tools";
@@ -10,20 +10,16 @@ import { getChatTools } from "@/lib/chat-tools";
 export const dynamic = "force-dynamic";
 export const maxDuration = 45;
 
-const openrouter = createOpenAI({
-  baseURL: OPENROUTER_BASE_URL,
-  apiKey: process.env.OPEN_ROUTER_API_KEY,
-  headers: {
-    "HTTP-Referer": "https://kaua.dev.br",
-    "X-Title": "kaua.dev.br assistant",
-  },
+const opencode = createOpenAI({
+  baseURL: OPENCODE_BASE_URL,
+  apiKey: process.env.OPENCODE_API_KEY,
 });
 
 export async function POST(req: Request) {
-  const apiKey = process.env.OPEN_ROUTER_API_KEY;
+  const apiKey = process.env.OPENCODE_API_KEY;
   if (!apiKey) {
     return new Response(
-      JSON.stringify({ error: "OPEN_ROUTER_API_KEY is not configured." }),
+      JSON.stringify({ error: "OPENCODE_API_KEY is not configured." }),
       { status: 503, headers: { "Content-Type": "application/json" } },
     );
   }
@@ -43,7 +39,7 @@ export async function POST(req: Request) {
   const messages = await convertToModelMessages(body.messages, { tools });
 
   const result = streamText({
-    model: openrouter.chat(CHAT_MODEL_ID),
+    model: opencode.chat(CHAT_MODEL_ID),
     system: buildAgentSystemPrompt(),
     messages,
     tools,

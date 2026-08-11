@@ -9,7 +9,9 @@ import { SiteFooter } from "@/components/site-footer";
 import { Fireworks } from "@/components/fireworks";
 import { ChatProvider } from "@/components/chat-provider";
 import { ChatPanel } from "@/components/chat-panel";
+import { CustomThemeBanner } from "@/components/custom-theme-banner";
 import { siteConfig } from "@/lib/site";
+import { CUSTOM_THEME_BOOT_SCRIPT } from "@/lib/custom-theme";
 import { commitMono } from "@/app/fonts";
 
 export function generateStaticParams() {
@@ -290,6 +292,12 @@ export default async function LocaleLayout({
       className={commitMono.variable}
     >
       <head>
+        {/* Apply a persisted custom theme before paint so it never flashes the
+            default palette on reload. Mirrors src/lib/custom-theme.ts. */}
+        <script
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: CUSTOM_THEME_BOOT_SCRIPT }}
+        />
         {/* rel="me" links — IndieAuth / Mastodon verification, ties this
             site to the author's external profiles. Also reinforces E-E-A-T. */}
         <link rel="me" href={siteConfig.links.github} />
@@ -333,6 +341,7 @@ export default async function LocaleLayout({
               >
                 {tA11y("skipToContent")}
               </a>
+              <CustomThemeBanner />
               <SiteHeader />
               <main id="main" className="flex-1">{children}</main>
               <SiteFooter />

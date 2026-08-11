@@ -137,6 +137,34 @@ const glowAvatarSchema = z.object({
 
 const jumpToCatSchema = z.object({});
 
+const hexColor = z
+  .string()
+  .regex(
+    /^#?[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$/,
+    "Cor hexadecimal, ex.: #1e293b",
+  );
+
+const customThemeSchema = z.object({
+  name: z
+    .string()
+    .min(1)
+    .max(40)
+    .describe("Nome curto do tema, ex.: 'Oceano', 'Neon Roxo', 'Synthwave'"),
+  background: hexColor.describe("Cor de fundo principal do site (hex)"),
+  foreground: hexColor.describe(
+    "Cor do texto principal (hex) — deve ter bom contraste com o fundo",
+  ),
+  primary: hexColor.describe(
+    "Cor de destaque/acento (links, botões e o gato) (hex)",
+  ),
+  accent: hexColor
+    .optional()
+    .describe("Cor de acento secundária (opcional; derivada se omitida)"),
+  border: hexColor
+    .optional()
+    .describe("Cor das bordas e linhas (opcional; derivada se omitida)"),
+});
+
 // ─────────────────────────────────────────────
 // Tool definitions (server-side)
 // ─────────────────────────────────────────────
@@ -302,6 +330,21 @@ const DEFS = {
       "Rola a página até o gatinho animado no topo do site, caso o visitante queira vê-lo.",
     inputSchema: jumpToCatSchema,
     execute: async () => ok("Rolando até o gato."),
+  }),
+
+  custom_theme: tool({
+    description:
+      "Aplica um tema visual TOTALMENTE customizado ao site inteiro — fundo, texto, cor de destaque, bordas e até o gatinho — a partir de cores hexadecimais. O tema é salvo no navegador e persiste entre visitas; uma faixa no topo permite voltar ao tema original. Use quando o visitante descrever um tema ou paleta (ex.: 'deixa tudo azul oceano', 'tema neon roxo', 'modo synthwave', 'quero um tema rosa pastel').",
+    inputSchema: customThemeSchema,
+    execute: async ({ name }) =>
+      ok(`Tema customizado "${name}" aplicado ao site inteiro.`),
+  }),
+
+  reset_theme: tool({
+    description:
+      "Remove o tema customizado e volta ao tema original (claro/escuro). Use quando o visitante pedir para voltar ao tema normal/original.",
+    inputSchema: z.object({}),
+    execute: async () => ok("Tema original restaurado."),
   }),
 } as const;
 
@@ -639,6 +682,23 @@ export function dispatchChatToolResult(
         behavior: "smooth",
         block: "start",
       });
+      break;
+    }
+    case "custom_theme": {
+      import("@/lib/custom-theme").then((m) => {
+        m.applyCustomTheme({
+          name: String(args.name ?? "Custom"),
+          background: String(args.background ?? "#ffffff"),
+          foreground: String(args.foreground ?? "#111111"),
+          primary: String(args.primary ?? "#6d28d9"),
+          accent: args.accent ? String(args.accent) : undefined,
+          border: args.border ? String(args.border) : undefined,
+        });
+      });
+      break;
+    }
+    case "reset_theme": {
+      import("@/lib/custom-theme").then((m) => m.clearCustomTheme());
       break;
     }
   }

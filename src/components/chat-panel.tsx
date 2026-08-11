@@ -63,6 +63,12 @@ function persistMessages(messages: UIMessage[]) {
   }
 }
 
+// Alguns modelos (ex.: MiMo) vazam tokens de controle do chat template
+// (<|im_end|>, <|im_start|>, <|endoftext|>) no conteúdo. Removemos ao exibir.
+function stripControlTokens(text: string): string {
+  return text.replace(/<\|(?:im_start|im_end|endoftext)\|>/g, "");
+}
+
 // Extrai apenas o texto das partes da mensagem (ignora tool parts).
 function messageText(message: UIMessage): string {
   let out = "";
@@ -71,7 +77,7 @@ function messageText(message: UIMessage): string {
       out += (part as { text: string }).text;
     }
   }
-  return out;
+  return stripControlTokens(out);
 }
 
 // Extrai as tool parts de uma mensagem usando os helpers do AI SDK v7.

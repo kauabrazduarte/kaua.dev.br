@@ -80,10 +80,14 @@
     "following": "Seguindo",
     "stars": "Stars recebidas",
     "contributions": "{count, plural, =0 {Nenhuma contribuição} one {# contribuição} other {# contribuições}}",
-    "graphAria": "{count, number} contribuições no GitHub no último ano",
-    "summary": "{count, number} contribuições · últimos 12 meses",
+    "graphAria": "{count, number} contribuições no GitHub este ano",
+    "summary": "{count, number} contribuições · este ano",
     "legendLess": "menos",
     "legendMore": "mais"
+  },
+  "customTheme": {
+    "bannerText": "Tema customizado “{name}” ativo — clique para",
+    "revert": "voltar ao tema original"
   },
   "contact": {
     "kicker": "Contato",

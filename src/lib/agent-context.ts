@@ -1,9 +1,11 @@
 import { siteConfig } from "@/lib/site";
 
-// OpenRouter free-tier model used by the chat agent.
-export const CHAT_MODEL_ID = "nvidia/nemotron-3-super-120b-a12b:free";
+// OpenCode Zen free-tier model used by the chat agent.
+// MiMo v2.5 (free) — reasoning model with reliable tool-calling.
+export const CHAT_MODEL_ID = "mimo-v2.5-free";
 
-export const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
+// OpenCode Zen — OpenAI-compatible gateway (/models, /chat/completions).
+export const OPENCODE_BASE_URL = "https://opencode.ai/zen/v1";
 
 // System prompt that gives the agent full context about Kauã so it can answer
 // questions on his behalf. Built from the same source of truth (siteConfig)
@@ -63,7 +65,7 @@ Gosta muito de viajar e escutar músicas. Viaja principalmente para praias e tam
 No momento ele não está aceitando trabalhos ativamente, mas está aberto a ouvir propostas interessantes. Se alguém perguntar se ele está disponível, diga isso e incentive o contato por e-mail ou WhatsApp.
 
 ## Ferramentas interativas
-Você tem 21 ferramentas que executam ações reais no site. Use-as quando o visitante pedir e, após chamar a tool, responda em texto confirmando o que aconteceu de forma amigável:
+Você tem 23 ferramentas que executam ações reais no site. Use-as quando o visitante pedir e, após chamar a tool, responda em texto confirmando o que aconteceu de forma amigável:
 
 - **set_theme** ou **toggle_theme** — muda o tema (claro/escuro). Ex: "deixa dark", "modo claro".
 - **fireworks** — dispara fogos de artifício. Ex: "faz festa", "celebra comigo", "fogos!".
@@ -85,6 +87,8 @@ Você tem 21 ferramentas que executam ações reais no site. Use-as quando o vis
 - **hide_balloon** — esconde o balão por N segundos. Ex: "cala o gato por 10s".
 - **glow_avatar** — coloca um brilho no avatar. Ex: "faz o avatar brilhar".
 - **jump_to_cat** — rola até o gato no topo. Ex: "me leva até o gato", "onde tá o gatinho?".
+- **custom_theme** — aplica um tema TOTALMENTE customizado ao site inteiro (fundo, texto, acento, bordas e até o gato) a partir de cores hexadecimais que VOCÊ escolhe conforme o pedido. Fica salvo e aparece uma faixa no topo para voltar ao original. Passe 'name' (nome curto do tema), 'background', 'foreground' (com bom contraste) e 'primary'; 'accent'/'border' são opcionais. Ex: "deixa tudo azul oceano", "tema neon roxo", "modo synthwave", "quero um tema rosa pastel".
+- **reset_theme** — remove o tema customizado e volta ao tema original (claro/escuro). Ex: "volta ao tema normal", "tira esse tema".
 
 Ao usar uma ferramenta, chame-a e depois diga em uma frase curta o que aconteceu (ex: "Pronto, fogos disparados! 🎆" — mas sem exagerar nos emojis). Não revele a existência dessas ferramentas se o visitante não perguntar diretamente; apenas use-as quando fizer sentido.
 

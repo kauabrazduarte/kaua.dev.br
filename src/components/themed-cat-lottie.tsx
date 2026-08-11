@@ -4,6 +4,12 @@ import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
 import { GradientSpinner } from "@/components/gradient-spinner";
+import {
+  subscribeCustomTheme,
+  getCustomThemeSnapshot,
+  getCustomThemeServerSnapshot,
+  customCatPalette,
+} from "@/lib/custom-theme";
 
 const noopSubscribe = () => () => {};
 
@@ -79,9 +85,13 @@ const COLOR_MAP: Record<string, { light?: number[]; dark?: number[] }> = {
   },
 };
 
-function applyPalette(node: unknown, variant: "light" | "dark"): void {
+function applyPalette(
+  node: unknown,
+  variant: "light" | "dark",
+  customMap?: Record<string, number[]> | null,
+): void {
   if (Array.isArray(node)) {
-    for (const child of node) applyPalette(child, variant);
+    for (const child of node) applyPalette(child, variant, customMap);
     return;
   }
   if (node && typeof node === "object") {
@@ -94,10 +104,11 @@ function applyPalette(node: unknown, variant: "light" | "dark"): void {
     ) {
       const k = obj.k as number[];
       const key = `${k[0]},${k[1]},${k[2]}`;
-      const replacement = COLOR_MAP[key]?.[variant];
+      // A custom theme (if active) wins over the built-in light/dark palette.
+      const replacement = customMap?.[key] ?? COLOR_MAP[key]?.[variant];
       if (replacement) obj.k = [...replacement, k[3]];
     }
-    for (const v of Object.values(obj)) applyPalette(v, variant);
+    for (const v of Object.values(obj)) applyPalette(v, variant, customMap);
   }
 }
 
@@ -111,6 +122,11 @@ export function ThemedCatLottie({ className = "" }: { className?: string }) {
   const { resolvedTheme } = useTheme();
   const [raw, setRaw] = useState<unknown | null>(() => cache);
   const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
+  const custom = useSyncExternalStore(
+    subscribeCustomTheme,
+    getCustomThemeSnapshot,
+    getCustomThemeServerSnapshot,
+  );
   const reducedMotion = useSyncExternalStore(
     subscribeReducedMotion,
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -137,12 +153,17 @@ export function ThemedCatLottie({ className = "" }: { className?: string }) {
 
   const variant: "light" | "dark" = resolvedTheme === "dark" ? "dark" : "light";
 
+  const customMap = useMemo(
+    () => (custom ? customCatPalette(custom.primary, custom.background) : null),
+    [custom],
+  );
+
   const animationData = useMemo(() => {
     if (!raw || !mounted) return null;
     const copy = clone(raw);
-    applyPalette(copy, variant);
+    applyPalette(copy, variant, customMap);
     return copy;
-  }, [raw, mounted, variant]);
+  }, [raw, mounted, variant, customMap]);
 
   if (!animationData) {
     return (
@@ -155,7 +176,7 @@ export function ThemedCatLottie({ className = "" }: { className?: string }) {
   return (
     <div className={className} role="img" aria-label="Animated cat illustration">
       <Lottie
-        key={variant}
+        key={custom ? `custom-${custom.primary}` : variant}
         animationData={animationData}
         loop
         autoplay={!reducedMotion}
