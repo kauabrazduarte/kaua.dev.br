@@ -140,6 +140,8 @@
     "resetTitle": "Limpar a conversa salva do navegador",
     "disclaimer": "IA experimental — respostas do assistente, não do próprio Kauã.",
     "errorPrefix": "Erro",
+    "thinking": "Pensando…",
+    "reasoning": "Ver raciocínio",
     "greetings": [
       "Fale comigo",
       "Psiti! Clique aqui",

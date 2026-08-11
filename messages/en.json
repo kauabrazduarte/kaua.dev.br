@@ -140,6 +140,8 @@
     "resetTitle": "Clear the saved chat from your browser",
     "disclaimer": "Experimental AI — answers from the assistant, not Kauã himself.",
     "errorPrefix": "Error",
+    "thinking": "Thinking…",
+    "reasoning": "View reasoning",
     "greetings": [
       "Talk to me",
       "Psst! Click here",

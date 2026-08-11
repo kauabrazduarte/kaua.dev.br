@@ -1,11 +1,19 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { convertToModelMessages, streamText, isStepCount, type UIMessage } from "ai";
+import {
+  convertToModelMessages,
+  streamText,
+  wrapLanguageModel,
+  extractReasoningMiddleware,
+  isStepCount,
+  type UIMessage,
+} from "ai";
 import {
   CHAT_MODEL_ID,
   OPENCODE_BASE_URL,
   buildAgentSystemPrompt,
 } from "@/lib/agent-context";
 import { getChatTools } from "@/lib/chat-tools";
+import { reasoningFetch } from "@/lib/opencode-reasoning";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 45;
@@ -13,6 +21,15 @@ export const maxDuration = 45;
 const opencode = createOpenAI({
   baseURL: OPENCODE_BASE_URL,
   apiKey: process.env.OPENCODE_API_KEY,
+  // Folds OpenCode Zen's separate `reasoning` field into <think>…</think>.
+  fetch: reasoningFetch,
+});
+
+// Reasoning models (mimo-v2.5-free) stream their thinking; extract it into
+// proper reasoning parts so the UI can show it live.
+const chatModel = wrapLanguageModel({
+  model: opencode.chat(CHAT_MODEL_ID),
+  middleware: extractReasoningMiddleware({ tagName: "think" }),
 });
 
 export async function POST(req: Request) {
@@ -39,7 +56,7 @@ export async function POST(req: Request) {
   const messages = await convertToModelMessages(body.messages, { tools });
 
   const result = streamText({
-    model: opencode.chat(CHAT_MODEL_ID),
+    model: chatModel,
     system: buildAgentSystemPrompt(),
     messages,
     tools,
@@ -50,6 +67,7 @@ export async function POST(req: Request) {
   });
 
   return result.toUIMessageStreamResponse({
+    sendReasoning: true,
     onError: (err) => {
       return err instanceof Error ? err.message : String(err);
     },

@@ -140,6 +140,8 @@
     "resetTitle": "Borrar el chat guardado del navegador",
     "disclaimer": "IA experimental — respuestas del asistente, no del propio Kauã.",
     "errorPrefix": "Error",
+    "thinking": "Pensando…",
+    "reasoning": "Ver razonamiento",
     "greetings": [
       "Habla conmigo",
       "¡Psst! Haz clic aquí",

@@ -69,11 +69,22 @@ function stripControlTokens(text: string): string {
   return text.replace(/<\|(?:im_start|im_end|endoftext)\|>/g, "");
 }
 
-// Extrai apenas o texto das partes da mensagem (ignora tool parts).
+// Extrai apenas o texto das partes da mensagem (ignora tool/reasoning parts).
 function messageText(message: UIMessage): string {
   let out = "";
   for (const part of message.parts) {
     if (part.type === "text") {
+      out += (part as { text: string }).text;
+    }
+  }
+  return stripControlTokens(out);
+}
+
+// Extrai o raciocínio (thinking) que o modelo emite antes da resposta final.
+function messageReasoning(message: UIMessage): string {
+  let out = "";
+  for (const part of message.parts) {
+    if (part.type === "reasoning") {
       out += (part as { text: string }).text;
     }
   }
@@ -474,6 +485,27 @@ export function ChatPanel() {
                 {messages.map((m) => (
                   <MessageBubble key={m.id} message={m} status={status} />
                 ))}
+                {/* Indicador imediato: aparece assim que a mensagem é enviada,
+                    antes de a resposta do assistente existir no array. */}
+                {isBusy && messages[messages.length - 1]?.role === "user" ? (
+                  <div className="flex justify-start">
+                    <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-border/50 bg-muted/40 px-3 py-2">
+                      <span className="flex items-center gap-2 py-0.5 text-muted-foreground">
+                        <GradientSpinner
+                          cellSize={3}
+                          cellGap={1.5}
+                          rows={2}
+                          cols={2}
+                          period={650}
+                          label={t("thinking")}
+                        />
+                        <span className="font-mono text-[11px]">
+                          {t("thinking")}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                ) : null}
                 {error ? (
                   <div className="flex justify-start">
                     <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -682,14 +714,19 @@ function MessageBubble({
   message: UIMessage;
   status: ReturnType<typeof useChat<UIMessage>>["status"];
 }) {
+  const t = useTranslations("chat");
   const isUser = message.role === "user";
   const isAssistant = message.role === "assistant";
   const text = messageText(message);
+  const reasoning = messageReasoning(message);
   const toolParts = messageToolParts(message);
 
+  // Spinner base só enquanto NADA chegou ainda (nem raciocínio). Assim que o
+  // raciocínio começa a streamar, ele próprio vira o indicador "pensando".
   const showThinking =
     isAssistant &&
     text.length === 0 &&
+    reasoning.length === 0 &&
     toolParts.length === 0 &&
     (status === "submitted" || status === "streaming");
 
@@ -720,6 +757,38 @@ function MessageBubble({
             />
             <span className="font-mono text-[11px]">…</span>
           </span>
+        ) : null}
+
+        {/* Raciocínio do agente. Enquanto a resposta não começou, mostra o
+            pensamento streamando ao vivo; depois, colapsa num "ver raciocínio". */}
+        {reasoning ? (
+          text.length === 0 ? (
+            <div className="mb-1.5 rounded-md border border-primary/20 bg-primary/5 px-2 py-1.5">
+              <div className="mb-1 flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                <GradientSpinner
+                  rows={2}
+                  cols={2}
+                  cellSize={2}
+                  cellGap={1}
+                  period={500}
+                  label={t("thinking")}
+                />
+                <span>{t("thinking")}</span>
+              </div>
+              <div className="scrollbar-none max-h-40 overflow-y-auto whitespace-pre-wrap break-words font-mono text-[11px] leading-relaxed text-muted-foreground/80">
+                {reasoning}
+              </div>
+            </div>
+          ) : (
+            <details className="mb-1.5">
+              <summary className="cursor-pointer list-none font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70 transition-colors hover:text-muted-foreground">
+                <span aria-hidden>💭</span> {t("reasoning")}
+              </summary>
+              <div className="scrollbar-none mt-1 max-h-40 overflow-y-auto whitespace-pre-wrap break-words rounded-md border border-border/40 bg-muted/30 px-2 py-1.5 font-mono text-[11px] leading-relaxed text-muted-foreground/80">
+                {reasoning}
+              </div>
+            </details>
+          )
         ) : null}
 
         {/* Indicadores de execução de ferramentas — visíveis enquanto a tool
