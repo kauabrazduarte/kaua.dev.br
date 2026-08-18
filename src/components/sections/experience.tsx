@@ -58,7 +58,7 @@ const EXPERIENCES: Experience[] = [
   },
   {
     company: "Marcos Jocober",
-    aka: "The Deed Hunter",
+    aka: "TDHW",
     url: "https://marcosjocober.com",
     role: {
       pt: "Desenvolvedor Full-Stack · Infra",

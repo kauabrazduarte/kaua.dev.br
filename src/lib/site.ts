@@ -70,7 +70,7 @@ export const siteConfig = {
     avatar: "/avatar.png",
   },
   workplaces: [
-    { name: "Marcos Jocober", aka: "The Deed Hunter" },
+    { name: "Marcos Jocober", aka: "TDHW" },
     { name: "PrecoCerto", aka: null },
   ],
 } as const;

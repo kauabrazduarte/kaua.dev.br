@@ -51,7 +51,7 @@ Gosta muito de viajar e escutar músicas. Viaja principalmente para praias e tam
 
 ## Experiência profissional
 1. Melo Advogados — Tech Lead · Full-Stack (2026 — atual): lidera o time de desenvolvimento, divide responsabilidades entre os membros e atua diretamente no código quando necessário. Stack: Next.js, TypeScript, Python, Bun, Claude Code, Google Cloud Run, Google Workspace.
-2. Marcos Jocober / "The Deed Hunter" (https://marcosjocober.com) — Desenvolvedor Full-Stack · Infra (2026 — atual): único dev da empresa, responsável por toda a área de tecnologia — servidor dedicado, painéis de controle, cPanels. Stack: Bun, Node.js, TypeScript, Next.js, Claude Code, VPS, MacMini (OpenClaw), Dokploy.
+2. Marcos Jocober / "The Deed Hunter (TDHW)" (https://marcosjocober.com) — Desenvolvedor Full-Stack · Infra (2026 — atual): único dev da empresa, responsável por toda a área de tecnologia — servidor dedicado, painéis de controle, cPanels. Stack: Bun, Node.js, TypeScript, Next.js, Claude Code, VPS, MacMini (OpenClaw), Dokploy.
 3. PrecoCerto (https://precocerto.com) — Desenvolvedor Web (2026 — atual): único dev do projeto, recebe demandas diretamente do dono e as executa — manutenção do site em produção, novas features, criou o sistema completo. Stack: Next.js, TypeScript, Tailwind, Claude Code, VPS, Easypanel.
 4. Luxfy — Desenvolvedor Full-Stack (2025): criou o site completo com integração de WhatsApp e IAs.
 5. SapiencIA — Desenvolvedor Front-End (2025): site + integrações com sistemas de correção de redações e português.
