@@ -34,16 +34,22 @@ const EXPERIENCES: Experience[] = [
     current: true,
     highlights: [
       {
+        pt: "Foco em integrações de IA aplicadas ao fluxo jurídico.",
+        en: "Focused on AI integrations applied to the legal workflow.",
+        es: "Enfoque en integraciones de IA aplicadas al flujo jurídico.",
+        zh: "专注于应用于法律工作流程的 AI 集成。",
+      },
+      {
+        pt: "Adaptação e manutenção de websites.",
+        en: "Adapting and maintaining websites.",
+        es: "Adaptación y mantenimiento de sitios web.",
+        zh: "网站的适配与维护。",
+      },
+      {
         pt: "Lidera o time de desenvolvimento, dividindo responsabilidades entre os membros.",
         en: "Leads the development team, distributing responsibilities among its members.",
         es: "Lidera el equipo de desarrollo, distribuyendo responsabilidades entre los miembros.",
         zh: "带领开发团队，在成员间分配职责。",
-      },
-      {
-        pt: "Atua diretamente no código quando necessário.",
-        en: "Jumps into the code directly when needed.",
-        es: "Interviene directamente en el código cuando es necesario.",
-        zh: "需要时亲自参与编码。",
       },
     ],
     tags: [
@@ -75,16 +81,16 @@ const EXPERIENCES: Experience[] = [
     current: true,
     highlights: [
       {
-        pt: "Único desenvolvedor da empresa, responsável por toda a área de tecnologia.",
-        en: "Sole developer at the company, responsible for the entire technology area.",
-        es: "Único desarrollador de la empresa, responsable de toda el área de tecnología.",
-        zh: "公司唯一的开发者，负责整个技术领域。",
+        pt: "Foco em automações de processos com integrações de IA e APIs.",
+        en: "Focused on process automation with AI integrations and APIs.",
+        es: "Enfoque en automatización de procesos con integraciones de IA y APIs.",
+        zh: "专注于通过 AI 和 API 集成实现流程自动化。",
       },
       {
-        pt: "Configuração e manutenção de servidor dedicado, painéis de controle e cPanels.",
-        en: "Setting up and maintaining a dedicated server, control panels, and cPanels.",
-        es: "Configuración y mantenimiento de servidor dedicado, paneles de control y cPanels.",
-        zh: "搭建和维护专用服务器、控制面板与 cPanel。",
+        pt: "Construção e manutenção de ferramentas internas em Next.js e Bun.",
+        en: "Building and maintaining internal tools in Next.js and Bun.",
+        es: "Construcción y mantenimiento de herramientas internas en Next.js y Bun.",
+        zh: "构建和维护基于 Next.js 和 Bun 的内部工具。",
       },
     ],
     tags: [
@@ -116,16 +122,16 @@ const EXPERIENCES: Experience[] = [
     current: true,
     highlights: [
       {
-        pt: "Único desenvolvedor do projeto, recebendo demandas diretamente do dono.",
-        en: "Sole developer on the project, receiving demands directly from the owner.",
-        es: "Único desarrollador del proyecto, recibiendo demandas directamente del dueño.",
-        zh: "项目唯一的开发者，直接从老板处接收需求。",
+        pt: "Manutenção do website em produção.",
+        en: "Maintenance of the production website.",
+        es: "Mantenimiento del sitio web en producción.",
+        zh: "维护生产环境的网站。",
       },
       {
-        pt: "Execução das demandas: manutenção do site em produção e novas features.",
-        en: "Executing those demands: maintaining the production site and building new features.",
-        es: "Ejecución de las demandas: mantenimiento del sitio en producción y nuevas funcionalidades.",
-        zh: "执行需求：维护生产环境网站并开发新功能。",
+        pt: "Criando novas features.",
+        en: "Building new features.",
+        es: "Creando nuevas funcionalidades.",
+        zh: "开发新功能。",
       },
       {
         pt: "Criação do sistema completo.",
