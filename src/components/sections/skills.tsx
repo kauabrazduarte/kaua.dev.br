@@ -27,6 +27,7 @@ import {
   Electron,
 } from "developer-icons";
 import { Section } from "@/components/section";
+import { Zed, OpenCode } from "@/components/icons/custom-icons";
 
 type Category = "languages" | "frontend" | "backend" | "devops" | "ai";
 
@@ -71,9 +72,11 @@ const SKILLS: Skill[] = [
   { name: "GitHub", category: "devops", Icon: GitHubDark, tint: "fill" },
   { name: "Linux", category: "devops", Icon: Linux },
 
+  { name: "Zed", category: "ai", Icon: Zed, tint: "fill" },
+  { name: "Figma", category: "ai", Icon: Figma },
   { name: "Claude", category: "ai", Icon: AnthropicBasicLight, DarkIcon: AnthropicBasicDark, tint: "fill" },
   { name: "Codex", category: "ai", Icon: OpenAI, tint: "fill" },
-  { name: "Figma", category: "ai", Icon: Figma },
+  { name: "OpenCode", category: "ai", Icon: OpenCode, tint: "fill" },
 ];
 
 const ORDER: Category[] = ["languages", "frontend", "backend", "devops", "ai"];
