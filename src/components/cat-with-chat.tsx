@@ -1,7 +1,6 @@
 "use client";
 
 import { useChatStore } from "@/components/chat-provider";
-import { ChatBalloon } from "@/components/chat-balloon";
 import { ThemedCatLottie } from "@/components/themed-cat-lottie";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
@@ -20,7 +19,6 @@ export function CatWithChat({ className = "" }: { className?: string }) {
       >
         <ThemedCatLottie className="w-full" />
       </button>
-      <ChatBalloon />
     </div>
   );
 }

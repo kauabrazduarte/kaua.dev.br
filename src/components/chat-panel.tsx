@@ -700,9 +700,7 @@ const TOOL_LABELS: Record<string, string> = {
   invert_colors: "Inverter cores",
   set_chat_width: "Redimensionar chat",
   trigger_presence: "Simular presença",
-  balloon_phrase: "Frase do balão",
   shake_cat: "Sacudir gato",
-  hide_balloon: "Esconder balão",
   glow_avatar: "Brilho no avatar",
   jump_to_cat: "Ir até o gato",
 };

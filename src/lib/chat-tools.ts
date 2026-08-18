@@ -100,13 +100,6 @@ const triggerPresenceSchema = z.object({
     .describe("Fake presence state"),
 });
 
-const balloonPhraseSchema = z.object({
-  phrase: z
-    .string()
-    .max(60)
-    .describe("Custom phrase to show in the cat balloon"),
-});
-
 const shakeCatSchema = z.object({});
 
 const rocketConfettiSchema = z.object({
@@ -116,15 +109,6 @@ const rocketConfettiSchema = z.object({
     .max(10)
     .default(4)
     .describe("Number of rocket launches"),
-});
-
-const hideBalloonSchema = z.object({
-  seconds: z
-    .number()
-    .min(1)
-    .max(60)
-    .default(10)
-    .describe("Seconds to hide the balloon"),
 });
 
 const glowAvatarSchema = z.object({
@@ -295,27 +279,11 @@ const DEFS = {
       ok(`Presença simulada: ${state}.`),
   }),
 
-  balloon_phrase: tool({
-    description:
-      "Define uma frase personalizada no balão do gato. Use quando o visitante pedir para o gato dizer algo específico.",
-    inputSchema: balloonPhraseSchema,
-    execute: async ({ phrase }) =>
-      ok(`Frase do balão definida: "${phrase}"`),
-  }),
-
   shake_cat: tool({
     description:
       "Faz o gatinho animado sacudir rapidamente. Use quando o visitante pedir para 'acordar' o gato ou dar um 'tremor' nele.",
     inputSchema: shakeCatSchema,
     execute: async () => ok("Gato sacudido."),
-  }),
-
-  hide_balloon: tool({
-    description:
-      "Esconde o balão do gato por alguns segundos. Use quando o visitante pedir para 'calar' o gato temporariamente.",
-    inputSchema: hideBalloonSchema,
-    execute: async ({ seconds }) =>
-      ok(`Balão escondido por ${seconds}s.`),
   }),
 
   glow_avatar: tool({
@@ -658,19 +626,8 @@ export function dispatchChatToolResult(
       setGlobalKV("presence", state);
       break;
     }
-    case "balloon_phrase": {
-      const phrase = String(args.phrase ?? "");
-      setGlobalKV("balloon-phrase", phrase);
-      break;
-    }
     case "shake_cat": {
       shakeCat();
-      break;
-    }
-    case "hide_balloon": {
-      const seconds = Number(args.seconds ?? 10);
-      setGlobalKV("balloon-hidden", "1");
-      setTimeout(() => setGlobalKV("balloon-hidden", "0"), seconds * 1000);
       break;
     }
     case "glow_avatar": {
