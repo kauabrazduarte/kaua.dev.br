@@ -25,8 +25,8 @@ const opencode = createOpenAI({
   fetch: reasoningFetch,
 });
 
-// Reasoning models (mimo-v2.5-free) stream their thinking; extract it into
-// proper reasoning parts so the UI can show it live.
+// Reasoning models stream their thinking; extract it into proper reasoning
+// parts so the UI can show it live.
 const chatModel = wrapLanguageModel({
   model: opencode.chat(CHAT_MODEL_ID),
   middleware: extractReasoningMiddleware({ tagName: "think" }),

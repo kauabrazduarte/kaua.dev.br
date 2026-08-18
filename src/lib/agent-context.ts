@@ -1,8 +1,8 @@
 import { siteConfig } from "@/lib/site";
 
-// OpenCode Zen free-tier model used by the chat agent.
-// MiMo v2.5 (free) — reasoning model with reliable tool-calling.
-export const CHAT_MODEL_ID = "mimo-v2.5-free";
+// OpenCode Zen model used by the chat agent.
+// GPT-5.4 Nano — default model.
+export const CHAT_MODEL_ID = "gpt-5.4-nano";
 
 // OpenCode Zen — OpenAI-compatible gateway (/models, /chat/completions).
 export const OPENCODE_BASE_URL = "https://opencode.ai/zen/v1";
