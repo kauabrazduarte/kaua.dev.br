@@ -6,10 +6,16 @@ const NOW_PLAYING_URL = "https://api.spotify.com/v1/me/player/currently-playing"
 
 export const SPOTIFY_REDIRECT_PATH = "/api/spotify/callback";
 export const SPOTIFY_SCOPES =
-  "user-read-currently-playing user-read-playback-state user-read-recently-played";
+  "user-read-currently-playing user-read-playback-state user-read-recently-played playlist-read-private";
 
 const RECENTLY_PLAYED_URL =
   "https://api.spotify.com/v1/me/player/recently-played?limit=1";
+const PLAYLISTS_URL =
+  "https://api.spotify.com/v1/me/playlists?limit=50&fields=items(id,name),next";
+
+// Cache lifetime for the whitelist (playlist listing + track listing calls).
+// Playlist contents change rarely, so a few minutes of staleness is fine.
+const WHITELIST_REVALIDATE_S = 300;
 
 // Idle poll cadence (seconds) used as revalidateIn when the shown track isn't
 // actively playing, so the client keeps checking for a fresh now-playing.
@@ -26,54 +32,10 @@ export interface NowPlaying {
   revalidateIn: number;
 }
 
-// Tracks whose title, album, or artist contains any of these terms should
-// never surface on the site. Matching is a plain "contains": each term and the
-// haystack are normalized (lowercase, accents stripped, any non-alphanumeric —
-// including punctuation — collapsed into single spaces), then we check for the
-// term anywhere in the string. No word boundaries — "chata" matches "Chata"
-// and "Enchatada" alike.
-const BLOCKLIST: string[] = [
-  "bxkq",
-  "sayfalse",
-  "belinda",
-  "icedmane",
-  "hwungii",
-  "qmiir",
-  "dj zarek",
-  "irokz",
-  "zaylo",
-  "dr mob",
-  "y3llavision",
-  "dj asul",
-  "trvxer",
-  "enmity",
-  "kryd",
-  "gigi perez",
-  "sawano",
-  "oblxkq",
-  "creepy nuts",
-  "celine",
-  "chata",
-  "visual arts",
-  "samuel kim",
-  "rosa walton",
-  "i like the way",
-  "sex drugs",
-];
-
-function normalize(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "") // strip combining diacritical marks
-    .replace(/[^a-z0-9]+/g, " ")      // any non-letter becomes a single space
-    .trim();
-}
-
-function isBlocked(...fields: (string | undefined)[]): boolean {
-  const haystack = normalize(fields.filter(Boolean).join(" "));
-  return BLOCKLIST.some((blocked) => haystack.includes(blocked));
-}
+// Only tracks that appear in one of the user's "public-safe" playlists may
+// surface on the site. A playlist counts as public-safe when its ID is one
+// of these (exact match against playlist.id).
+const WHITELIST_PLAYLIST_MARKERS = ["0LwgY019rzCABbE4zhcZdw", "0BOFXiad46kbwmHxdCE7PN", "0tSn8GBISzCAzdegqpOHM1", "2XFpL5TXCaHBua0oXcdN3c"];
 
 function basicAuthHeader(): string | null {
   const id = process.env.SPOTIFY_CLIENT_ID;
@@ -109,6 +71,7 @@ async function getAccessToken(): Promise<string | null> {
 // Shape of a Spotify track object, shared by the currently-playing and
 // recently-played endpoints.
 type TrackItem = {
+  id: string;
   name: string;
   duration_ms: number;
   external_urls: { spotify: string };
@@ -116,16 +79,67 @@ type TrackItem = {
   album: { name: string; images: { url: string; height: number; width: number }[] };
 };
 
+// Fetch the set of track IDs belonging to the user's whitelist playlists
+// (id matches an entry in WHITELIST_PLAYLIST_MARKERS). Paginates through
+// both the playlist listing and each matching playlist's tracks. Cached via
+// Next's data cache since playlist contents rarely change.
+async function getWhitelistedTrackIds(token: string): Promise<Set<string>> {
+  const headers = { Authorization: `Bearer ${token}` };
+  const fetchOpts = {
+    headers,
+    next: { revalidate: WHITELIST_REVALIDATE_S, tags: ["spotify-whitelist"] },
+  };
+
+  const matchingPlaylistIds: string[] = [];
+  let playlistsUrl: string | null = PLAYLISTS_URL;
+  while (playlistsUrl) {
+    const res = await fetch(playlistsUrl, fetchOpts);
+    if (!res.ok) break;
+    const data = (await res.json()) as {
+      items?: { id: string; name: string }[];
+      next: string | null;
+    };
+    for (const playlist of data.items ?? []) {
+      if (WHITELIST_PLAYLIST_MARKERS.some((marker) => playlist.name.includes(marker)) || WHITELIST_PLAYLIST_MARKERS.some((marker) => playlist.id.includes(marker))) {
+        matchingPlaylistIds.push(playlist.id);
+      }
+    }
+    playlistsUrl = data.next;
+  }
+
+  const ids = new Set<string>();
+  for (const playlistId of matchingPlaylistIds) {
+    let tracksUrl: string | null =
+      `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=100&fields=items(track(id)),next`;
+    while (tracksUrl) {
+      const res = await fetch(tracksUrl, fetchOpts);
+      if (!res.ok) break;
+      const data = (await res.json()) as {
+        items?: { track: { id: string | null } | null }[];
+        next: string | null;
+      };
+      for (const { track } of data.items ?? []) {
+        if (track?.id) ids.add(track.id);
+      }
+      tracksUrl = data.next;
+    }
+  }
+
+  return ids;
+}
+
 // Map a raw Spotify track into our NowPlaying shape. Returns null when the
-// track's title/album/artist hits the blocklist. `progressMs` is the playback
-// position (null/undefined for recently-played tracks).
+// track isn't in the whitelist. `progressMs` is the playback position
+// (null/undefined for recently-played tracks).
 function mapTrack(
   item: TrackItem,
   isPlaying: boolean,
   progressMs: number | null,
+  whitelist: Set<string>,
 ): NowPlaying | null {
+  if (!whitelist.has(item.id)) return null;
+
   const artist = item.artists.map((a) => a.name).join(", ");
-  if (isBlocked(item.name, item.album.name, artist)) return null;
 
   const smallestArt = item.album.images.reduce<typeof item.album.images[number] | undefined>(
     (min, img) => (!min || (img.height ?? 0) < (min.height ?? 0) ? img : min),
@@ -157,8 +171,11 @@ function mapTrack(
 }
 
 // Fetch the most recently played track as a fallback for when nothing is
-// playing. Returns null on error or when the track hits the blocklist.
-async function getRecentlyPlayed(token: string): Promise<NowPlaying | null> {
+// playing. Returns null on error or when the track isn't in the whitelist.
+async function getRecentlyPlayed(
+  token: string,
+  whitelist: Set<string>,
+): Promise<NowPlaying | null> {
   const res = await fetch(RECENTLY_PLAYED_URL, {
     headers: { Authorization: `Bearer ${token}` },
     cache: "no-store",
@@ -169,16 +186,18 @@ async function getRecentlyPlayed(token: string): Promise<NowPlaying | null> {
   const item = data.items?.[0]?.track;
   if (!item) return null;
 
-  return mapTrack(item, false, null);
+  return mapTrack(item, false, null, whitelist);
 }
 
 // Fetch what's on the player: the currently-playing track when something is
 // playing, otherwise the most recently played one (isPlaying: false). Returns
-// null when the user isn't authenticated, when the track hits the blocklist,
-// or on any network error.
+// null when the user isn't authenticated, when the track isn't in the
+// whitelist, or on any network error.
 export async function getNowPlaying(): Promise<NowPlaying | null> {
   const token = await getAccessToken();
   if (!token) return null;
+
+  const whitelist = await getWhitelistedTrackIds(token);
 
   const res = await fetch(NOW_PLAYING_URL, {
     headers: { Authorization: `Bearer ${token}` },
@@ -186,7 +205,7 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
   });
 
   // 204 = nothing playing right now → fall back to recently played.
-  if (res.status === 204) return getRecentlyPlayed(token);
+  if (res.status === 204) return getRecentlyPlayed(token, whitelist);
   if (!res.ok) return null;
 
   type CurrentlyPlaying = {
@@ -196,9 +215,9 @@ export async function getNowPlaying(): Promise<NowPlaying | null> {
   };
 
   const data = (await res.json()) as CurrentlyPlaying;
-  if (!data?.item) return getRecentlyPlayed(token);
+  if (!data?.item) return getRecentlyPlayed(token, whitelist);
 
-  return mapTrack(data.item, data.is_playing, data.progress_ms);
+  return mapTrack(data.item, data.is_playing, data.progress_ms, whitelist);
 }
 
 // Resolve the OAuth redirect URI from env. Same value must be registered in

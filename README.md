@@ -70,14 +70,15 @@ O token e a URL ficam em `.claude/presence.local.json` (gitignored):
 { "url": "https://kaua.dev.br/api/presence", "token": "..." }
 ```
 
-**Dois gatilhos** disparam o heartbeat (independentes, podem coexistir):
+**Dois gatilhos** disparam o heartbeat (independentes, podem coexistir), com
+versão pra Windows (PowerShell) e pra Linux (bash + systemd):
 
-| Gatilho | Arquivo | Dispara quando |
-| --- | --- | --- |
-| Processos abertos | `scripts/presence-process-watch.ps1` | Warp / Zed / Riggr está aberto (checado a cada 10 min via Task Scheduler) |
-| Prompt no Claude Code | `scripts/presence-heartbeat.ps1` | Mando um prompt (hook `UserPromptSubmit` em `.claude/settings.local.json`) |
+| Gatilho | Windows | Linux | Dispara quando |
+| --- | --- | --- | --- |
+| Processos abertos | `scripts/presence-process-watch.ps1` | `scripts/presence-process-watch.sh` | Riggr / um terminal (Kitty, Alacritty, ...) / Zed está aberto (checado a cada 10 min) |
+| Prompt no Claude Code | `scripts/presence-heartbeat.ps1` | — (ainda não portado) | Mando um prompt (hook `UserPromptSubmit` em `.claude/settings.local.json`) |
 
-### Ativar (gatilho por processos)
+### Ativar (gatilho por processos) — Windows
 
 Roda **uma vez** no PowerShell (como Administrador se der "Acesso negado"):
 
@@ -87,19 +88,15 @@ powershell -ExecutionPolicy Bypass -File "C:\Users\kauac\Meu Pessoal\Projetos Pe
 
 Registra a tarefa agendada `kaua-dev-presence` (roda a cada 10 min, sobrevive a reboot).
 
-### Desativar
+Desativar:
 
 ```powershell
 Unregister-ScheduledTask -TaskName 'kaua-dev-presence' -Confirm:$false
 ```
 
-Pra desligar o gatilho do Claude Code, remova o bloco `UserPromptSubmit` de
-`.claude/settings.local.json`.
-
-### Ajustar quais apps contam
-
-Edite a lista `$targets` em `scripts/presence-process-watch.ps1` (match por
-substring no nome do processo, sem precisar do nome exato do .exe):
+Ajustar quais apps contam: edite a lista `$targets` em
+`scripts/presence-process-watch.ps1` (match por substring no nome do
+processo, sem precisar do nome exato do .exe):
 
 ```powershell
 $targets = @('warp', 'zed', 'rigg')
@@ -109,6 +106,35 @@ Pra descobrir o nome de um processo: `Get-Process | Select ProcessName -Unique`.
 
 > Os scripts `.ps1` devem conter **apenas caracteres ASCII** — o PowerShell 5.1
 > lê acentos/travessões errado e quebra o parser.
+
+### Ativar (gatilho por processos) — Linux
+
+Roda **uma vez**:
+
+```bash
+bash scripts/register-presence-timer.sh
+```
+
+Registra um timer `systemd --user` (`kaua-dev-presence.timer`) que dispara
+`presence-process-watch.sh` a cada 10 min. `Type=oneshot` + `Nice=19` +
+`IOSchedulingClass=idle`: nada fica residente entre execuções e cada tick
+roda com prioridade mínima (poucos ms de CPU, sem impacto perceptível).
+
+Desativar:
+
+```bash
+systemctl --user disable --now kaua-dev-presence.timer
+rm ~/.config/systemd/user/kaua-dev-presence.{service,timer}
+systemctl --user daemon-reload
+```
+
+Ajustar quais apps contam: edite `targets_regex` em
+`scripts/presence-process-watch.sh` (match por substring no nome do
+processo — `pgrep`). Pra descobrir o nome de um processo:
+`ps -eo comm= | sort -u`.
+
+Pra desligar o gatilho do Claude Code (ambos os SOs), remova o bloco
+`UserPromptSubmit` de `.claude/settings.local.json`.
 
 ## Deploy
 
