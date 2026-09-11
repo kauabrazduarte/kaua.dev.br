@@ -12,7 +12,7 @@ import { ChatPanel } from "@/components/chat-panel";
 import { CustomThemeBanner } from "@/components/custom-theme-banner";
 import { siteConfig } from "@/lib/site";
 import { CUSTOM_THEME_BOOT_SCRIPT } from "@/lib/custom-theme";
-import { commitMono } from "@/app/fonts";
+import { ioskeleyMono } from "@/app/fonts";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -289,7 +289,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       suppressHydrationWarning
-      className={commitMono.variable}
+      className={ioskeleyMono.variable}
     >
       <head>
         {/* Apply a persisted custom theme before paint so it never flashes the

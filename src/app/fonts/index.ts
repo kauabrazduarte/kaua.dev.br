@@ -1,30 +1,30 @@
 import localFont from "next/font/local";
 
-// CommitMono — a single monospaced family used across the whole site (both the
-// "sans" and "mono" design tokens point at it). Self-hosted from src/app/fonts
-// via next/font/local, so no network requests and no layout shift. The four
-// faces cover regular/italic at weights 400 and 700.
-export const commitMono = localFont({
-  variable: "--font-commit-mono",
+// Iosevka Mono — a single monospaced family used across the whole site (both
+// the "sans" and "mono" design tokens point at it). Self-hosted from
+// src/app/fonts via next/font/local, so no network requests and no layout
+// shift. The four faces cover regular/italic at weights 400 and 700.
+export const ioskeleyMono = localFont({
+  variable: "--font-ioskeley-mono",
   display: "swap",
   src: [
     {
-      path: "./CommitMono-400-Regular.otf",
+      path: "./IoskeleyMono-400-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./CommitMono-400-Italic.otf",
+      path: "./IoskeleyMono-400-Italic.ttf",
       weight: "400",
       style: "italic",
     },
     {
-      path: "./CommitMono-700-Regular.otf",
+      path: "./IoskeleyMono-700-Regular.ttf",
       weight: "700",
       style: "normal",
     },
     {
-      path: "./CommitMono-700-Italic.otf",
+      path: "./IoskeleyMono-700-Italic.ttf",
       weight: "700",
       style: "italic",
     },

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { commitMono } from "@/app/fonts";
+import { ioskeleyMono } from "@/app/fonts";
 import "./globals.css";
 
 // Global fallback 404 — rendered for paths OUTSIDE the [locale] segment, where
@@ -24,7 +24,7 @@ export default function GlobalNotFound() {
     <html
       lang="en"
       suppressHydrationWarning
-      className={commitMono.variable}
+      className={ioskeleyMono.variable}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
