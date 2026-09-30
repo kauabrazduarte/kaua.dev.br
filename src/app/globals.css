@@ -305,7 +305,9 @@
   opacity: 1;
 }
 
-@media (hover: none), (pointer: coarse) {
+@media (min-width: 768px) and (hover: none),
+  (min-width: 768px) and (pointer: coarse),
+  (max-width: 767px) and (hover: none) and (pointer: coarse) and (prefers-reduced-motion: reduce) {
   .ambient-grid__lines--lit,
   .ambient-grid__glow,
   .ambient-grid__cell,
