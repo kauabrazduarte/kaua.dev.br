@@ -51,6 +51,7 @@ export function AmbientGrid() {
       let timer = 0;
       let lastCol = -1;
       let lastRow = -1;
+      let onResize = () => {};
 
       const paint = () => {
         root.style.setProperty("--gx", `${x.toFixed(1)}px`);
@@ -85,19 +86,23 @@ export function AmbientGrid() {
         const pickCell = () => {
           const columns = Math.max(1, Math.floor(window.innerWidth / CELL));
           const rows = Math.max(1, Math.floor(window.innerHeight / CELL));
-          const col = Math.floor(Math.random() * columns);
-          const row = Math.floor(Math.random() * rows);
+          const firstCol = Math.round((columns - 1) * 0.25);
+          const lastCol = Math.round((columns - 1) * 0.75);
+          const firstRow = Math.round((rows - 1) * 0.25);
+          const lastRow = Math.round((rows - 1) * 0.75);
+          const col = firstCol + Math.floor(Math.random() * (lastCol - firstCol + 1));
+          const row = firstRow + Math.floor(Math.random() * (lastRow - firstRow + 1));
           targetX = col * CELL + CELL / 2;
           targetY = row * CELL + CELL / 2;
+          return lastCol > firstCol || lastRow > firstRow;
         };
         const wander = () => {
           const previousX = targetX;
           const previousY = targetY;
-          // Avoid a stationary interval when the viewport has another cell.
+          let hasAnotherCell: boolean;
           do {
-            pickCell();
-          } while (targetX === previousX && targetY === previousY &&
-            (window.innerWidth >= CELL * 2 || window.innerHeight >= CELL * 2));
+            hasAnotherCell = pickCell();
+          } while (hasAnotherCell && targetX === previousX && targetY === previousY);
           if (!raf) raf = requestAnimationFrame(tick);
           timer = window.setTimeout(wander, 3000 + Math.random() * 5000);
         };
@@ -107,6 +112,16 @@ export function AmbientGrid() {
         paint();
         root.dataset.active = "true";
         timer = window.setTimeout(wander, 3000 + Math.random() * 5000);
+        onResize = () => {
+          if (Math.max(x, targetX) + CELL / 2 > window.innerWidth ||
+            Math.max(y, targetY) + CELL / 2 > window.innerHeight) {
+            pickCell();
+            x = targetX;
+            y = targetY;
+            paint();
+          }
+        };
+        window.addEventListener("resize", onResize);
       } else {
         root.dataset.active = "false";
       }
@@ -126,6 +141,7 @@ export function AmbientGrid() {
       stop = () => {
         window.removeEventListener("pointermove", onMove);
         document.documentElement.removeEventListener("pointerleave", onLeave);
+        window.removeEventListener("resize", onResize);
         window.clearTimeout(timer);
         if (raf) cancelAnimationFrame(raf);
       };
