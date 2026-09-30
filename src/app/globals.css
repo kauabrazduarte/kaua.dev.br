@@ -149,6 +149,176 @@
   }
 }
 
+/* ─────────────────────────────────────────────
+ * Ambient grid backdrop (see components/ambient-grid.tsx)
+ * Everything is derived from --foreground / --primary so it follows
+ * light, dark and agent-painted custom themes.
+ * ───────────────────────────────────────────── */
+.ambient-grid {
+  --grid-cell: 48px; /* keep in sync with CELL in ambient-grid.tsx */
+  --gx: 50vw;
+  --gy: 30vh;
+  --cx: -100px;
+  --cy: -100px;
+  --grid-line: color-mix(in oklab, var(--foreground) 7%, transparent);
+  --grid-line-lit: color-mix(in oklab, var(--primary) 60%, transparent);
+}
+.dark .ambient-grid {
+  --grid-line: color-mix(in oklab, var(--foreground) 6%, transparent);
+  --grid-line-lit: color-mix(in oklab, var(--primary) 50%, transparent);
+}
+
+.ambient-grid > * {
+  position: absolute;
+}
+
+/* Colour wash so the page never reads as flat white / flat black. */
+.ambient-grid__wash {
+  inset: 0;
+  background:
+    radial-gradient(
+      70rem 34rem at 50% -8%,
+      color-mix(in oklab, var(--primary) 11%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      44rem 30rem at 100% 100%,
+      color-mix(in oklab, var(--primary) 6%, transparent),
+      transparent 70%
+    );
+}
+
+.ambient-grid__lines {
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+  /* Strongest at the top centre, dissolving toward the edges and bottom. */
+  -webkit-mask-image: radial-gradient(
+    ellipse 110% 95% at 50% 0%,
+    #000 25%,
+    rgb(0 0 0 / 0.22) 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 110% 95% at 50% 0%,
+    #000 25%,
+    rgb(0 0 0 / 0.22) 100%
+  );
+}
+
+/* Same grid in the accent colour, only visible inside a circle around the cursor. */
+.ambient-grid__lines--lit {
+  background-image:
+    linear-gradient(to right, var(--grid-line-lit) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-lit) 1px, transparent 1px);
+  -webkit-mask-image: radial-gradient(
+    circle 230px at var(--gx) var(--gy),
+    #000,
+    transparent
+  );
+  mask-image: radial-gradient(
+    circle 230px at var(--gx) var(--gy),
+    #000,
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.ambient-grid__glow {
+  left: 0;
+  top: 0;
+  width: 560px;
+  height: 560px;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--primary) 15%, transparent),
+    transparent 65%
+  );
+  transform: translate3d(calc(var(--gx) - 280px), calc(var(--gy) - 280px), 0);
+  opacity: 0;
+  transition: opacity 500ms ease;
+  will-change: transform;
+}
+
+/* The grid cell under the pointer; hops from cell to cell. */
+.ambient-grid__cell {
+  left: 0;
+  top: 0;
+  width: calc(var(--grid-cell) + 1px);
+  height: calc(var(--grid-cell) + 1px);
+  background: color-mix(in oklab, var(--primary) 8%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--primary) 38%, transparent);
+  transform: translate3d(var(--cx), var(--cy), 0);
+  transition:
+    transform 140ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 300ms ease;
+  opacity: 0;
+}
+
+/* Small crosshair + cell coordinates riding on the eased pointer position. */
+.ambient-grid__cross {
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform: translate3d(var(--gx), var(--gy), 0);
+  opacity: 0;
+  transition: opacity 300ms ease;
+  will-change: transform;
+}
+.ambient-grid__cross::before,
+.ambient-grid__cross::after {
+  content: "";
+  position: absolute;
+  background: color-mix(in oklab, var(--primary) 70%, transparent);
+}
+.ambient-grid__cross::before {
+  left: -8px;
+  top: 0;
+  width: 17px;
+  height: 1px;
+}
+.ambient-grid__cross::after {
+  left: 0;
+  top: -8px;
+  width: 1px;
+  height: 17px;
+}
+.ambient-grid__coords {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: color-mix(in oklab, var(--foreground) 55%, transparent);
+}
+
+.ambient-grid[data-active="true"] .ambient-grid__lines--lit,
+.ambient-grid[data-active="true"] .ambient-grid__glow,
+.ambient-grid[data-active="true"] .ambient-grid__cell,
+.ambient-grid[data-active="true"] .ambient-grid__cross {
+  opacity: 1;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .ambient-grid__lines--lit,
+  .ambient-grid__glow,
+  .ambient-grid__cell,
+  .ambient-grid__cross {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient-grid__cell {
+    transition: opacity 300ms ease;
+  }
+}
+
 /* Hairline rule like a printed page line. */
 .paper-rule {
   height: 1px;

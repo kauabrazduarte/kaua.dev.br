@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Fireworks } from "@/components/fireworks";
+import { AmbientGrid } from "@/components/ambient-grid";
 import { ChatProvider } from "@/components/chat-provider";
 import { ChatPanel } from "@/components/chat-panel";
 import { CustomThemeBanner } from "@/components/custom-theme-banner";
@@ -324,6 +325,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body className="min-h-dvh bg-background text-foreground antialiased">
+        <AmbientGrid />
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider
             attribute="class"
