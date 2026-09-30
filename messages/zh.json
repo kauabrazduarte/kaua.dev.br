@@ -80,8 +80,8 @@
     "following": "关注中",
     "stars": "获得的星标",
     "contributions": "{count, plural, =0 {没有贡献} other {# 次贡献}}",
-    "graphAria": "今年在 GitHub 的 {count, number} 次贡献",
-    "summary": "今年 {count, number} 次贡献",
+    "graphAria": "过去 12 个月在 GitHub 的 {count, number} 次贡献",
+    "summary": "过去 12 个月 {count, number} 次贡献",
     "legendLess": "少",
     "legendMore": "多"
   },

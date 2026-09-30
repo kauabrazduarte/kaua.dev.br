@@ -22,13 +22,12 @@ interface Response {
 }
 
 // Public, tokenless API maintained by @jogruber that mirrors the GitHub
-// contributions calendar. We revalidate every 6 hours. `y=<year>` returns the
-// current calendar year only (Jan 1 → Dec 31) instead of a rolling 12 months.
+// contributions calendar. We revalidate every 6 hours. `y=last` returns the
+// rolling last 12 months.
 async function fetchContributions(): Promise<Response | null> {
   try {
-    const year = new Date().getFullYear();
     const res = await fetch(
-      `https://github-contributions-api.jogruber.de/v4/${siteConfig.github.username}?y=${year}`,
+      `https://github-contributions-api.jogruber.de/v4/${siteConfig.github.username}?y=last`,
       { next: { revalidate: 60 * 60 * 6 } },
     );
     if (!res.ok) return null;

@@ -80,8 +80,8 @@
     "following": "Following",
     "stars": "Stars received",
     "contributions": "{count, plural, =0 {No contributions} one {# contribution} other {# contributions}}",
-    "graphAria": "{count, number} GitHub contributions this year",
-    "summary": "{count, number} contributions · this year",
+    "graphAria": "{count, number} GitHub contributions in the last 12 months",
+    "summary": "{count, number} contributions · last 12 months",
     "legendLess": "less",
     "legendMore": "more"
   },

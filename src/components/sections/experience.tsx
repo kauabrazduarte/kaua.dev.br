@@ -18,51 +18,6 @@ interface Experience {
 
 const EXPERIENCES: Experience[] = [
   {
-    company: "Melo Advogados",
-    role: {
-      pt: "Tech Lead · Full-Stack",
-      en: "Tech Lead · Full-Stack",
-      es: "Tech Lead · Full-Stack",
-      zh: "技术负责人 · 全栈",
-    },
-    period: {
-      pt: "2026 — Atual",
-      en: "2026 — Present",
-      es: "2026 — Actual",
-      zh: "2026 — 至今",
-    },
-    current: true,
-    highlights: [
-      {
-        pt: "Foco em integrações de IA aplicadas ao fluxo jurídico.",
-        en: "Focused on AI integrations applied to the legal workflow.",
-        es: "Enfoque en integraciones de IA aplicadas al flujo jurídico.",
-        zh: "专注于应用于法律工作流程的 AI 集成。",
-      },
-      {
-        pt: "Adaptação e manutenção de websites.",
-        en: "Adapting and maintaining websites.",
-        es: "Adaptación y mantenimiento de sitios web.",
-        zh: "网站的适配与维护。",
-      },
-      {
-        pt: "Lidera o time de desenvolvimento, dividindo responsabilidades entre os membros.",
-        en: "Leads the development team, distributing responsibilities among its members.",
-        es: "Lidera el equipo de desarrollo, distribuyendo responsabilidades entre los miembros.",
-        zh: "带领开发团队，在成员间分配职责。",
-      },
-    ],
-    tags: [
-      "Next.js",
-      "TypeScript",
-      "Python",
-      "Bun",
-      "Claude Code",
-      "Google Cloud Run",
-      "Google Workspace",
-    ],
-  },
-  {
     company: "Marcos Jocober",
     aka: "TDHW",
     url: "https://marcosjocober.com",
@@ -147,6 +102,50 @@ const EXPERIENCES: Experience[] = [
       "Claude Code",
       "VPS",
       "Easypanel",
+    ],
+  },
+  {
+    company: "Melo Advogados",
+    role: {
+      pt: "Tech Lead · Full-Stack",
+      en: "Tech Lead · Full-Stack",
+      es: "Tech Lead · Full-Stack",
+      zh: "技术负责人 · 全栈",
+    },
+    period: {
+      pt: "2026",
+      en: "2026",
+      es: "2026",
+      zh: "2026",
+    },
+    highlights: [
+      {
+        pt: "Foco em integrações de IA aplicadas ao fluxo jurídico.",
+        en: "Focused on AI integrations applied to the legal workflow.",
+        es: "Enfoque en integraciones de IA aplicadas al flujo jurídico.",
+        zh: "专注于应用于法律工作流程的 AI 集成。",
+      },
+      {
+        pt: "Adaptação e manutenção de websites.",
+        en: "Adapting and maintaining websites.",
+        es: "Adaptación y mantenimiento de sitios web.",
+        zh: "网站的适配与维护。",
+      },
+      {
+        pt: "Lidera o time de desenvolvimento, dividindo responsabilidades entre os membros.",
+        en: "Leads the development team, distributing responsibilities among its members.",
+        es: "Lidera el equipo de desarrollo, distribuyendo responsabilidades entre los miembros.",
+        zh: "带领开发团队，在成员间分配职责。",
+      },
+    ],
+    tags: [
+      "Next.js",
+      "TypeScript",
+      "Python",
+      "Bun",
+      "Claude Code",
+      "Google Cloud Run",
+      "Google Workspace",
     ],
   },
   {
