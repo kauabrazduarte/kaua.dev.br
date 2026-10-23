@@ -42,7 +42,7 @@
   "about": {
     "kicker": "About",
     "title": "About me",
-    "body": "I build full-stack web apps end to end. If an API has an endpoint, I'll integrate it. I work with TypeScript, Bun and Node.js, and occasionally venture into Python and PHP when there's no way around it. I'm not actively taking on work right now, but if the proposal is good, just reach out."
+    "body": "I build full-stack web apps end to end. If an API has an endpoint, I'll integrate it. I work with TypeScript, Bun and Node.js, and occasionally venture into Python and PHP when there's no way around it. I'm currently looking for new work and opportunities. If you have a proposal, get in touch."
   },
   "skills": {
     "kicker": "Stack",
@@ -92,7 +92,7 @@
   "contact": {
     "kicker": "Contact",
     "title": "Let's talk",
-    "subtitle": "Not actively taking on work, but always open to hear interesting proposals.",
+    "subtitle": "I'm looking for new work and opportunities. Let's talk.",
     "or": "or on"
   },
   "links": {

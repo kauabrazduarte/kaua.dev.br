@@ -42,7 +42,7 @@
   "about": {
     "kicker": "Sobre mí",
     "title": "Sobre mí",
-    "body": "Construyo aplicaciones web full-stack de principio a fin. Si una API tiene un endpoint, lo integro. Trabajo con TypeScript, Bun y Node.js, y de vez en cuando me aventuro en Python y PHP cuando no queda otra. Por ahora no estoy aceptando trabajos activamente, pero si la propuesta es buena, solo escríbeme."
+    "body": "Construyo aplicaciones web full-stack de principio a fin. Si una API tiene un endpoint, lo integro. Trabajo con TypeScript, Bun y Node.js, y de vez en cuando me aventuro en Python y PHP cuando no queda otra. Ahora estoy buscando nuevos trabajos y oportunidades. Si tienes una propuesta, escríbeme."
   },
   "skills": {
     "kicker": "Stack",
@@ -92,7 +92,7 @@
   "contact": {
     "kicker": "Contacto",
     "title": "Hablemos",
-    "subtitle": "No estoy aceptando trabajos activamente, pero siempre abierto a propuestas interesantes.",
+    "subtitle": "Estoy buscando nuevos trabajos y oportunidades. ¡Hablemos!",
     "or": "o en"
   },
   "links": {

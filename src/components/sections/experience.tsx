@@ -28,12 +28,11 @@ const EXPERIENCES: Experience[] = [
       zh: "全栈开发者 · 基础设施",
     },
     period: {
-      pt: "2026 — Atual",
-      en: "2026 — Present",
-      es: "2026 — Actual",
-      zh: "2026 — 至今",
+      pt: "2026",
+      en: "2026",
+      es: "2026",
+      zh: "2026",
     },
-    current: true,
     highlights: [
       {
         pt: "Foco em automações de processos com integrações de IA e APIs.",

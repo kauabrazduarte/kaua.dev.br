@@ -42,7 +42,7 @@
   "about": {
     "kicker": "关于",
     "title": "关于我",
-    "body": "我从头到尾构建全栈 Web 应用。只要 API 有接口，我就能对接。我使用 TypeScript、Bun 和 Node.js，偶尔在实在没办法时也会涉足 Python 和 PHP。目前我没有积极接活，但如果有好的提案，尽管联系我。"
+    "body": "我从头到尾构建全栈 Web 应用。只要 API 有接口，我就能对接。我使用 TypeScript、Bun 和 Node.js，偶尔在实在没办法时也会涉足 Python 和 PHP。目前我正在寻找新的工作和合作机会。如果你有合适的项目，欢迎联系我。"
   },
   "skills": {
     "kicker": "技术栈",
@@ -92,7 +92,7 @@
   "contact": {
     "kicker": "联系",
     "title": "聊聊吧",
-    "subtitle": "目前没有积极接洽新工作，但始终欢迎有趣的提案。",
+    "subtitle": "我正在寻找新的工作和合作机会，欢迎联系我。",
     "or": "或在"
   },
   "links": {
