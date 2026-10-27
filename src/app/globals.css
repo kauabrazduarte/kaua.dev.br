@@ -170,7 +170,7 @@
   );
 }
 .dark .ambient-grid {
-  --grid-line: color-mix(in oklab, var(--foreground) 6%, transparent);
+  --grid-line: color-mix(in oklab, var(--background) 88%, var(--foreground));
 }
 
 /* Hairline rule like a printed page line. */
