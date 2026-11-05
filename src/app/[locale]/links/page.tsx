@@ -102,10 +102,10 @@ export default async function LinksPage({ params }: { params: Params }) {
     },
   ];
 
-  // Same token set as the Button `outline` variant on the home: hairline border,
-  // transparent surface, accent on hover. No literal colors.
+  // Hairline border on a transparent surface. Hover is only the arrow nudge —
+  // no background fill, so the row never flashes black over the page.
   const rowClass =
-    "group flex items-center gap-4 rounded-2xl border border-border bg-transparent px-4 py-3.5 text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background";
+    "group flex items-center gap-4 rounded-2xl border border-border bg-transparent px-4 py-3.5 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background";
 
   return (
     <div className="mx-auto w-full max-w-md px-6 py-12 sm:py-16">

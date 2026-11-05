@@ -54,7 +54,7 @@ export default async function PixPage({ params }: { params: Params }) {
     .replaceAll('fill="#ffffff"', 'fill="transparent"')
     .replaceAll('stroke="#000000"', 'stroke="currentColor"');
 
-  // Brand-accented outline buttons — orange border/text on the cream paper
+  // Brand-accented outline buttons — orange border/text on white
   // (violet in dark), in the home's accent spirit rather than a heavy fill.
   const brandButton =
     "w-full border-brand/40 text-brand hover:bg-brand/10 hover:text-brand";

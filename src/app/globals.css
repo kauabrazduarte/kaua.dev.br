@@ -35,44 +35,38 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* ─────────────────────────────────────────────
- * Light theme — warm "paper" off-white.
- * Background is a creamy off-white close to printed
- * paper. Accent (amber-600) shows up only in the
- * status dot, link underlines and focus rings.
- * ───────────────────────────────────────────── */
+/* Light theme — white surfaces with neutral grays and an amber accent. */
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.975 0.008 85);        /* warm cream */
-  --foreground: oklch(0.22 0.012 60);         /* warm ink */
-  --card: oklch(0.975 0.008 85);              /* same as bg (no card surface) */
-  --card-foreground: oklch(0.22 0.012 60);
-  --popover: oklch(0.966 0.008 85);           /* warm off-white (~#f7f4ef) */
-  --popover-foreground: oklch(0.22 0.012 60);
+  --background: #ffffff;
+  --foreground: oklch(0.22 0 0);
+  --card: #ffffff;
+  --card-foreground: oklch(0.22 0 0);
+  --popover: #ffffff;
+  --popover-foreground: oklch(0.22 0 0);
 
   --primary: oklch(0.62 0.16 55);             /* amber-600 ink */
-  --primary-foreground: oklch(0.99 0.005 85);
+  --primary-foreground: #ffffff;
 
-  --secondary: oklch(0.95 0.008 85);
-  --secondary-foreground: oklch(0.32 0.012 60);
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.32 0 0);
 
-  --muted: oklch(0.95 0.008 85);
-  --muted-foreground: oklch(0.5 0.01 60);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.5 0 0);
 
-  --accent: oklch(0.93 0.012 85);
-  --accent-foreground: oklch(0.25 0.012 60);
+  --accent: oklch(0.94 0 0);
+  --accent-foreground: oklch(0.25 0 0);
 
   --destructive: oklch(0.58 0.22 28);
   --destructive-foreground: oklch(0.99 0 0);
   --success: oklch(0.55 0.13 155);
   --success-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.88 0.012 80);             /* faint warm rule */
-  --paper-rule: oklch(0.82 0.012 80);         /* slightly stronger for dividers */
-  --input: oklch(0.88 0.012 80);
+  --border: oklch(0.88 0 0);
+  --paper-rule: oklch(0.82 0 0);
+  --input: oklch(0.88 0 0);
   --ring: oklch(0.62 0.16 55);
-  /* Burnt-orange brand accent for the Pix QR + action buttons. A touch deeper
-     than --primary so it reads as the warm "home orange" on the cream paper. */
+  /* Burnt-orange brand accent for the Pix QR and action buttons. */
   --brand: #be5828;
 }
 
@@ -137,9 +131,9 @@
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    /* Extremely subtle paper grain — SVG turbulence at ~2% opacity.
-       Doesn't add network bytes (inline data URI) and reads as texture
-       rather than noise. */
+  }
+  .dark body {
+    /* Keep the subtle grain in dark mode only; light mode stays pure white. */
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/></svg>");
     background-repeat: repeat;
   }

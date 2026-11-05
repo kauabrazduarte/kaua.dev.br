@@ -17,7 +17,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: siteConfig.description.pt,
     start_url: "/",
     display: "standalone",
-    background_color: "#fafaf9",
+    background_color: "#ffffff",
     theme_color: "#0c0a14",
     icons: [
       // /icon and /apple-icon are generated dynamically by icon.tsx /
