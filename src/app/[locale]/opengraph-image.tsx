@@ -56,7 +56,7 @@ export default async function OG({ params }: { params: Params }) {
   let avatarSrc: string | undefined;
   try {
     const buf = await readFile(
-      path.join(process.cwd(), "public", "avatar.png"),
+      path.join(process.cwd(), "public", "avatar-ink.png"),
     );
     avatarSrc = `data:image/png;base64,${buf.toString("base64")}`;
   } catch {

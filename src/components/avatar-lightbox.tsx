@@ -35,7 +35,7 @@ export function AvatarLightbox({ src, alt, size, thumbClassName, priority }: Pro
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="cursor-zoom-in rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="cursor-zoom-in rounded-full bg-white outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         aria-label="Ver foto de perfil"
       >
         <Image
@@ -44,7 +44,7 @@ export function AvatarLightbox({ src, alt, size, thumbClassName, priority }: Pro
           width={size}
           height={size}
           priority={priority}
-          className={`shrink-0 rounded-full transition-transform duration-200 hover:scale-105 ${thumbClassName ?? ""}`}
+          className={`shrink-0 rounded-full bg-white object-cover transition-transform duration-200 hover:scale-105 ${thumbClassName ?? ""}`}
         />
       </button>
 
@@ -72,7 +72,7 @@ export function AvatarLightbox({ src, alt, size, thumbClassName, priority }: Pro
                 alt={alt}
                 width={320}
                 height={320}
-                className="rounded-full border-2 border-white/20 shadow-2xl"
+                className="rounded-full bg-white object-cover shadow-2xl"
               />
             </m.div>
           </m.div>

@@ -37,7 +37,14 @@
     "secondaryCta": "Get in touch",
     "locationLabel": "Location",
     "location": "MG, Brazil",
-    "emailLabel": "Email"
+    "emailLabel": "Email",
+    "paintingAction": "Click to see another painting",
+    "paintings": {
+      "0": "Mountain sunrise",
+      "1": "Fox in the snow",
+      "2": "Galaxy",
+      "3": "Could you leave us flowers?"
+    }
   },
   "about": {
     "kicker": "About",
@@ -85,10 +92,6 @@
     "legendLess": "less",
     "legendMore": "more"
   },
-  "customTheme": {
-    "bannerText": "Custom theme “{name}” active — click to",
-    "revert": "back to the original theme"
-  },
   "contact": {
     "kicker": "Contact",
     "title": "Let's talk",
@@ -115,56 +118,5 @@
     "rights": "All rights reserved.",
     "builtWith": "Made with lots of {heart}",
     "quote": "I bore witness to myself only when another named my passage."
-  },
-  "chat": {
-    "title": "Kauã's Assistant",
-    "subtitle": "Ask about Kauã or send",
-    "subtitlePrefix": "Ask about Kauã or send",
-    "commandsLink": "commands",
-    "panelLabel": "Chat with Kauã's assistant",
-    "openChat": "Open a conversation with the assistant cat",
-    "introHeading": "Hi! I'm the assistant from Kauã's portfolio 👋",
-    "introBody": "I can answer questions about who he is, what he does, his stack, and how to get in touch. Go ahead, ask away!",
-    "suggestions": [
-      "What does Kauã do?",
-      "What's his stack?",
-      "Is he available?",
-      "How do I reach him?"
-    ],
-    "placeholder": "Ask something about Kauã…",
-    "inputLabel": "Message for the assistant",
-    "send": "Send",
-    "stop": "Stop",
-    "close": "Close conversation",
-    "resetContext": "Reset",
-    "resetTitle": "Clear the saved chat from your browser",
-    "disclaimer": "Experimental AI — answers from the assistant, not Kauã himself.",
-    "errorPrefix": "Error",
-    "thinking": "Thinking…",
-    "reasoning": "View reasoning",
-    "easterEggToggle": "Secret commands",
-    "easterEggTitle": "Hidden commands",
-    "easterEggSubtitle": "Ask the kitty to run these actions:",
-    "easterEggHint": "Or type !tools to open this list. Triple-click the avatar to toggle.",
-    "easterEggItems": [
-      { "cmd": "Change theme", "desc": "Light or dark" },
-      { "cmd": "Fire fireworks", "desc": "Burst of fireworks" },
-      { "cmd": "Confetti rain", "desc": "Confetti from the top" },
-      { "cmd": "Rockets", "desc": "Rockets from bottom to top" },
-      { "cmd": "Scroll to a section", "desc": "About, skills, experience…" },
-      { "cmd": "Open a link", "desc": "GitHub, X, WhatsApp, Pix…" },
-      { "cmd": "Change language", "desc": "PT, EN, ES or ZH" },
-      { "cmd": "Copy something", "desc": "Copy text to clipboard" },
-      { "cmd": "Earthquake", "desc": "Shake the page" },
-      { "cmd": "Invert colors", "desc": "Temporary negative mode" },
-      { "cmd": "Widen the chat", "desc": "Resize the panel (desktop)" },
-      { "cmd": "Wake the cat", "desc": "Shake the kitty" },
-      { "cmd": "Glow avatar", "desc": "Make the avatar glow" },
-      { "cmd": "Notification", "desc": "Show a custom toast" },
-      { "cmd": "Pulse element", "desc": "Pulse avatar, cat or header" },
-      { "cmd": "Highlight section", "desc": "Colored border on a section" },
-      { "cmd": "Simulate presence", "desc": "Fake online/offline" },
-      { "cmd": "Go to the cat", "desc": "Scroll to the kitty at the top" }
-    ]
   }
 }

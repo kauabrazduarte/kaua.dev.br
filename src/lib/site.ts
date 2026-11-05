@@ -64,10 +64,8 @@ export const siteConfig = {
   },
   github: {
     username: "kauabrazduarte",
-    // Avatar is bundled in /public so we don't depend on GitHub at request
-    // time (faster Hero, deterministic OG image). Refresh with:
-    //   curl -L https://github.com/kauabrazduarte.png -o public/avatar.png
-    avatar: "/avatar.png",
+    // Avatar is bundled in /public so the profile and previews use the same image.
+    avatar: "/avatar-ink.png",
   },
   workplaces: [
     { name: "Marcos Jocober", aka: "TDHW" },

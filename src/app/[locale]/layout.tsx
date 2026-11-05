@@ -8,11 +8,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Fireworks } from "@/components/fireworks";
 import { AmbientGrid } from "@/components/ambient-grid";
-import { ChatProvider } from "@/components/chat-provider";
-import { ChatPanel } from "@/components/chat-panel";
-import { CustomThemeBanner } from "@/components/custom-theme-banner";
 import { siteConfig } from "@/lib/site";
-import { CUSTOM_THEME_BOOT_SCRIPT } from "@/lib/custom-theme";
 import { ioskeleyMono } from "@/app/fonts";
 
 export function generateStaticParams() {
@@ -293,34 +289,24 @@ export default async function LocaleLayout({
       className={ioskeleyMono.variable}
     >
       <head>
-        {/* Apply a persisted custom theme before paint so it never flashes the
-            default palette on reload. Mirrors src/lib/custom-theme.ts. */}
-        <script
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: CUSTOM_THEME_BOOT_SCRIPT }}
-        />
         {/* rel="me" links — IndieAuth / Mastodon verification, ties this
             site to the author's external profiles. Also reinforces E-E-A-T. */}
         <link rel="me" href={siteConfig.links.github} />
         <link rel="me" href={siteConfig.links.x} />
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageJsonLd) }}
         />
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(quoteJsonLd) }}
         />
       </head>
@@ -333,7 +319,6 @@ export default async function LocaleLayout({
             enableSystem={false}
             disableTransitionOnChange
           >
-            <ChatProvider>
             <div className="relative flex min-h-dvh flex-col">
               {/* Skip link — only visible when focused via keyboard tab.
                   Lets keyboard / screen-reader users jump past the header. */}
@@ -343,7 +328,6 @@ export default async function LocaleLayout({
               >
                 {tA11y("skipToContent")}
               </a>
-              <CustomThemeBanner />
               <SiteHeader />
               <main id="main" className="flex-1">{children}</main>
               <SiteFooter />
@@ -366,9 +350,7 @@ export default async function LocaleLayout({
                 </figcaption>
               </figure>
             </div>
-            <ChatPanel />
             <Fireworks />
-            </ChatProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

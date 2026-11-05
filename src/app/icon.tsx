@@ -11,7 +11,7 @@ export const contentType = "image/png";
 
 export default async function Icon() {
   const buf = await readFile(
-    path.join(process.cwd(), "public", "avatar.png"),
+    path.join(process.cwd(), "public", "avatar-ink.png"),
   );
   const dataUri = `data:image/png;base64,${buf.toString("base64")}`;
 
@@ -27,10 +27,9 @@ export default async function Icon() {
           // resulting PNG.
           borderRadius: 9999,
           overflow: "hidden",
-          background: "transparent",
+          background: "#fff",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={dataUri}
           width={size.width}
