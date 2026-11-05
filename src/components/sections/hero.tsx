@@ -14,7 +14,7 @@ export function HeroSection() {
 
   return (
     <section id="top" className="scroll-mt-20">
-      <div className="mx-auto w-full max-w-2xl px-6">
+      <div className="mx-auto w-full max-w-2xl sm:px-6">
         <WatercolorLandscape />
       </div>
 
