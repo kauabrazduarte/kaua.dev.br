@@ -9,7 +9,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { Fireworks } from "@/components/fireworks";
 import { AmbientGrid } from "@/components/ambient-grid";
 import { siteConfig } from "@/lib/site";
-import { ioskeleyMono } from "@/app/fonts";
+import { obelMono } from "@/app/fonts";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -286,7 +286,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       suppressHydrationWarning
-      className={ioskeleyMono.variable}
+      className={obelMono.variable}
     >
       <head>
         {/* rel="me" links — IndieAuth / Mastodon verification, ties this

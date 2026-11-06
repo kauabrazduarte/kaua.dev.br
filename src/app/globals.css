@@ -27,8 +27,8 @@
   --color-success-foreground: var(--success-foreground);
   --color-brand: var(--brand);
   --color-paper-rule: var(--paper-rule);
-  --font-sans: var(--font-ioskeley-mono);
-  --font-mono: var(--font-ioskeley-mono);
+  --font-sans: var(--font-obel-mono);
+  --font-mono: var(--font-obel-mono);
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 4px);
   --radius-sm: calc(var(--radius) - 8px);
